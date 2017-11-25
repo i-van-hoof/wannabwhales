@@ -22,7 +22,7 @@ export const environment = {
     apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
     authDomain: 'whalesapp-dev.firebaseapp.com',
     databaseURL: 'https://whalesapp-dev.firebaseio.com',
-    projectId: 'whales-app',
+    projectId: 'whalesapp-dev',
     storageBucket: 'whales-app.appspot.com',
     messagingSenderId: '506504177003'
   }

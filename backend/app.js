@@ -25,7 +25,7 @@ firebase.initializeApp(environment.firebase);
 
 
 var CronJob = require('cron').CronJob;
-new CronJob('0 41 * * * *', function() {
+new CronJob('0 0 * * * *', function() {
     getMarketData();
 }, null, true, 'Europe/Amsterdam');
 
