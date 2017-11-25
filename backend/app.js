@@ -31,6 +31,7 @@ new CronJob('0 41 * * * *', function() {
 
 
 function getMarketData() {
+    console.log("Getting market data");
 rp('https://whales-app.firebaseio.com/market.json')
     .then(portfolioString => {
         portfolio = JSON.parse(portfolioString);
@@ -57,6 +58,8 @@ rp('https://whales-app.firebaseio.com/market.json')
             object['last_updated'] = +object['last_updated'];
             delete object['24h_volume_usd'];
         }
+
+        console.log("Parsed "+market.length+" records");
         let updates = {};
 
 
@@ -68,7 +71,8 @@ rp('https://whales-app.firebaseio.com/market.json')
             updates[path] = { symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp };
         }
         firebase.database().ref().update(updates).then(results => {
-            console.log('results', results);
+            // console.log('results', results);
+            console.log("Send "+market.length+" records to firebase");
         }).catch(err => {
             console.log('err', err);
         })
