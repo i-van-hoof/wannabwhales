@@ -1,0 +1,43 @@
+<script src="portfolio-list.component.ts"></script>
+<div class="row">
+  <div class="col-xs-12">
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-xs-12">
+
+    <button type="button" class="btn btn-basic" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
+    <hr>
+
+    <div> <h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}} </h3></div>
+    <app-portfolio-item
+      *ngFor="let coinmarketEl of coinmarket; let i = index;"
+      [coinmarketItem]="coinmarketEl"
+      [symbol]="coinmarket[i]['symbol']"
+      [hidden]="coinmarket[i]['inportfolio'] === false && !show1"
+      [inportfolio]="coinmarket[i]['inportfolio']"
+    ></app-portfolio-item>
+
+
+
+  </div>
+
+</div>
+
+<!--
+<app-portfolio-item
+  *ngFor="let coinmarketEl of coinmarket; let cryptocoinEl of portfolio;  let i = index"
+  [marketItem]="cryptocoinEl"
+  [coinmarketItem]="coinmarketEl"
+  [symbol]="portfolio[i]['symbol']"
+  [inportfolio]="portfolio[i]['inportfolio']"
+></app-portfolio-item>
+
+-->
+
+
+
+

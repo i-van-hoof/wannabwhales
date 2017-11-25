@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-xs-12">
+    <button type="button" class="btn btn-primary" (click)="onEditPortfolioItem()">
+      Edit item
+    </button>
+    <div class="btn-group"
+         appDropdown>
+      <button type="button" class="btn btn-primary dropdown-toggle">
+        Manage Item <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><a style="cursor: pointer">Add item to wishlist</a></li>
+        <li><a style="cursor: pointer">Add item to portfolio</a></li>
+        <li><a style="cursor: pointer"> <!--(click)="onAddToTransactions()" -->  Add transaction to transaction list</a></li>
+        <li><a style="cursor: pointer" (click)="onEditPortfolioItem()">Edit item</a></li>
+        <li><a style="cursor: pointer">Delete item from portfolio</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<hr>
+
+
+<div class="row" >
+  <div class="col-xs-12">
+
+  </div>
+</div>
+
+<div class="row" style="background-color: #f8f8f8">
+<br>
+    <img
+      src="./assets/SVG/{{portfolioItem.symbol}}.svg"
+      ngClass= {{portfolioItem.symbol}}
+      style="max-height: 90px; padding-left: 15px; padding-top: 15px;">
+
+
+  <div class="col-xs-12">
+    <h1>{{portfolioItem.name}}</h1>
+    <h4>Balance: {{portfolioItem.balance}} Value <b>{{ coinmarketItem.value | number : '1.2-2'}} $ </b></h4>
+    <h4>Price: {{ coinmarketItem.price_usd}} $ ({{ coinmarketItem.price_btc}} BTC)</h4>
+    <h4> {{ coinmarketItem.last_updated * 1000 | date:'yyyy-MM-dd HH:mm:ss'}} </h4>
+  </div>
+</div>
+
+
+<br>
+<div class="row">
+
+  <div class="col-xs-4">
+    Market Cap <br><b> {{coinmarketItem.market_cap_usd | number}} </b>
+  </div>
+
+  <div class="col-xs-4">
+    Supply <br><b> {{coinmarketItem.available_supply | number}} </b>
+  </div>
+
+  <div class="col-xs-4">
+    Volume (24h) <br><b> {{coinmarketItem.volume_24h | number}} </b>
+  </div>
+
+</div>
+
+<br>
+<div class="row">
+  <div class="col-xs-4">
+    Change 1h <br><b [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}"> {{coinmarketItem.percent_change_1h}} % </b>
+  </div>
+
+
+
+  <div class="col-xs-4">
+    Change 24h <br><b [ngClass]="{'negative': coinmarketItem.percent_change_24h < 0, 'positive' : coinmarketItem.percent_change_24h > 0}"> {{coinmarketItem.percent_change_24h}} % </b>
+  </div>
+
+  <div class="col-xs-4">
+    Change 7d <br><b [ngClass]="{'negative': coinmarketItem.percent_change_7d < 0, 'positive' : coinmarketItem.percent_change_7d > 0}"> {{coinmarketItem.percent_change_7d}} %  </b>
+  </div>
+
+</div>
+
+<hr>
+
+<div class="row">
+  <div class="col-xs-12" style="padding-right: 0 !important;">
+    <h3>{{portfolioItem.name}} Chart</h3>
+    <button (click)="updateSeriesData()">Click for update</button>
+     <chart style="display:block; padding-right: 0; width: 100% !important;" type="StockChart" [options]="options" (load)="saveInstance($event.context)"></chart>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h3>Transactions</h3>
+<!--
+    <ul class="list-group">
+      <li class="list-group-item"
+      *ngFor="let transaction of marketItem.transactions">
+     {{transaction.symbol}} - {{transaction.amount}} coins - {{transaction.transaction_price_btc}} BTC
+      </li>
+
+    </ul>
+-->
+
+  </div>
+</div>
+

@@ -1,0 +1,20 @@
+<a
+  style="cursor: pointer"
+   class="list-group-item clearfix"
+  (click)="onSelected()">
+
+<div class="row">
+  <div class="col-xs-8"><b>{{marketItem.symbol}} ({{marketItem.name}})<br><p class="list-group-item-text">Price: {{marketItem.price_btc}} BTC</p></b></div>
+  <div class="col-xs-4 pull-right" style="text-align: right"><span class="pull-right"><img src="{{ marketItem.imagePath}}" alt="" class="img-responsive" style="max-height: 50px"></span></div>
+
+</div>
+
+  <div class="pull-left">
+
+    <p class="list-group-item-text"> {{marketItem.volume_usd}} USD Volume </p>
+  </div>
+
+</a>
+
+
+

@@ -1,0 +1,17 @@
+{ "albums": [{
+  "title": "Pulse",
+  "artist": "Pink Floyd",
+  "description": "A live  album by the English progressive rock band originally released in 1995, on the label EMI in the United Kingdom.",
+  "id": "1"
+}, {
+  "title": "Dilate",
+  "artist": "Ani DiFranco",
+  "description": "Her highest-selling and most acclaimed album, released in 1996.",
+  "id": "2"
+}, {
+  "title": "Axis Bold As Love",
+  "artist": "Jimi Hendrix",
+  "description": "Second studio album by the English-American band, released in 1967.",
+  "id": "3"
+}]
+}

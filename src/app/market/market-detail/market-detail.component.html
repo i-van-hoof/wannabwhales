@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-xs-12">
+    <img [src]="marketItem.imagePath" alt="{{marketItem.symbol}}" class="img-responsive" style="max-height: 100px">
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1>{{marketItem.name}}</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="btn-group"
+    appDropdown>
+      <button type="button" class="btn btn-primary dropdown-toggle">
+        Manage Item <span class="caret"></span>
+      </button>
+        <ul class="dropdown-menu">
+        <li><a style="cursor: pointer">Add item to wishlist</a></li>
+        <li><a style="cursor: pointer">Add item to portfolio</a></li>
+        <li><a style="cursor: pointer">Edit item</a></li>
+        <li><a style="cursor: pointer">Delete item from portfolio</a></li>
+        </ul>
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-xs-4">
+    Price <br> {{marketItem.price_btc}}
+  </div>
+
+
+
+  <div class="col-xs-4">
+    Market Cap <br> {{marketItem.market_cap_usd}}
+  </div>
+
+  <div class="col-xs-4">
+    Volume (24h) <br> {{marketItem.volume_usd}}
+  </div>
+
+</div>
+
+<hr>
+<div class="row">
+  <div class="col-xs-12">
+    <h3>Transactions</h3>
+
+    <ul class="list-group">
+      <li class="list-group-item"
+        *ngFor="let transaction of marketItem.transactions">
+        {{transaction.symbol}} - {{transaction.amount}} coins - {{transaction.transaction_price_btc}} BTC
+      </li>
+
+    </ul>
+
+  </div>
+</div>
+
+
+
+
+
+
+

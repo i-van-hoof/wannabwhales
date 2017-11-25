@@ -1,0 +1,126 @@
+<div class="row">
+  <div class="col-xs-12">
+    <form [formGroup]="portfolioForm" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-xs-12">
+          <button
+            type="submit"
+            class="btn btn-success"
+            [disabled]="!portfolioForm.valid">Save</button>
+          <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
+        </div>
+      </div>
+<hr>
+
+
+
+      <div class="row">
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="symbol">Symbol</label>
+            <input
+              type="text"
+              id="symbol"
+              formControlName="symbol"
+              class="form-control">
+          </div>
+        </div>
+        <div class="col-xs-6">
+          <div class="form-group">
+            <label for="id">ID</label>
+            <input
+              type="text"
+              id="id"
+              formControlName="id"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              formControlName="name"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="balance">Balance</label>
+            <input
+              type="number"
+              id="balance"
+              formControlName="balance"
+              class="form-control">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label for="wishlist">In Portfolio</label>
+            <select
+              type="text"
+              id="wishlist"
+              formControlName="inportfolio"
+              class="form-control">
+              <option [ngValue]="true">In portfolio</option>
+              <option [ngValue]="false">Not in portfolio</option>
+            </select>
+          </div>
+        </div>
+
+
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-xs-12" formArrayName="transactions">
+          <div
+            class="row"
+            *ngFor="let transactionCtrl of portfolioForm.get('transactions').controls; let i = index"
+            [formGroupName]="i"
+            style="margin-top: 10px;">
+            <div class="col-xs-6">
+              <label>Coin Symbol</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="symbol">
+            </div>
+            <div class="col-xs-4">
+              <label>Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="amount">
+            </div>
+            <div class="col-xs-2">
+              <label>Remove</label>
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="onDeleteTransaction(i)">X</button>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-xs-12">
+            <button  type="button"
+               class="btn btn-success"
+               (click)="onAddTransaction()">Add Transaction
+             </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

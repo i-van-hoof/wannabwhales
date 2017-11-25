@@ -1,0 +1,37 @@
+
+  <div class="col-sm-12">
+    <div style="text-align:center">
+      <h3>Welcome to <b> WannaBeWhales</b></h3>
+      <img width="150" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">
+      <h2 style="text-align:center">Cryptocurrency Market Info</h2>
+    </div>
+
+
+      <div class="col-sm-12"><a
+        style="background-color: #f3f3f4; border-bottom:2px solid #ddd; border-right:0px solid #ddd; border-left:0px solid #ddd"
+        class="list-group-item clearfix">
+        <div class="col-xs-3">Coin - Price</div>
+        <div class="col-xs-2">Market Cap</div>
+        <div class="col-xs-2">Volume</div>
+        <div class="col-xs-1">% 1h</div>
+        <div class="col-xs-1">% 24h</div>
+        <div class="col-xs-1">% 7d</div>
+        <div class="col-xs-2">Last updated</div>
+
+      </a></div>
+
+
+
+          <div>
+
+
+  <div class="col-sm-12">
+    <app-home-item
+      *ngFor="let coinmarketEl of coinmarket; let i = index"
+      [coinmarket]="coinmarketEl"
+      [index]="i"
+    ></app-home-item>
+   </div>
+</div>
+
+

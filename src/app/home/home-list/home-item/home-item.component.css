@@ -1,0 +1,11 @@
+.negative {
+  color: red;
+}
+
+.positive {
+  color: mediumseagreen;
+}
+
+.highlight {
+  background-color: yellow;
+}

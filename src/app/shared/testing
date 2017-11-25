@@ -1,0 +1,81 @@
+Maximum number of roundtrips push list of data with Firebase Real Time Database
+
+
+
+
+
+In my angular 4 application I use the push() method to append data to a list of data in Firebase real time database. See Firebase documentation: https://firebase.google.com/docs/database/web/lists-of-data
+
+The push() method generates a unique key every time a new child is added to the specified Firebase reference. I have written the following code in Angular 4:
+
+
+import {AngularFireDatabase} from 'angularfire2/database';
+import * as firebase from 'firebase';
+
+market = [
+  { symbol: '1ST', price_usd: 1, balance: 100},
+  { symbol: '2ND', price_usd: 2, balance: 300},
+  { symbol: '3RD', price_usd: 3, balance: 400}
+];
+
+constructor(private db: AngularFireDatabase) {}
+
+storeTicker() {
+  const timestamp = firebase.database.ServerValue.TIMESTAMP;
+  for (let object of market) {
+    const path = object['symbol'];
+    const itemsRef = this.db.list('Tickers/' + path);
+    itemsRef.push({ symbol: path, price_usd: object['price_usd'], balance: object['balance'], time: timestamp});
+  }
+}
+
+The code is executed when a button is clicked, this will result in a time-series for each reference.
+
+My Firebase Real Time database looks like this:
+{
+  "Tickers" : {
+    "1ST" : {
+    "-Kx8gN5uZALd5BP2GCH6" : {
+      "balance" : 0,
+        "price_usd" : 0.25583,
+        "symbol" : "1ST",
+        "time" : 1508769890908
+    }},
+    "2ND" : {
+      "-Kx8Z0xCl7ONZERk1ICo" : {
+        "balance" : 0,
+          "price_usd" : 0.0253829,
+          "symbol" : "2ND",
+          "time" : 1508767703084
+    }},
+    "3RD" : {
+      "-Kx8gN5FEZEPsOe8S-Tw" : {
+        "balance" : 0,
+          "price_usd" : 0.767354,
+          "symbol" : "3RD",
+          "time" : 1508769890886
+    }},
+  // with a  total of 250 paths
+
+  }}
+
+
+Each call to push in this way will result in a roundtrip to Firebase. The problem is that Firebase only does push() for the first 100 references.
+
+
+  I cannot find a maximum limit of number of roundtrips in the Firebase documentation: https://firebase.google.com/docs/database/usage/limits
+
+I foudn one qustion on Stackoverflow with similar problem but I don't understand the update
+
+My question is:
+1) Is there a maximum number of roundrtips in Firebase?
+  2) Can I make my code more efficient by combining them into a multi-location update
+
+
+
+  Can I combine the push roundtrips into a multi-location update with the code in this question:
+
+
+
+
+

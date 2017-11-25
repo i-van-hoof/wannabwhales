@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="col-md-5">
+    <app-market-list></app-market-list>
+  </div>
+  <div class="col-md-5">
+    <app-market-detail
+      *ngIf="selectedRecipe; else infoText"
+      [marketItem]="selectedRecipe"
+    ></app-market-detail>
+    <ng-template #infoText><p>Hier ben ik</p></ng-template>
+  </div>
+</div>

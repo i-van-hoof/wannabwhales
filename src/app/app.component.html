@@ -1,0 +1,50 @@
+<app-header (featureSelected)="onNavigate($event)"></app-header>
+<!--tijdelijke tekst om firestore uit te proberen-->
+<!--<input type="text" [(ngModel)]="postTitle" name="title" placeholder="Title..">-->
+<!--<textarea [(ngModel)]="content" name="content" placeholder="Content.."></textarea>-->
+<!--<input type="submit" value="Add a post" (click)="addPost()">-->
+
+<!--<ul  *ngFor="let post of posts | async">-->
+  <!--<li (click)="getPost(post.id)">-->
+    <!--<strong>{{ post.data.title}}</strong>-->
+    <!--<br>-->
+    <!--{{ post.data.content}}-->
+  <!--</li>-->
+
+<!--</ul>-->
+
+<!--<h1>A specific post</h1>-->
+<!--<h3>{{ ( post | async)?.title}}</h3>-->
+<!--<p> {{ ( post | async)?.content}}</p>-->
+
+<!--// tot hier tijdelijke tekst-->
+
+<!--<ul>-->
+  <!--<li *ngFor="let item of items | async">-->
+    <!--{{ item['id'] | json }}-->
+  <!--</li>-->
+<!--</ul>-->
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12">
+      <!--
+      <app-market *ngIf="loadedFeature === 'market'"></app-market>
+      <app-portfolio *ngIf="loadedFeature === 'portfolio'"></app-portfolio>
+      <app-wish-list *ngIf="loadedFeature === 'transactions'"></app-wish-list>
+      -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+

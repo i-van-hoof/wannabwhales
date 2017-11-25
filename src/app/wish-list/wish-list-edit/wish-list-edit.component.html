@@ -1,0 +1,148 @@
+<div class="row">
+<div class="col-xs-12">
+  <form (ngSubmit)="onAddTransaction(f)" #f="ngForm">
+    <div class="row">
+      <div class="col-sm-2 form-group">
+        <label for="orderType">Type</label>
+        <input
+          type="string"
+          id="orderType"
+          class="form-control"
+          name="orderType"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="symbol">Symbol</label>
+        <input
+          type="text"
+          id="symbol"
+          class="form-control"
+          name="symbol"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="tradingPair">Pair</label>
+        <input
+          type="string"
+          id="tradingPair"
+          class="form-control"
+          name="tradingPair"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="amount">Amount</label>
+        <input
+          type="number"
+          id="amount"
+          class="form-control"
+          name="amount"
+          ngModel
+          required
+          pattern="^[1-9]+[0-9]*$"
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="transaction_price_btc">Price BTC</label>
+        <input
+          type="number"
+          id="transaction_price_btc"
+          class="form-control"
+          name="transaction_price_btc"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="txTotalBtc">Total BTC</label>
+        <input
+          type="number"
+          id="txTotalBtc"
+          class="form-control"
+          name="txTotalBtc"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="txTotalUsd">Total USD</label>
+        <input
+          type="number"
+          id="txTotalUsd"
+          class="form-control"
+          name="txTotalUsd"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="txExchange">Exchange</label>
+        <input
+          type="text"
+          id="txExchange"
+          class="form-control"
+          name="txExchange"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="fillType">Fill</label>
+        <input
+          type="text"
+          id="fillType"
+          class="form-control"
+          name="fillType"
+          ngModel
+          required
+        >
+      </div>
+
+      <div class="col-sm-2 form-group">
+        <label for="transaction_time">Time</label>
+        <input
+          type="number"
+          id="transaction_time"
+          name="transaction_time"
+          class="form-control"
+          required
+        >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12">
+        <button class="btn btn-success"
+                type="submit">Submit
+        </button>
+        <button class="btn btn-danger"
+                type="button">Delete
+        </button>
+        <button class="btn btn-primary"
+                type="button">Clear
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,115 @@
+
+
+import { Injectable} from '@angular/core';
+import { Transaction} from '../shared/transaction.model';
+import { TransactionService } from '../wish-list/transaction.service';
+
+import { Subject } from 'rxjs/Subject';
+import { CoinCryptocoin } from './coinmarket.model';
+import { PortfolioModel } from '../portfolio/portfolio.model';
+
+@Injectable()
+export class CoinmarketService {
+  coinmarketChanged = new Subject<CoinCryptocoin[]>();
+  portfolioChanged = new Subject<PortfolioModel[]>();
+  portfoliosymbolsChanged = new Subject();
+  tickersChanged = new Subject();
+
+  private coinmarket: CoinCryptocoin[] = [];
+  private tickers = [];
+  private filteredItems = [];
+  private portfolio: PortfolioModel[] = [];
+  private portfoliosymbols = [];
+  // private transactions: Transaction[] = [];
+
+  constructor(private trService: TransactionService) {}
+
+  getMarket() {
+    return this.coinmarket.slice();
+  }
+
+  getMarket99() {
+    return this.coinmarket.slice(0, 99);
+  }
+
+  getMarket199() {
+    return this.coinmarket.slice(100, 199);
+  }
+
+  getMarket299() {
+    return this.coinmarket.slice(200, 299);
+  }
+
+
+  getTickers() {
+    return this.tickers.slice();
+  }
+
+  getPortfolio() {
+    return this.portfolio.slice();
+  }
+
+  setCoinmarket(coinmarket: CoinCryptocoin[]) {
+    this.coinmarket = coinmarket;
+    this.coinmarketChanged.next(this.coinmarket.slice());
+  }
+
+  setTicker(tickers: any) {
+    this.tickers = tickers;
+    this.tickersChanged.next(this.tickers.slice());
+   // console.log(tickers);
+  }
+
+
+  setPortfolio(portfolio: PortfolioModel[]) {
+    this.portfolio = portfolio;
+    this.portfolioChanged.next(this.portfolio.slice());
+  }
+
+  getPortfolioItem(symbol: string) {
+   // console.log(symbol);
+    const index = this.portfolio.findIndex(p => p['symbol'] === symbol);
+    return this.portfolio[index];
+  }
+
+  getCoinmarketItem(symbol: string) {
+    const index2 = this.coinmarket.findIndex(p => p.symbol === symbol);
+    return this.coinmarket[index2];
+  }
+
+  // getTickerItem(symbol: string) {
+  //   console.log(symbol);
+  //   const index = this.tickers.findIndex(p => p['symbol'] === symbol);
+  //   return this.tickers[index];
+  // }
+
+  addTransactionsToTransactions(transactions: Transaction[]) {
+    this.trService.addTransactions(transactions);
+  }
+
+//  deletePortfolioItem(index: number) {
+  //  this.portfolio.splice(index, 1);
+    //this.portfolio.next(this.portfolio.slice());
+  //}
+
+  updatePortfolio(symbol: string, newPortfolio: PortfolioModel) {
+    const index = this.portfolio.findIndex(p => p.symbol === symbol);
+    this.portfolio[index] = newPortfolio;
+    this.portfolioChanged.next(this.portfolio.slice());
+  }
+
+  updatePortfolioSymbols(symbol: string) {
+    if ( this.portfoliosymbols.findIndex(p => p.symbol === symbol)) {console.log('symbol is in portfoliosymbols')};
+    this.portfoliosymbolsChanged.next(this.portfoliosymbols.slice());
+  }
+
+  addPortfolio(portfolio: PortfolioModel) {
+    this.portfolio.push(portfolio);
+    this.portfolioChanged.next(this.portfolio.slice());
+  }
+
+
+
+}
+
+

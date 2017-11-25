@@ -1,0 +1,108 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { HeaderComponent} from './header/header.component';
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MarketComponent } from './market/market.component';
+import { MarketListComponent } from './market/market-list/market-list.component';
+import { MarketDetailComponent } from './market/market-detail/market-detail.component';
+import { MarketItemComponent } from './market/market-list/market-item/market-item.component';
+import { WishListComponent } from './wish-list/wish-list.component';
+import { WishListEditComponent } from './wish-list/wish-list-edit/wish-list-edit.component';
+import { PortfolioComponent } from './portfolio/portfolio.component';
+import { PortfolioListComponent } from './portfolio/portfolio-list/portfolio-list.component';
+import { PortfolioItemComponent } from './portfolio/portfolio-list/portfolio-item/portfolio-item.component';
+import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
+import { DropdownDirective} from './shared/dropdown.directive';
+import { TransactionService} from './wish-list/transaction.service';
+import { MarketService} from './market/market.service';
+import { HttpModule} from '@angular/http';
+import { AppRoutingModule} from './app-routing.module';
+import { HomeComponent } from './home/home.component';
+import { DataStorageService} from './shared/data-storage.service';
+import { CoinmarketService} from './home/coinmarket.service';
+import { HomeListComponent } from './home/home-list/home-list.component';
+import { HomeItemComponent} from './home/home-list/home-item/home-item.component';
+import { TruncatePipe } from './limito.pipe';
+import { PortfolioStartComponent } from './portfolio/portfolio-start/portfolio-start.component';
+import { PortfolioEditComponent } from './portfolio/portfolio-edit/portfolio-edit.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { SigninComponent } from './auth/signin/signin.component';
+import { AuthService} from './auth/auth.service';
+import { AngularFireModule} from 'angularfire2';
+
+// de imports voor Firebase
+
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment} from '../environments/environment';
+
+// de imports voor Highcharts
+
+import { ChartModule } from 'angular2-highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import * as highcharts from 'highcharts';
+
+// de imports voor de grafiek van highcharts
+import { ItemsListComponent } from './items/items-list/items-list.component';
+import { ItemDetailComponent } from './items/item-detail/item-detail.component';
+import { ItemFormComponent } from './items/item-form/item-form.component';
+
+export function highchartsFactory() {
+return highcharts;
+}
+
+export declare let require: any;
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    MarketComponent,
+    MarketListComponent,
+    MarketDetailComponent,
+    MarketItemComponent,
+    WishListComponent,
+    WishListEditComponent,
+    PortfolioComponent,
+    PortfolioListComponent,
+    PortfolioItemComponent,
+    PortfolioDetailComponent,
+    DropdownDirective,
+    HomeComponent,
+    HomeItemComponent,
+    HomeListComponent,
+    TruncatePipe,
+    PortfolioStartComponent,
+    PortfolioEditComponent,
+    SignupComponent,
+    SigninComponent,
+    ItemsListComponent,
+    ItemDetailComponent,
+    ItemFormComponent,
+
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase, 'whales-app'),
+    AngularFireAuthModule,
+    AngularFireDatabaseModule,
+    ChartModule.forRoot(require('highcharts'))
+
+  ],
+  providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService,
+   {
+   provide: HighchartsStatic,
+   useFactory: highchartsFactory
+  }
+  ],
+
+
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
