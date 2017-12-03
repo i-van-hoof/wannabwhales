@@ -14,9 +14,13 @@ export class CoinmarketService {
   portfolioChanged = new Subject<PortfolioModel[]>();
   portfoliosymbolsChanged = new Subject();
   tickersChanged = new Subject();
+  portfolioTickersChanged = new Subject();
+  summaryTickersChanged = new Subject();
 
   private coinmarket: CoinCryptocoin[] = [];
   private tickers = [];
+  private portfolioTickers = [];
+  private summaryTickers = [];
   private filteredItems = [];
   private portfolio: PortfolioModel[] = [];
   private portfoliosymbols = [];
@@ -28,22 +32,18 @@ export class CoinmarketService {
     return this.coinmarket.slice();
   }
 
-  getMarket99() {
-    return this.coinmarket.slice(0, 99);
-  }
-
-  getMarket199() {
-    return this.coinmarket.slice(100, 199);
-  }
-
-  getMarket299() {
-    return this.coinmarket.slice(200, 299);
-  }
-
-
   getTickers() {
     return this.tickers.slice();
   }
+
+  getPortfolioTickers() {
+    return this.portfolioTickers.slice();
+  }
+
+  getSummaryTickers() {
+    return this.summaryTickers.slice();
+  }
+
 
   getPortfolio() {
     return this.portfolio.slice();
@@ -60,6 +60,17 @@ export class CoinmarketService {
    // console.log(tickers);
   }
 
+  setPortfolioTicker(tickers: any) {
+    this.portfolioTickers = tickers;
+    this.portfolioTickersChanged.next(this.portfolioTickers.slice());
+    // console.log(tickers);
+  }
+
+  setSummaryTicker(tickers: any) {
+    this.summaryTickers = tickers;
+    this.summaryTickersChanged.next(this.summaryTickers.slice());
+    // console.log(tickers);
+  }
 
   setPortfolio(portfolio: PortfolioModel[]) {
     this.portfolio = portfolio;

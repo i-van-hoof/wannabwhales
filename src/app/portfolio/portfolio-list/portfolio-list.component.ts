@@ -43,17 +43,13 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
     return total;
   }
 
-
   ngOnInit() {
-
-
 
     this.subscription = this.coinmarketService.portfolioChanged
       .subscribe(
         (portfolio: PortfolioModel[]) => {
           this.portfolio = portfolio; } );
           this.portfolio = this.coinmarketService.getPortfolio();
-
 
    //  code om de coinmarket data op te halen uit de coinmarket service
     this.subscription2 = this.coinmarketService.coinmarketChanged
@@ -68,12 +64,6 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
           this.tickers = tickers; } );
           this.tickers = this.coinmarketService.getTickers();
        }
-
-
-  getBooksandMoviesfromService() {
-    this.dataStorage.getBooksAndMovies(); }
-
-
 
   ngOnDestroy() {
     this.subscription.unsubscribe();

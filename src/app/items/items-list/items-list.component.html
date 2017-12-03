@@ -1,19 +1,46 @@
 <div class="row">
-  <div class="col-xs-12">
-    <button (click)="updateSeriesData()">Click</button>
-    <!--<div [chart]="chart">Chart container</div>-->
-   <!--<chart type="StockChart" [options]="options" (load)="saveInstance($event.context)></chart>-->
-    <!--<chart type="StockChart" [options]="options" (load)="saveInstance($event.context)"></chart>-->
+  <h2>DASHBOARD | user-id: <b>Ian van Hoof</b></h2>
+  <hr style="border-color: dimgrey">
+  <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>
+</div>
 
 
+
+<div class="row">
+  <div class="col-xs-6">
+    <h3>Portfolio Chart</h3>
+
+
+    <hr>
+    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceStock($event.context)"></chart>
+  </div>
+  <div class="col-xs-6">
+    <h3>Portfolio Shares</h3>
+    <hr>
+    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsPiechart" (load)="saveInstancePie($event.context)"></chart>
+  </div>
+</div>
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-6">
+
+  <h3>Factsheet Portfolio</h3>
+    <hr>
   </div>
 
-<!--<p>Historische koers</p>-->
+  <div class="col-xs-6">
+
+    <h3>Global market</h3>
+    <hr>
+    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceSummary($event.context)"></chart>
+  </div>
+</div>
 
 
 
-<!--<ul>-->
-  <!--<li *ngFor="let item of items | async">-->
-    <!--{{ item['price_usd'] | json }}-->
-  <!--</li>-->
-<!--</ul>-->
+

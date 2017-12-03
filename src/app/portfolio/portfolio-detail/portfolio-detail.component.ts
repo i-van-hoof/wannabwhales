@@ -29,9 +29,38 @@ export class PortfolioDetailComponent implements OnInit {
 
      this.options = {
        title: {text: ''},
+
        series: [{
          data: [ [1408768560076, 5000],[1508768560085, 5000]]
-       }]
+       }],
+       rangeSelector: {
+         enabled: true,
+         buttons: [{
+           type: 'day',
+           count: 3,
+           text: '3d'
+         }, {
+           type: 'week',
+           count: 1,
+           text: '1w'
+         }, {
+           type: 'month',
+           count: 1,
+           text: '1m'
+         }, {
+           type: 'month',
+           count: 6,
+           text: '6m'
+         }, {
+           type: 'year',
+           count: 1,
+           text: '1y'
+         }, {
+           type: 'all',
+           text: 'All'
+         }],
+         selected: 3
+       },
      };
 
      setTimeout(() => {
@@ -67,7 +96,7 @@ export class PortfolioDetailComponent implements OnInit {
   ngOnInit() {
 
     this.dataStorageService.retrieveTicker(this.symbol);
-    // this.dataStorageService.retrieveTickerList();
+
     this.coinMarketservice.getTickers();
 
     this.subscription = this.coinMarketservice.tickersChanged

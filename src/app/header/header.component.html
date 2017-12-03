@@ -1,13 +1,16 @@
 <nav class="navbar navbar-default" style="background-color:#d9edf7">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a routerLink="/" class="navbar-brand">Market</a>
+      <img width="50" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">
+      <a routerLink="/" class="navbar-brand">WannaBeWhales</a>
     </div>
 
     <div class="collapse navbar-collapse">
+
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/home">Home</a></li>
-        <li routerLinkActive="active"><a routerLink="/cryptocoins">Cryptocoins</a></li>
+
+        <li routerLinkActive="active"><a routerLink="/home">Market</a></li>
+        <li routerLinkActive="active"><a routerLink="/cryptocoins">Dashboard</a></li>
         <li routerLinkActive="active"><a routerLink="/portfolio">Portfolio</a></li>
         <li routerLinkActive="active"><a routerLink="/transactions">Transactions</a></li>
 
@@ -28,9 +31,7 @@
           <!--<a style="cursor: pointer" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>-->
           <!--<ul class="dropdown-menu">-->
             <!--<li><a style="cursor: pointer" (click)="onSaveData()">Save Data</a></li>-->
-            <li><a style="cursor: pointer" (click)="onSaveTicker1()">Save Tickers 0-99</a></li>
-            <li><a style="cursor: pointer" (click)="onSaveTicker2()">Save Tickers 100-199</a></li>
-            <li><a style="cursor: pointer" (click)="onSaveTicker3()">Save Tickers 200-299</a></li>
+
             <li><a style="cursor: pointer" (click)="onSavePortfolio()">Save Portfolio</a></li>
             <li><a style="cursor: pointer" (click)="onSaveTransactions()">Save Transactions</a></li>
            <!--<li><a style="cursor: pointer" (click)="onGet()">Fetch Market Data</a></li>-->

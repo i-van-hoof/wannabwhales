@@ -12,24 +12,21 @@ import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
-import {any} from 'codelyzer/util/function';
 import Database = firebase.database.Database;
 import 'rxjs/add/operator/map';
-import { FirebaseApp } from 'angularfire2';
-
-
 
 
 @Injectable()
 export class DataStorageService {
 
  item: FirebaseObjectObservable<any>;
-
  //itemsRef: AngularFireList<any>;
  filteredItems = [];
+ filteredSummaryItems = [];
+ filteredPortfolioItems = [];
  tickerValue = {};
-
-
+ summaryTickerValue = {};
+ portfolioTickerValue = {};
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
@@ -39,129 +36,60 @@ export class DataStorageService {
 
               ) { }
 
-  storeMarket() {
-    return this.http.put('https://whales-app.firebaseio.com/market.json', this.coinMarketService
-      .getMarket());
-  }
-
-  storeTicker99() {
-    const database = firebase.database();
-    const fruitRef = database.ref().child('Tickers');
-    const marketticker = this.coinMarketService.getMarket();
-    const timestamp = firebase.database.ServerValue.TIMESTAMP;
-    var updates = {};
-    for (let object of marketticker) {
-      // const path = '/' + object['symbol'];
-      const key = this.db.createPushId(); // Get a new unique key (locally, no network activity)
-      const path = object['symbol'] + '/' + key;
-      // updates[path + `/${key}`] = {symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp};
-      updates[path] = {symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp};
-     // console.log(updates);
-    }
-      console.log(updates);
-      this.db.object('/Tickers').update(updates);}
-
-
-
-
-
-
-
-  // storeTicker() {
-  //   const timestamp = firebase.database.ServerValue.TIMESTAMP;
-  //   var updates = {};
-  //   for (let object of market) {
-  //     const key = this.db.list('/Tickers').push().key; // Get a new unique key (locally, no network activity)
-  //     const path = object['symbol'] + '/' + key;
-  //     updates[path] = {symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp};
-  //   }
-  //   this.db.object('/Tickers').update(updates);
-  // }
-
-//   var userId = 1234
-//   var photos = firebase.database().ref(‘photos/’);
-//   var newPhotoKey = this.photos.push().key
-//   var newPhoto = {};
-//   newPhoto[`/photos/${newEventKey}`] = {
-//     url: ‘http://firebasestorage.com/image1,
-//     likes: 0
-// };
-
-//   storeTicker99() {
-//     const marketticker1 = this.coinMarketService.getMarket99();
-//    // const portfolioticker = this.coinMarketService.getPortfolio();
-//    const timestamp1 = firebase.database.ServerValue.TIMESTAMP;
-//     console.log(marketticker1);
-//
-//     for (let object of marketticker1) {
-//       const path1 = object['symbol'];
-//       console.log(path1);
-//      // console.log(path);
-//      const itemsRef = this.db.list('Tickers/' + path1);
-//      itemsRef.push({ symbol: path1, price_usd: object['price_usd'], balance: object['balance'], time: timestamp1});
-//     }
-// }
-
-  storeTicker199() {
-    const marketticker2 = this.coinMarketService.getMarket199();
-    // const portfolioticker = this.coinMarketService.getPortfolio();
-    const timestamp2 = firebase.database.ServerValue.TIMESTAMP;
-    console.log(marketticker2);
-
-    for (let object of marketticker2) {
-      const path2 = object['symbol'];
-      console.log(path2);
-      // console.log(path);
-      const itemsRef = this.db.list('Tickers/' + path2);
-      itemsRef.push({ symbol: path2, price_usd: object['price_usd'], balance: object['balance'], time: timestamp2});
-    }
-  }
-
-  storeTicker299() {
-    const marketticker3 = this.coinMarketService.getMarket299();
-    // const portfolioticker = this.coinMarketService.getPortfolio();
-    const timestamp3 = firebase.database.ServerValue.TIMESTAMP;
-    console.log(marketticker3);
-
-    for (let object of marketticker3) {
-      const path3 = object['symbol'];
-      console.log(path3);
-      // console.log(path);
-      const itemsRef = this.db.list('Tickers/' + path3);
-      itemsRef.push({ symbol: path3, price_usd: object['price_usd'], balance: object['balance'], time: timestamp3});
-    }
-  }
-
   retrieveTicker(tickerSymbol) {
-    const itemsRef2 = this.db.list('Tickers/' + tickerSymbol).snapshotChanges();
-    itemsRef2.subscribe( data => {
+    const itemsRef = this.db.list('Tickers/' + tickerSymbol).snapshotChanges();
+    itemsRef.subscribe( data => {
       if (data) {
         // console.log('there is ticker data');
         this.filteredItems = [];
-        data.map( test => {
-          this.tickerValue = test.payload.toJSON();
-
+        data.map( tickerData => {
+          this.tickerValue = tickerData.payload.toJSON();
           // console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
           this.filteredItems.push([this.tickerValue['time'], this.tickerValue['price_usd']]);
         });
-        console.log(this.filteredItems);
+       // console.log(this.filteredItems);
         this.coinMarketService.setTicker(this.filteredItems);
         return this.filteredItems;
       }})}
 
-  // retrieveTickerList() {
-  //   const itemsRef3 = this.db.list('Tickers/BTC').snapshotChanges();
-  //   itemsRef3.subscribe( data => {
-  //     if (data) {
-  //       console.log('there is ticker data');
-  //       data.map( test => {
-  //         this.tickerList = test.payload.toJSON();
-  //
-  //         console.log(this.tickerList);
-  //         this.filteredItems.push([this.tickerValue['time'], this.tickerValue['price_usd']]);
-  //         return this.filteredItems;
-  //       });
-  //     }})}
+  // code for retrieving ticker of total portfolio value
+
+  retrievePortfolioTicker(portfolioTickerSymbol) {
+    const itemsRef = this.db.list('PortfolioTickers/' + portfolioTickerSymbol).snapshotChanges();
+    itemsRef.subscribe( data => {
+      if (data) {
+        // console.log('there is ticker data');
+        this.filteredPortfolioItems = [];
+        data.map( tickerData => {
+          this.portfolioTickerValue = tickerData.payload.toJSON();
+          // console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
+          this.filteredPortfolioItems.push([this.portfolioTickerValue['time'], this.portfolioTickerValue['price_usd']]);
+        });
+       // console.log(this.filteredPortfolioItems);
+        this.coinMarketService.setPortfolioTicker(this.filteredPortfolioItems);
+        return this.filteredPortfolioItems;
+      }})};
+
+  retrieveSummaryTicker(DataProvider) {
+    const itemsRef = this.db.list('MarketSummary/' + DataProvider).snapshotChanges();
+    itemsRef.subscribe( data => {
+      if (data) {
+        // console.log('there is ticker data');
+        this.filteredSummaryItems = [];
+        data.map( tickerData => {
+          this.summaryTickerValue = tickerData.payload.toJSON();
+          // console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
+          this.filteredSummaryItems.push([this.summaryTickerValue['time'], this.summaryTickerValue['total_market_cap_usd']]);
+        });
+        // console.log(this.filteredPortfolioItems);
+        this.coinMarketService.setSummaryTicker(this.filteredSummaryItems);
+        return this.filteredSummaryItems;
+      }})};
+
+  storeMarket() {
+    return this.http.put('https://whales-app.firebaseio.com/market.json', this.coinMarketService
+      .getMarket());
+  }
 
   storePortfolio() {
     //  const token = this.authService.getToken();
@@ -175,37 +103,21 @@ export class DataStorageService {
       .getTransactions());
   }
 
-  // getPortfolio() {
-  //   // const token = this.authService.getToken();
-  //   this.http.get('https://whales-app.firebaseio.com/portfolio.json')
-  //     .map(
-  //       (response: Response) => {
-  //         const portfolio: PortfolioModel[] = response.json();
-  //         return portfolio;
-  //
-  //       }
-  //     )
-  //     .subscribe(
-  //       (portfolio: PortfolioModel[]) => {
-  //         this.coinMarketService.setPortfolio(portfolio);
-  //       }
-  //     );
-  // }
-
   getBooksAndMovies() {
       return Observable.forkJoin(
       this.http.get('https://whales-app.firebaseio.com/market.json')
         .map((res: Response) => res.json()),
-      this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=250')
+      this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=275')
         .map((res: Response) => res.json())
       )
         .subscribe( (Observable) => {
-            console.log(Observable[0]);
-            console.log(Observable[1]);
+          //  console.log(Observable[0]);
+          //  console.log(Observable[1]);
+          let total = 0;
           for (let object of Observable[1]) {
           const index3 = Observable[0].findIndex(p => p.symbol === object.symbol);
             object['price_usd'] = +object['price_usd'];
-            if (index3 >= 0) {object['balance'] = Observable[0][index3].balance; object['value'] = Observable[0][index3].balance * object['price_usd'] ; } else {object['balance'] = 0; }
+            if (index3 >= 0) {object['balance'] = Observable[0][index3].balance; object['value'] = Observable[0][index3].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; }
             if (index3 >= 0) {object['inportfolio'] = Observable[0][index3].inportfolio; } else {object['inportfolio'] = false; }
             object['volume_24h'] = object['24h_volume_usd'];
             object['volume_24h'] = +object['volume_24h'];
@@ -220,7 +132,14 @@ export class DataStorageService {
             object['total_supply'] = +object['total_supply'];
             object['last_updated'] = +object['last_updated'];
             delete object['24h_volume_usd'];
+
+            // console.log('total portfolio value');
+            // console.log(total);
           }
+           //  console.log(total);
+            Observable[1].push({id: 'Portfolio_UsID', name: 'Portfolio1', symbol: 'PORTF', rank: '1000', price_usd: total, price_btc
+              : 1, balance: 1
+               });
             this.coinMarketService.setCoinmarket(Observable[1]);
             this.coinMarketService.setPortfolio(Observable[1]);
 

@@ -28,19 +28,6 @@ export class HeaderComponent {
       );
   }
 
-  onSaveTicker1() {
-    this.dataStorageService.storeTicker99();
-  }
-
-  onSaveTicker2() {
-    this.dataStorageService.storeTicker199();
-  }
-
-  onSaveTicker3() {
-    this.dataStorageService.storeTicker299();
-  }
-
-
   onSavePortfolio() {
     this.dataStorageService.storePortfolio()
       .subscribe(
@@ -60,8 +47,9 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
+    this.dataStorageService.getBooksAndMovies();
     this.interval = window.setInterval(() => {
-      this.onGetPortfolio();
+      this.dataStorageService.getBooksAndMovies();
     }, 10000);
   }
 
@@ -69,10 +57,6 @@ export class HeaderComponent {
     if (this.interval) {
       clearInterval(this.interval);
     }
-  }
-
-  onGetPortfolio() {
-    this.dataStorageService.getBooksAndMovies();
   }
 
   onGetTransactions() {
