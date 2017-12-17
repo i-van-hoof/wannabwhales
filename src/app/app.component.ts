@@ -9,6 +9,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument}
 
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import * as firebase from 'firebase';
 
 interface Post {
   title: string;
@@ -59,6 +60,11 @@ export class AppComponent implements OnInit {
       //       return {id, data};
       //     });
       //   });
+      firebase.initializeApp({
+        apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
+        authDomain: 'whalesapp-dev.firebaseapp.com',
+        }
+      )
     }
       onNavigate(feature: string)
       {

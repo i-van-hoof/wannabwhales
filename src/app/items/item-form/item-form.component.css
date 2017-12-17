@@ -1,0 +1,11 @@
+.negative {
+  color: red;
+}
+
+.positive {
+  color: mediumseagreen;
+}
+
+.rightAlign {
+  text-align: right;
+}

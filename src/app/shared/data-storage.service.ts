@@ -28,6 +28,9 @@ export class DataStorageService {
  summaryTickerValue = {};
  portfolioTickerValue = {};
 
+  // Bittrex API code work in progress
+  // const secret = '78f97d0ee39042a99d5a8d02d86ab4a2';
+
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
               private transactionService: TransactionService,
@@ -35,6 +38,8 @@ export class DataStorageService {
               public db: AngularFireDatabase,
 
               ) { }
+
+
 
   retrieveTicker(tickerSymbol) {
     const itemsRef = this.db.list('Tickers/' + tickerSymbol).snapshotChanges();
@@ -92,8 +97,10 @@ export class DataStorageService {
   }
 
   storePortfolio() {
-    //  const token = this.authService.getToken();
-    return this.http.put('https://whales-app.firebaseio.com/market.json', this.coinMarketService
+    const token = this.authService.getToken();
+    const UserId = this.authService.getUserId();
+    alert(UserId);
+    return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
       .getPortfolio());
   }
 
@@ -104,15 +111,17 @@ export class DataStorageService {
   }
 
   getBooksAndMovies() {
+      // const token = this.authService.getToken();
+      // const UserId = this.authService.getUserId();
       return Observable.forkJoin(
-      this.http.get('https://whales-app.firebaseio.com/market.json')
+      this.http.get('https://whalesapp-dev.firebaseio.com/UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2.json')
         .map((res: Response) => res.json()),
       this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=275')
         .map((res: Response) => res.json())
       )
         .subscribe( (Observable) => {
-          //  console.log(Observable[0]);
-          //  console.log(Observable[1]);
+            console.log(Observable[0]);
+            console.log(Observable[1]);
           let total = 0;
           for (let object of Observable[1]) {
           const index3 = Observable[0].findIndex(p => p.symbol === object.symbol);

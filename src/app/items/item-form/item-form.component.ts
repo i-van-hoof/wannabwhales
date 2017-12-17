@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {CoinCryptocoin} from '../../home/coinmarket.model';
+
 
 @Component({
   selector: 'app-item-form',
@@ -6,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./item-form.component.css']
 })
 export class ItemFormComponent implements OnInit {
+  @Input() portfolioCoin: any;
+  @Input() index: number;
+  @Input() contact: any;
 
   constructor() { }
 

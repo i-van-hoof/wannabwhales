@@ -23,7 +23,7 @@ export const environment = {
     authDomain: 'whalesapp-dev.firebaseapp.com',
     databaseURL: 'https://whalesapp-dev.firebaseio.com',
     projectId: 'whalesapp-dev',
-    storageBucket: 'whales-app.appspot.com',
+    storageBucket: 'whalesapp-dev.appspot.com',
     messagingSenderId: '506504177003'
   }
 };

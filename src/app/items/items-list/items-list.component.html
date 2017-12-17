@@ -1,5 +1,5 @@
 <div class="row">
-  <h2>DASHBOARD | user-id: <b>Ian van Hoof</b></h2>
+  <h2>DASHBOARD | user: <b>Ian van Hoof</b></h2>
   <hr style="border-color: dimgrey">
   <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>
 </div>
@@ -27,19 +27,115 @@
 
 
 <div class="row">
-  <div class="col-xs-6">
 
-  <h3>Factsheet Portfolio</h3>
+  <div class="col-xs-6">
+    <h3>Global market chart</h3>
     <hr>
   </div>
 
   <div class="col-xs-6">
-
-    <h3>Global market</h3>
+    <h3>Factsheet Portfolio</h3>
     <hr>
-    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceSummary($event.context)"></chart>
   </div>
+
 </div>
+
+<div class="row">
+  <div class="col-xs-6">
+    <div class="col-xs-4">
+      Global Marketcap <br><b> {{ totalMarketCap | json: async | number}}</b>
+    </div>
+
+    <div class="col-xs-4">
+      Volume (24h) <br><b> {{ totalMarketVolume | json: async | number }} </b>
+    </div>
+
+    <div class="col-xs-4">
+      BTC % market <br><b> {{ totalMarketBitcoin | json: async }} </b>
+    </div>
+
+
+  </div>
+
+  <div class="col-xs-6">
+
+
+    <div class="col-xs-4">
+      Portfolio Value <br><b>$ {{getTotal() | number: '1.0-0' }}</b>
+    </div>
+
+    <div class="col-xs-4">
+      Biggest Gainer <br><b>{{ maxChangeSymbol | jsonquotes: async }} {{ maxChange | json: async }} %</b>
+    </div>
+
+    <div class="col-xs-4">
+      Biggest Loser <br><b>{{ minChangeSymbol | jsonquotes: async }} {{ minChange | json: async }} %</b>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="row">
+  <hr style="margin-bottom: 0; border: 0">
+
+  <div class="col-xs-6">
+    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceSummary($event.context)"></chart>
+
+  </div>
+
+  <div class="col-xs-6">
+    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsColumn" (load)="saveInstanceColumn($event.context)"></chart>
+
+  </div>
+
+
+
+</div>
+<div class="row">
+  <hr style="margin-bottom: 0; border: 0">
+  <div class="col-xs-12">
+
+    <a
+      style="background-color: #f3f3f4; border-bottom:2px solid #ddd; border-right:0px solid #ddd; border-left:0px solid #ddd"
+      class="list-group-item clearfix">
+      <div class="col-xs-2">Coin</div>
+      <div class="col-xs-2" style="text-align: right">price USD</div>
+      <div class="col-xs-2" style="text-align: right">price BTC</div>
+      <div class="col-xs-2" style="text-align: right">1 h</div>
+      <div class="col-xs-2" style="text-align: right">24 h</div>
+      <div class="col-xs-2" style="text-align: right">Value</div>
+
+    </a>
+
+    <app-item-form
+      *ngFor="let coinmarketEl of sharesArray; let i = index;"
+      [portfolioCoin]="coinmarketEl"
+
+    ></app-item-form>
+
+  </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

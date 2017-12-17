@@ -6,6 +6,10 @@ import {DataStorageService} from '../../shared/data-storage.service';
 import {Subscription} from 'rxjs/Subscription';
 import {CoinmarketService} from '../../home/coinmarket.service';
 import {CoinCryptocoin} from '../../home/coinmarket.model';
+import {MyExampleService} from '../../shared/marketsummary.service';
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
+import {TimerObservable} from 'rxjs/observable/TimerObservable';
+import {Http} from '@angular/http';
 
 
 @Component({
@@ -17,6 +21,7 @@ export class ItemsListComponent implements OnInit {
 
   optionsStockchart: Object;
   optionsPiechart: Object;
+  optionsColumn: Object;
   items: Observable<any[]>;
   data: any;
   subscription: Subscription;
@@ -28,15 +33,43 @@ export class ItemsListComponent implements OnInit {
   chartStock: Object;
   chartPie: Object;
   chartSummary: Object;
+  chartColumn: Object;
   coinmarket: CoinCryptocoin[];
   sharesArray = [];
+  coinsSymbolsArray = [];
+  coinsChangeArray = [];
   filteredSummaryItems;
+  coinmarketCap: {};
+  totalMarketVolume: number;
+  totalMarketCap: number;
+  totalMarketBitcoin: number;
+  maxChange= 0;
+  maxChangeSymbol: any;
+  minChange= 0;
+  minChangeSymbol: any;
+
+
+// three lines for TimeObservable
+//   private observableData: any;
+//   private display: boolean; // whether to display info in the component
+//                             // use *ngIf="display" in your html to take
+//                             // advantage of this
+//
+//   private alive: boolean; // used to unsubscribe from the IntervalObservable
+//                           // when OnDestroy is called.
+//   private interval: number;
 
   constructor(
     db: AngularFireDatabase,
     private dataStorageService: DataStorageService,
-    private coinmarketService: CoinmarketService
+    private coinmarketService: CoinmarketService,
+    private http: Http
+    // private myExampleService: MyExampleService,
   ) {
+// two lines for TimeObservable
+//     this.display = false;
+//     this.alive = true;
+//     this.interval = 10000;
 
     // options of the Highstock ticker
     this.optionsStockchart = {
@@ -245,7 +278,65 @@ export class ItemsListComponent implements OnInit {
         }]
       }]
     };
+    // options of the barchart Highcharts for daily pricechange
+    this.optionsColumn = {
+      title: false,
+      colors: ['#2b908f', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066',
+        '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+      chart: {
+        type: 'column',
+        backgroundColor: '#2a2a2b',
 
+        plotBackgroundColor: {
+          linearGradient: {x1: 0, y1: 0, x2: 0, y2: 0},
+          stops: [
+            [0, '#2a2a2b'],
+            [1, '#3e3e40']
+          ]
+        },
+        plotBorderWidth: null,
+        plotShadow: false,
+      },
+      //     legend: { enabled: false },
+      credits: {enabled: false},
+      legend: {
+        enabled: false
+      },
+      xAxis: {
+        categories: ['TEST', 'TEST', 'TEST', 'TEST', 'TEST'],
+        labels: {
+          style: {
+            color: '#E0E0E3'
+          }
+      }},
+      yAxis: {
+        labels: {
+          style: {
+            color: '#E0E0E3'
+          }
+        }},
+      tooltip: {
+        //     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+      },
+      plotOptions: {
+        pie: {
+          allowPointSelect: false,
+          cursor: 'pointer',
+          dataLabels: {
+            enabled: true,
+            style: {
+              color: 'white',
+              textTransform: 'uppercase'
+            },
+            format: '<b></b>: {point.percentage:.1f} %',
+          }
+        }
+      },
+      series: [{
+        name: false,
+        data: [0, 0, 0, 0, 0]
+      }]
+    };
 
     this.items = db.list('PortfolioTickers').valueChanges();
     console.log(this.items);
@@ -266,12 +357,16 @@ export class ItemsListComponent implements OnInit {
     this.chartPie = chartInstance;
   }
 
+  saveInstanceColumn(chartInstance): void {
+    this.chartColumn = chartInstance;
+  }
+
   saveInstanceSummary(chartInstance): void {
     this.chartSummary = chartInstance;
   }
 
  // update Stockchart Highcharts
-  updateSeriesData(data: Array<any>) {
+  updateSeriesData() {
    // console.log('button UpdateSeriesData()');
     this.chartStock['series'][0].setData(this.portfolioTickers);
     this.getPiechartData();
@@ -279,24 +374,72 @@ export class ItemsListComponent implements OnInit {
     this.chartPie['series'][0].setData(this.sharesArray);
     console.log(this.summaryTickers);
     this.chartSummary['series'][0].setData(this.summaryTickers);
+    this.chartColumn['series'][0].setData(this.coinsChangeArray);
+    this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
   }
 
   getPiechartData() {
+    let total = 0;
+    let maxChange = 0;
+    let maxChangeSymbol;
+    for (let i = 0; i < this.coinmarket.length; i++) {
+      if (this.coinmarket[i].value) {
+        if ( this.coinmarket[i].percent_change_24h > this.maxChange) {
+        this.maxChange = this.coinmarket[i].percent_change_24h; this.maxChangeSymbol = this.coinmarket[i].symbol; console.log(this.maxChange)};
+        if ( this.coinmarket[i].percent_change_24h < this.minChange) {
+          this.minChange = this.coinmarket[i].percent_change_24h; this.minChangeSymbol = this.coinmarket[i].symbol; console.log(this.minChangeSymbol)};
+        total += 1;
+        this.sharesArray.push({
+          name: this.coinmarket[i].symbol,
+          y: this.coinmarket[i].value,
+          price_usd: this.coinmarket[i].price_usd,
+          balance: this.coinmarket[i].balance,
+          percent_change_1h: this.coinmarket[i].percent_change_1h,
+          price_btc: this.coinmarket[i].price_btc,
+          percent_change_24h: this.coinmarket[i].percent_change_24h});
+        this.coinsSymbolsArray.push(this.coinmarket[i].symbol);
+        this.coinsChangeArray.push(this.coinmarket[i].percent_change_24h);
+        }
+      }
+      console.log(this.coinsSymbolsArray);
+    }
+
+
+
+  getTotal() {
     let total = 0;
     for (let i = 0; i < this.coinmarket.length; i++) {
       if (this.coinmarket[i].value) {
         total += this.coinmarket[i].value;
       }
-      if (this.coinmarket[i].value) {
-        this.sharesArray.push({name: this.coinmarket[i].symbol, y: this.coinmarket[i].value});
-      }
-     // return total;
-     // console.log(total);
-      // console.log(this.sharesArray);
     }
+    return total;
   }
 
+  // getTotal() {
+  //   let total = 0;
+  //   for (let i = 0; i < this.summaryTickers.length; i++) {
+  //     if (this.coinmarket[i].value) {
+  //       total += this.coinmarket[i].value;
+  //     }
+  //   }
+  //   return total;
+  // }
+
   ngOnInit() {
+
+    // TimerObservable.create(0, this.interval)
+    //   .takeWhile(() => this.alive)
+    //   .subscribe(() => {
+    //     this.myExampleService.get()
+    //       .subscribe((data) => {
+    //         this.observableData = data;
+    //         if(!this.display){
+    //           this.display = true;
+    //         }
+    //       });
+    //   });
+
 
     this.dataStorageService.retrievePortfolioTicker('UserId');
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
@@ -322,6 +465,18 @@ export class ItemsListComponent implements OnInit {
           this.summaryTickers = tickers2; } );
           this.summaryTickers = this.coinmarketService.getSummaryTickers();
           console.log(this.summaryTickers);
+
+    Observable.interval(3000)
+      .flatMap(() => this.http.get('https://api.coinmarketcap.com/v1/global/')
+        .map(res => res.json())
+        .catch((error:any) => Observable.throw(error.json().error || 'Server error')))
+      .subscribe(data => {
+        this.coinmarketCap = data; console.log(this.coinmarketCap);
+        this.totalMarketVolume = data.total_24h_volume_usd;
+        this.totalMarketCap = data.total_market_cap_usd;
+        this.totalMarketBitcoin = data.bitcoin_percentage_of_market_cap;
+          });
+
   }
 }
 

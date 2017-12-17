@@ -4,8 +4,9 @@
 //https://api.coinmarketcap.com/v1/ticker/?limit=250
 
 
-var rp = require("request-promise")
+var rp = require("request-promise");
 var firebase = require("firebase");
+var FirebaseTokenGenerator = require("firebase-token-generator");
 let portfolio = {};
 let market = {};
 let marketSummary = {};
@@ -23,6 +24,28 @@ const environment = {
 };
 
 firebase.initializeApp(environment.firebase);
+
+// generating token for accessing Firebase Real Time Database
+var tokenGenerator = new FirebaseTokenGenerator('6SqY8xYJ1d6wRYK7mZudWKjMAGP4RTBG9pa4YDXf');
+var token = tokenGenerator.createToken(
+  {uid: 'Ivanho79_TTM'},
+  { expires: 600000000000 });
+console.log(this.token);
+
+firebase.auth().signInWithCustomToken(token).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log(errorCode);
+  console.log(errorMessage);
+});
+
+// var ref = new Firebase("https://whalesapp-dev.firebaseio.com/");
+// ref.authWithCustomToken(token, function(error, authData) {
+//   console.log(error);
+//   console.log(authData);
+// console.log('access granted to Firebase')
+// });
 
 
 var CronJob = require('cron').CronJob;
@@ -75,7 +98,7 @@ rp('https://api.coinmarketcap.com/v1/global/')
 function getMarketData() {
     var total = 0;
     console.log("Getting market data");
-rp('https://whales-app.firebaseio.com/market.json')
+rp('https://whalesapp-dev.firebaseio.com/UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2.json')
     .then(portfolioString => {
         portfolio = JSON.parse(portfolioString);
         return rp('https://api.coinmarketcap.com/v1/ticker/?limit=275');

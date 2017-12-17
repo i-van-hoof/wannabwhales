@@ -24,6 +24,7 @@ import { CoinmarketService} from './home/coinmarket.service';
 import { HomeListComponent } from './home/home-list/home-list.component';
 import { HomeItemComponent} from './home/home-list/home-item/home-item.component';
 import { TruncatePipe } from './limito.pipe';
+import {JsonQuotesPipe} from './shared/replacequotes.pipe';
 import { PortfolioStartComponent } from './portfolio/portfolio-start/portfolio-start.component';
 import { PortfolioEditComponent } from './portfolio/portfolio-edit/portfolio-edit.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -47,6 +48,8 @@ import * as highcharts from 'highcharts';
 import { ItemsListComponent } from './items/items-list/items-list.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ItemFormComponent } from './items/item-form/item-form.component';
+import {DecimalPipe} from '@angular/common';
+
 
 export function highchartsFactory() {
 return highcharts;
@@ -73,6 +76,7 @@ export declare let require: any;
     HomeItemComponent,
     HomeListComponent,
     TruncatePipe,
+    JsonQuotesPipe,
     PortfolioStartComponent,
     PortfolioEditComponent,
     SignupComponent,
