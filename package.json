@@ -27,6 +27,7 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "firebase": "^4.5.2",
+    "google-cloud": "^0.57.0",
     "highcharts": "^6.0.2",
     "node-bittrex-api": "^0.8.1",
     "rxjs": "^5.4.2",

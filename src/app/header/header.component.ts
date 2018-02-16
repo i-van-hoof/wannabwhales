@@ -46,10 +46,14 @@ export class HeaderComponent {
       );
   }
 
+  onLogout() {
+    this.authService.logout();
+  }
+
   ngOnInit() {
-    this.dataStorageService.getBooksAndMovies();
+    this.dataStorageService.getUserPortfolio();
     this.interval = window.setInterval(() => {
-      this.dataStorageService.getBooksAndMovies();
+      this.dataStorageService.getUserPortfolio();
     }, 10000);
   }
 

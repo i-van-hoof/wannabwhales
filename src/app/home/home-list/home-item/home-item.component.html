@@ -3,18 +3,22 @@
   class="list-group-item clearfix">
 
   <div class="row">
-    <div class="col-xs-12"><b>{{coinmarket.symbol}}</b>  ({{coinmarket.name}})</div>
-    <div class="col-xs-12">
-      <div class="col-xs-3" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> <b> {{coinmarket.price_btc | limitTo: 5 }} BTC | {{coinmarket.price_usd | limitTo: 5}} $ </b></div>
-      <div class="col-xs-2"> <b> {{coinmarket.market_cap_usd | number  }} </b></div>
-      <div class="col-xs-2"> <b> {{ coinmarket.volume_24h | number }} </b></div>
-      <div class="col-xs-1" [ngClass]="{'negative': coinmarket.percent_change_1h < 0, 'positive' : coinmarket.percent_change_1h > 0}"> <b> {{coinmarket.percent_change_1h}} % </b></div>
-      <div class="col-xs-1" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> <b> {{coinmarket.percent_change_24h}} % </b></div>
-      <div class="col-xs-1" [ngClass]="{'negative': coinmarket.percent_change_7d < 0, 'positive' : coinmarket.percent_change_7d > 0}"> <b> {{coinmarket.percent_change_7d}} % </b></div>
-      <div class="col-xs-2"> <b> {{coinmarket.last_updated * 1000 | date:'yyyy-MM-dd HH:mm:ss' }} </b></div>
+    <div class="col-xs-2"><b>{{coinmarket.symbol}}</b>  ({{coinmarket.name}})</div>
+
+    <div class="col-xs-3">
+      <div class="col-xs-6" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> {{coinmarket.price_usd | limitTo: 5}} $</div>
+      <div class="col-xs-6" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> {{coinmarket.price_btc | limitTo: 5 }}</div>
+    </div>
+
+      <div class="col-xs-2" style="text-align: right">  {{coinmarket.market_cap_usd | number  }} </div>
+      <div class="col-xs-2" style="text-align: right">  {{ coinmarket.volume_24h | number }} </div>
+      <div class="col-xs-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_1h < 0, 'positive' : coinmarket.percent_change_1h > 0}">  {{coinmarket.percent_change_1h}} % </div>
+      <div class="col-xs-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}">  {{coinmarket.percent_change_24h}} % </div>
+      <div class="col-xs-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_7d < 0, 'positive' : coinmarket.percent_change_7d > 0}">  {{coinmarket.percent_change_7d}} % </div>
+      <!--<div class="col-xs-2"> <b> {{coinmarket.last_updated * 1000 | date:'yyyy-MM-dd HH:mm:ss' }} </b></div>-->
 
     </div>
-  </div>
+
 
     <div class="col-xs-2 pull-right" style="text-align: right"></div>
 

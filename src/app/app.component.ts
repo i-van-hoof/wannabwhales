@@ -9,7 +9,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument}
 
 import { Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import * as firebase from 'firebase';
+
 
 interface Post {
   title: string;
@@ -21,7 +21,7 @@ interface PostId extends Post {
 }
 
 // de import versie vanuit udemy
-// import * as firebase from 'firebase';
+ import * as firebase from 'firebase';
 
 // import { AngularFireDatabase} from 'angularfire2/database';
 
@@ -49,22 +49,25 @@ export class AppComponent implements OnInit {
   }
 
     ngOnInit() {
-      // this.postCol = this.afs.collection('posts');
-      // this.posts = this.postCol.valueChanges();
-      // nieuwe code om ID van een document te verkrijgen
-      // this.posts = this.postCol.snapshotChanges()
-      //   .map(actions => {
-      //     return actions.map(a => {
-      //       const data = a.payload.doc.data() as Post;
-      //       const id = a.payload.doc.id;
-      //       return {id, data};
-      //     });
-      //   });
-      firebase.initializeApp({
-        apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
-        authDomain: 'whalesapp-dev.firebaseapp.com',
-        }
-      )
+
+      // Dit is de initialize van de productie omgeving
+      // firebase.initializeApp({
+      //   apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
+      //   authDomain: 'whalesapp-dev.firebaseapp.com',
+      //   }
+      // )
+
+      // Dit is de initialize van de testomgeving
+      var config = {
+        apiKey: "AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys",
+        authDomain: "whalesapp-test-mr2.firebaseapp.com",
+        databaseURL: "https://whalesapp-test-mr2.firebaseio.com",
+        projectId: "whalesapp-test-mr2",
+        storageBucket: "whalesapp-test-mr2.appspot.com",
+        messagingSenderId: "875549240116"
+      };
+      firebase.initializeApp(config);
+
     }
       onNavigate(feature: string)
       {

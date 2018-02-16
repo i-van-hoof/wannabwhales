@@ -13,15 +13,16 @@ import {SignupComponent} from './auth/signup/signup.component';
 import {SigninComponent} from './auth/signin/signin.component';
 import {PortfolioListComponent} from './portfolio/portfolio-list/portfolio-list.component';
 import {ItemsListComponent} from './items/items-list/items-list.component';
+import {AuthGuard} from './auth/auth-guard.service';
 
 const appRoutes: Routes = [
-  { path: '', redirectTo: '/portfolio', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-   { path: 'cryptocoins', component: ItemsListComponent },
+  { path: 'dashboard', component: ItemsListComponent },
   { path: 'portfolio', component: PortfolioComponent, children: [
     { path: '', component: PortfolioStartComponent, pathMatch: 'full'},
     { path: ':symbol', component: PortfolioDetailComponent},
-    { path: ':symbol/edit', component: PortfolioEditComponent }
+    { path: ':symbol/edit', component: PortfolioEditComponent, canActivate: [AuthGuard] }
   ] },
   { path: 'transactions', component:  WishListComponent },
   { path: 'signup', component:  SignupComponent },

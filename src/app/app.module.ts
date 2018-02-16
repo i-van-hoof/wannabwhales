@@ -24,17 +24,17 @@ import { CoinmarketService} from './home/coinmarket.service';
 import { HomeListComponent } from './home/home-list/home-list.component';
 import { HomeItemComponent} from './home/home-list/home-item/home-item.component';
 import { TruncatePipe } from './limito.pipe';
-import {JsonQuotesPipe} from './shared/replacequotes.pipe';
+import { JsonQuotesPipe} from './shared/replacequotes.pipe';
 import { PortfolioStartComponent } from './portfolio/portfolio-start/portfolio-start.component';
 import { PortfolioEditComponent } from './portfolio/portfolio-edit/portfolio-edit.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AuthService} from './auth/auth.service';
-import { AngularFireModule} from 'angularfire2';
 
 // de imports voor Firebase
 
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import {AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { environment} from '../environments/environment';
 
@@ -49,13 +49,23 @@ import { ItemsListComponent } from './items/items-list/items-list.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ItemFormComponent } from './items/item-form/item-form.component';
 import {DecimalPipe} from '@angular/common';
+import {AuthGuard} from './auth/auth-guard.service';
 
+
+// export function highchartsFactory() {
+// return highcharts;
+// }
+//
+// export declare let require: any;
+
+declare var require: any;
 
 export function highchartsFactory() {
-return highcharts;
+  const hc = require('highcharts');
+  return hc;
 }
 
-export declare let require: any;
+
 
 @NgModule({
   declarations: [
@@ -96,10 +106,11 @@ export declare let require: any;
     AngularFireModule.initializeApp(environment.firebase, 'whales-app'),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
-    ChartModule.forRoot(require('highcharts'))
+    // ChartModule.forRoot(require('highcharts'))
+    ChartModule
 
   ],
-  providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService,
+  providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard,
    {
    provide: HighchartsStatic,
    useFactory: highchartsFactory

@@ -3,27 +3,28 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-// export const environment = {
-//   production: false,
-//   firebase: {
-//     apiKey: 'AIzaSyDzoKanoi6Ozi6M1jJh66p_K14x_n9R2UU',
-//     authDomain: 'whales-app.firebaseapp.com',
-//     databaseURL: 'https://whales-app.firebaseio.com',
-//     projectId: 'whales-app',
-//     storageBucket: 'whales-app.appspot.com',
-//     messagingSenderId: '506504177003'
-//   }
-// };
 
-// The Firebase development environment:
+// The Firebase test environment:
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
-    authDomain: 'whalesapp-dev.firebaseapp.com',
-    databaseURL: 'https://whalesapp-dev.firebaseio.com',
-    projectId: 'whalesapp-dev',
-    storageBucket: 'whalesapp-dev.appspot.com',
-    messagingSenderId: '506504177003'
+    apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
+    authDomain: 'whalesapp-test-mr2.firebaseapp.com',
+    databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
+    projectId: 'whalesapp-test-mr2',
+    storageBucket: 'whalesapp-test-mr2.appspot.com',
   }
 };
+
+// The Firebase production environment:
+// export const environment = {
+//   production: false,
+//   firebase: {
+//     apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
+//     authDomain: 'whalesapp-dev.firebaseapp.com',
+//     databaseURL: 'https://whalesapp-dev.firebaseio.com',
+//     projectId: 'whalesapp-dev',
+//     storageBucket: 'whalesapp-dev.appspot.com',
+//     messagingSenderId: '506504177003'
+//   }
+// };

@@ -12,21 +12,25 @@ import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
-import Database = firebase.database.Database;
+// import Database = firebase.database.Database;
 import 'rxjs/add/operator/map';
+import {PortfolioEditComponent} from '../portfolio/portfolio-edit/portfolio-edit.component';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Injectable()
 export class DataStorageService {
 
  item: FirebaseObjectObservable<any>;
- //itemsRef: AngularFireList<any>;
+ // itemsRef: AngularFireList<any>;
  filteredItems = [];
+ userLogedIn: any;
  filteredSummaryItems = [];
  filteredPortfolioItems = [];
  tickerValue = {};
  summaryTickerValue = {};
  portfolioTickerValue = {};
+ userId: string;
 
   // Bittrex API code work in progress
   // const secret = '78f97d0ee39042a99d5a8d02d86ab4a2';
@@ -35,10 +39,12 @@ export class DataStorageService {
               private coinMarketService: CoinmarketService,
               private transactionService: TransactionService,
               private authService: AuthService,
-              public db: AngularFireDatabase,
+              public  db: AngularFireDatabase,
+              private afAuth: AngularFireAuth
 
-              ) { }
-
+              ) {this.afAuth.authState.subscribe(user => {
+                  if(user) this.userId = user.uid
+  })}
 
 
   retrieveTicker(tickerSymbol) {
@@ -60,20 +66,27 @@ export class DataStorageService {
   // code for retrieving ticker of total portfolio value
 
   retrievePortfolioTicker(portfolioTickerSymbol) {
-    const itemsRef = this.db.list('PortfolioTickers/' + portfolioTickerSymbol).snapshotChanges();
-    itemsRef.subscribe( data => {
-      if (data) {
-        // console.log('there is ticker data');
-        this.filteredPortfolioItems = [];
-        data.map( tickerData => {
-          this.portfolioTickerValue = tickerData.payload.toJSON();
-          // console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
-          this.filteredPortfolioItems.push([this.portfolioTickerValue['time'], this.portfolioTickerValue['price_usd']]);
-        });
-       // console.log(this.filteredPortfolioItems);
-        this.coinMarketService.setPortfolioTicker(this.filteredPortfolioItems);
-        return this.filteredPortfolioItems;
-      }})};
+    if (this.authService.isAuthenticated()) {
+      console.log("getting portfolio ticker from firebase");
+      const itemsRef = this.db.list('PortfolioTickers/' + portfolioTickerSymbol).snapshotChanges();
+      itemsRef.subscribe(data => {
+        if (data) {
+          // console.log('there is ticker data');
+          this.filteredPortfolioItems = [];
+          data.map(tickerData => {
+            this.portfolioTickerValue = tickerData.payload.toJSON();
+            console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
+            this.filteredPortfolioItems.push([this.portfolioTickerValue['time'], this.portfolioTickerValue['price_usd']]);
+          });
+           console.log(this.filteredPortfolioItems);
+          this.coinMarketService.setPortfolioTicker(this.filteredPortfolioItems);
+          return this.filteredPortfolioItems;
+        }
+      })
+    } else {
+      console.log('user not authenticated')
+    }
+  };
 
   retrieveSummaryTicker(DataProvider) {
     const itemsRef = this.db.list('MarketSummary/' + DataProvider).snapshotChanges();
@@ -99,8 +112,9 @@ export class DataStorageService {
   storePortfolio() {
     const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
-    alert(UserId);
-    return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
+    // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
+    return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
+
       .getPortfolio());
   }
 
@@ -110,18 +124,29 @@ export class DataStorageService {
       .getTransactions());
   }
 
-  getBooksAndMovies() {
-      // const token = this.authService.getToken();
-      // const UserId = this.authService.getUserId();
+  getUserPortfolio() {
+        if (this.authService.isAuthenticated()) {
+          console.log('Authenticated: Start fetching portfolio data');
+          const token = this.authService.getToken();
+          const UserId = this.authService.getUserId();
+          // const userName = this.authService.getUserName();
+          // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/OBYGGHdGHHWU3SIUWehXBuGFIMn1.json?auth=' + token;
+          this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/'+ UserId + '.json?auth=' + token;
+          // this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json';
+          console.log('logged in and fetching data from location:', this.userLogedIn);
+          } else {
+          this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/Akg620apdUMJSgTowufZe7QHGCo1.json'
+            }
       return Observable.forkJoin(
-      this.http.get('https://whalesapp-dev.firebaseio.com/UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2.json')
+
+      this.http.get(this.userLogedIn)
         .map((res: Response) => res.json()),
       this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=275')
         .map((res: Response) => res.json())
       )
         .subscribe( (Observable) => {
-            console.log(Observable[0]);
-            console.log(Observable[1]);
+            // console.log(Observable[0]);
+            // console.log(Observable[1]);
           let total = 0;
           for (let object of Observable[1]) {
           const index3 = Observable[0].findIndex(p => p.symbol === object.symbol);
@@ -149,8 +174,11 @@ export class DataStorageService {
             Observable[1].push({id: 'Portfolio_UsID', name: 'Portfolio1', symbol: 'PORTF', rank: '1000', price_usd: total, price_btc
               : 1, balance: 1
                });
-            this.coinMarketService.setCoinmarket(Observable[1]);
-            this.coinMarketService.setPortfolio(Observable[1]);
+              // console.log(this.portfolioEditComponent.editMode);
+            if (this.authService.editMode === false) {
+              this.coinMarketService.setCoinmarket(Observable[1]);
+              this.coinMarketService.setPortfolio(Observable[1]);
+            } else { console.log('is in Edit Mode')}
 
       }) ;
     }

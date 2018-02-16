@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {CoinmarketService} from '../../home/coinmarket.service';
+import {AuthService} from '../../auth/auth.service';
+import {Response} from '@angular/http';
+import {DataStorageService} from '../../shared/data-storage.service';
+
+
 
 @Component({
   selector: 'app-portfolio-edit',
   templateUrl: './portfolio-edit.component.html',
   styleUrls: ['./portfolio-edit.component.css']
 })
+
 export class PortfolioEditComponent implements OnInit {
   symbol: string;
-  editMode = false;
+  editMode;
   portfolioForm: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private coinmarketService: CoinmarketService,
+              private dataStorageService: DataStorageService,
+              private authService: AuthService,
               private router: Router) {
   }
 
@@ -24,6 +32,7 @@ export class PortfolioEditComponent implements OnInit {
         (params: Params) => {
           this.symbol = params['symbol'];
           this.editMode = params['symbol'] != null;
+          this.authService.isInEditmode();
           this.initForm();
         }
       );
@@ -40,6 +49,10 @@ export class PortfolioEditComponent implements OnInit {
     } else {
       this.coinmarketService.addPortfolio(this.portfolioForm.value);
     }
+    this.dataStorageService.storePortfolio()
+      .subscribe(
+        (response: Response) => { console.log(response);}
+      );
     this.onCancel();
   }
 
@@ -61,7 +74,11 @@ export class PortfolioEditComponent implements OnInit {
 
   onCancel() {
     this.router.navigate(['../'], {relativeTo: this.route});
+    this.editMode = false;
+    this.authService.isOutEditmode();
   }
+
+
 
   private initForm() {
     let portfolioSymbol = '';
@@ -69,7 +86,6 @@ export class PortfolioEditComponent implements OnInit {
     let portfolioName = '';
     let portfolioBalance;
     let portfolioInportfolio: boolean;
-
     let portfolioTransactions = new FormArray([]);
 
     if (this.editMode) {
