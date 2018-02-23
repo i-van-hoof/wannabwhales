@@ -28,6 +28,10 @@ export class HeaderComponent {
       );
   }
 
+  // test code for Databsae read
+  retrieveUserPortfolio() {
+    this.dataStorageService.retrieveTest();};
+
   onSavePortfolio() {
     this.dataStorageService.storePortfolio()
       .subscribe(

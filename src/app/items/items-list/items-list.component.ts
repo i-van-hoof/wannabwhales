@@ -446,7 +446,7 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.dataStorageService.retrievePortfolioTicker('OBYGGHdGHHWU3SIUWehXBuGFIMn1');
+    this.dataStorageService.retrievePortfolioTicker('V0uICQbXrnfCryghTkRpmbv4sBn2');
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
 
     this.subscription = this.coinmarketService.portfolioTickersChanged

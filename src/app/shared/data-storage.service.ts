@@ -26,11 +26,13 @@ export class DataStorageService {
  filteredItems = [];
  userLogedIn: any;
  filteredSummaryItems = [];
+ filteredtestArray = [];
  filteredPortfolioItems = [];
  tickerValue = {};
  summaryTickerValue = {};
  portfolioTickerValue = {};
  userId: string;
+ testArray = {};
 
   // Bittrex API code work in progress
   // const secret = '78f97d0ee39042a99d5a8d02d86ab4a2';
@@ -61,9 +63,7 @@ export class DataStorageService {
        // console.log(this.filteredItems);
         this.coinMarketService.setTicker(this.filteredItems);
         return this.filteredItems;
-      }})}
-
-  // code for retrieving ticker of total portfolio value
+      }})};
 
   retrievePortfolioTicker(portfolioTickerSymbol) {
     if (this.authService.isAuthenticated()) {
@@ -78,7 +78,7 @@ export class DataStorageService {
             console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
             this.filteredPortfolioItems.push([this.portfolioTickerValue['time'], this.portfolioTickerValue['price_usd']]);
           });
-           console.log(this.filteredPortfolioItems);
+          console.log(this.filteredPortfolioItems);
           this.coinMarketService.setPortfolioTicker(this.filteredPortfolioItems);
           return this.filteredPortfolioItems;
         }
@@ -88,6 +88,27 @@ export class DataStorageService {
     }
   };
 
+  retrieveTest() {
+    if (this.authService.isAuthenticated()) {
+      console.log("getting portfolio ticker from firebase");
+      const itemsRef = this.db.list('UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2').snapshotChanges();
+      itemsRef.subscribe(data => {
+        if (data) {
+          this.filteredtestArray = [];
+          console.log(data);
+          data.map(tickerData => {
+            this.testArray = tickerData.payload.toJSON();
+            this.filteredtestArray.push(this.testArray);
+          });
+           console.log(this.filteredtestArray);
+        }
+      })
+    } else {
+      console.log('no data from test')
+    }
+  };
+
+  // code for retrieving ticker of total portfolio value
   retrieveSummaryTicker(DataProvider) {
     const itemsRef = this.db.list('MarketSummary/' + DataProvider).snapshotChanges();
     itemsRef.subscribe( data => {
@@ -113,7 +134,7 @@ export class DataStorageService {
     const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
-    return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
+    return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
 
       .getPortfolio());
   }
@@ -130,8 +151,8 @@ export class DataStorageService {
           const token = this.authService.getToken();
           const UserId = this.authService.getUserId();
           // const userName = this.authService.getUserName();
-          // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/OBYGGHdGHHWU3SIUWehXBuGFIMn1.json?auth=' + token;
-          this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/'+ UserId + '.json?auth=' + token;
+          // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2.json?auth=' + token;
+          this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/'+ UserId + '.json?auth=' + token;
           // this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json';
           console.log('logged in and fetching data from location:', this.userLogedIn);
           } else {
@@ -145,7 +166,7 @@ export class DataStorageService {
         .map((res: Response) => res.json())
       )
         .subscribe( (Observable) => {
-            // console.log(Observable[0]);
+             console.log(Observable[0]);
             // console.log(Observable[1]);
           let total = 0;
           for (let object of Observable[1]) {
