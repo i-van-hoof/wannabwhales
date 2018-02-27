@@ -4,30 +4,37 @@ import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {Observable} from 'rxjs/Observable';
+import {auth} from 'firebase';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {Http} from '@angular/http';
 
 @Injectable()
 export class AuthService {
   token: string;
-  // user: string;
-  user: Observable<firebase.User>;
+   user: string;
+   // user: Observable<firebase.User>;
   editMode = false;
   userName: string;
   authState: any = null;
   // accessToken: any;
 
-  constructor(private afAuth: AngularFireAuth ,private router: Router) { this.user = afAuth.authState;
+  constructor(private http: Http, private af: AngularFireDatabase, private afAuth: AngularFireAuth ,private router: Router) { // this.user = afAuth.authState;
     this.afAuth.authState.subscribe((auth) => {
-      this.authState = auth
+      this.authState = auth;
+      console.log(auth);
+     // this.user = this.authState.uid;
     });}
 
 // testing code for signup and signin
 
-  signupUser(email: string, password: string) {
+  signupUser(name: string, email: string, password: string) {
     this.afAuth
       .auth
       .createUserWithEmailAndPassword(email, password)
       .then(value => {
-        console.log('Success!', value);
+        console.log('Success!', value.uid);
+        this.writeUserData(name, value.uid, email);
+        this.router.navigate(['/dashboard']);
       })
       .catch(err => {
         console.log('Something went wrong:',err.message);
@@ -39,9 +46,11 @@ export class AuthService {
       .auth
       .signInWithEmailAndPassword(email, password)
       .then(value => {
+       // this.writeUserData(name, value.uid, email);
+        this.user = value.uid;
         console.log('sign in Firebase worked');
+        console.log(this.user);
 
-        console.log(value);
         this.router.navigate(['/dashboard']);
       })
       .catch(err => {
@@ -53,40 +62,16 @@ export class AuthService {
     this.afAuth
       .auth
       .signOut();
+      this.router.navigate(['/signin']);
   }
 
-  // old code signupUser and signinUser
-  // signupUser(email: string, password: string) {
-  //   firebase.auth().createUserWithEmailAndPassword(email, password)
-  //     .catch(
-  //       error => console.log(error)
-  //     );
-  // }
-  //
-  // signinUser(email: string, password: string) {
-  //   firebase.auth().signInWithEmailAndPassword(email, password)
-  //     .then(
-  //       response => {
-  //         // console.log(response);
-  //         this.router.navigate(['/dashboard']);
-  //         const user = firebase.auth().currentUser.uid;
-  //         alert(user);
-  //         firebase.auth().currentUser.getIdToken()
-  //           .then(
-  //             (token: string) => this.token = token
-  //           )
-  //       }
-  //     )
-  //     .catch(
-  //       error => alert(error + 'No valid Login credentials')
-  //     );
-  // }
 
-  // logout() {
-  //   firebase.auth().signOut();
-  //   this.token = null;
-  //   this.userName = null;
-  // }
+  writeUserData(name, userId, email) {
+    this.af.database.ref('users/'+ userId ).set({
+      name: name,
+      email: email,
+   });
+  }
 
 // get ID token of logged in user from Firebase Real Time Database
   getToken() {
@@ -99,8 +84,10 @@ export class AuthService {
 
 // get user ID and name of logged in user from Firebase Real Time Database
   getUserId() {
-    this.userName = firebase.auth().currentUser.uid;
-    return this.userName;
+    //  this.userName = firebase.auth().currentUser.uid;
+     // return this.userName;
+    return this.user;
+
   }
 
   getUserName() {

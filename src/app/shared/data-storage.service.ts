@@ -91,14 +91,13 @@ export class DataStorageService {
   retrieveTest() {
     if (this.authService.isAuthenticated()) {
       console.log("getting portfolio ticker from firebase");
-      const itemsRef = this.db.list('UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2').snapshotChanges();
+      const itemsRef = this.db.list('users').snapshotChanges();
       itemsRef.subscribe(data => {
         if (data) {
           this.filteredtestArray = [];
           console.log(data);
           data.map(tickerData => {
-            this.testArray = tickerData.payload.toJSON();
-            this.filteredtestArray.push(this.testArray);
+            this.filteredtestArray.push(tickerData.key);
           });
            console.log(this.filteredtestArray);
         }
@@ -131,10 +130,12 @@ export class DataStorageService {
   }
 
   storePortfolio() {
-    const token = this.authService.getToken();
+    alert("start userid process");
+    // const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
+    alert(UserId);
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
-    return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
+    return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
 
       .getPortfolio());
   }
@@ -148,11 +149,10 @@ export class DataStorageService {
   getUserPortfolio() {
         if (this.authService.isAuthenticated()) {
           console.log('Authenticated: Start fetching portfolio data');
-          const token = this.authService.getToken();
+          // const token = this.authService.getToken();
           const UserId = this.authService.getUserId();
-          // const userName = this.authService.getUserName();
-          // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2.json?auth=' + token;
-          this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/'+ UserId + '.json?auth=' + token;
+           // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/76ZrXBfRFUNj5mWDrtMkZa9b6Np1.json?auth=' + token;
+           this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/'+ UserId+ '.json';
           // this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json';
           console.log('logged in and fetching data from location:', this.userLogedIn);
           } else {

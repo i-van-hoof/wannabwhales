@@ -11,7 +11,8 @@ import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 import {TimerObservable} from 'rxjs/observable/TimerObservable';
 import {Http} from '@angular/http';
 import {AuthService} from '../../auth/auth.service';
-
+import {AngularFireAuth} from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-items-list',
@@ -19,8 +20,9 @@ import {AuthService} from '../../auth/auth.service';
   styleUrls: ['./items-list.component.css']
 })
 export class ItemsListComponent implements OnInit {
-
-  userName: string;
+  // test code
+  userName: Observable<firebase.User>;
+  //userName: string;
   optionsStockchart: Object;
   optionsPiechart: Object;
   optionsColumn: Object;
@@ -66,6 +68,7 @@ export class ItemsListComponent implements OnInit {
     private dataStorageService: DataStorageService,
     private coinmarketService: CoinmarketService,
     private http: Http,
+    afAuth: AngularFireAuth,
     private authService: AuthService
     // private myExampleService: MyExampleService,
   ) {
@@ -74,6 +77,7 @@ export class ItemsListComponent implements OnInit {
 //     this.alive = true;
 //     this.interval = 10000;
 
+    this.userName = afAuth.authState;
     // options of the Highstock portfolio value ticker
     this.optionsStockchart = {
       title: {text: ''},
@@ -446,7 +450,7 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.dataStorageService.retrievePortfolioTicker('V0uICQbXrnfCryghTkRpmbv4sBn2');
+    this.dataStorageService.retrievePortfolioTicker('Akg620apdUMJSgTowufZe7QHGCo1');
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
 
     this.subscription = this.coinmarketService.portfolioTickersChanged
@@ -469,7 +473,7 @@ export class ItemsListComponent implements OnInit {
           this.summaryTickers = this.coinmarketService.getSummaryTickers();
 
     Observable.interval(3000).subscribe(x => {
-      this.userName = this.authService.getUserName();
+      // this.userName = this.authService.getUserName();
       this.sharesArray = [];
       this.coinsSymbolsArray = [];
       this.coinsChangeArray = [];

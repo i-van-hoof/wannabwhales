@@ -10,6 +10,7 @@ import {AuthService} from '../auth.service';
 export class SignupComponent implements OnInit {
   email: string;
   password: string;
+  name: string;
 
   constructor(private authService: AuthService) { }
 
@@ -17,10 +18,11 @@ export class SignupComponent implements OnInit {
   }
 
   onSignup(form: NgForm) {
+    const name = form.value.name;
     const email = form.value.email;
     const password = form.value.password;
-    this.authService.signupUser(email, password);
-    this.email = this.password = '';
+    this.authService.signupUser(name, email, password);
+    this.name = this.email = this.password = '';
   }
 
   // oude code signup

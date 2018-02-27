@@ -51,26 +51,26 @@ export class AppComponent implements OnInit {
     ngOnInit() {
 
       // Dit is de initialize van de productie omgeving
-      var config = {
-        apiKey: "AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA",
-        authDomain: "whalesapp-dev.firebaseapp.com",
-        databaseURL: "https://whalesapp-dev.firebaseio.com",
-        projectId: "whalesapp-dev",
-        storageBucket: "whalesapp-dev.appspot.com",
-        messagingSenderId: "316428142358"
-      };
-      firebase.initializeApp(config);
-
-      // Dit is de initialize van de testomgeving
       // var config = {
-      //   apiKey: "AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys",
-      //   authDomain: "whalesapp-test-mr2.firebaseapp.com",
-      //   databaseURL: "https://whalesapp-test-mr2.firebaseio.com",
-      //   projectId: "whalesapp-test-mr2",
-      //   storageBucket: "whalesapp-test-mr2.appspot.com",
-      //   messagingSenderId: "875549240116"
+      //   apiKey: "AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA",
+      //   authDomain: "whalesapp-dev.firebaseapp.com",
+      //   databaseURL: "https://whalesapp-dev.firebaseio.com",
+      //   projectId: "whalesapp-dev",
+      //   storageBucket: "whalesapp-dev.appspot.com",
+      //   messagingSenderId: "316428142358"
       // };
       // firebase.initializeApp(config);
+
+     // Dit is de initialize van de testomgeving
+      var config = {
+        apiKey: "AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys",
+        authDomain: "whalesapp-test-mr2.firebaseapp.com",
+        databaseURL: "https://whalesapp-test-mr2.firebaseio.com",
+        projectId: "whalesapp-test-mr2",
+        storageBucket: "whalesapp-test-mr2.appspot.com",
+        messagingSenderId: "875549240116"
+      };
+      firebase.initializeApp(config);
 
     }
       onNavigate(feature: string)

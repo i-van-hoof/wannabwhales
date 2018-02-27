@@ -36,6 +36,7 @@ export class HeaderComponent {
     this.dataStorageService.storePortfolio()
       .subscribe(
         (response: Response) => {
+          alert("start saving process");
           console.log(response);
         }
       );

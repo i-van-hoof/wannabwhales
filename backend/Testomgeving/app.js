@@ -20,6 +20,7 @@ admin.initializeApp({
   }
 });
 
+let users = [];
 let portfolio = [];
 let count = 0;
 let tickerData;
@@ -84,8 +85,8 @@ function getMarketSummary() {
     active_markets: marketSummary['active_markets'],
     time: timestamp };
   // console.log(updates);
-  db.ref().update(updates).then(results => {
-    // console.log('results', results);
+  return db.ref().update(updates).then(function(results) {
+    console.log('results', results);
     console.log("Sent market summary from Coinmarket cap to Firebase");
 }).catch(err => {
     console.log('err', err);
@@ -111,10 +112,11 @@ function generateTickers() {
       delete object['total_supply'];
       delete object['last_updated'];
     }
-    console.log("Parsed "+tickers.length+" coin tickers");
-    generatePortfolioTickers(tickers);
-    let tickerUpdates = {};
+    console.log("Parsed "+tickers.length+" market-tickers");
 
+    generatePortfolioTickers(tickers);
+
+    let tickerUpdates = {};
     var db = admin.database();
 
     for (let object of tickers) {
@@ -129,72 +131,88 @@ function generateTickers() {
         market_cap_usd: object['market_cap_usd'],
         time: timestamp};
     }
-
   // update Firebase with market tickers, once every 15 minutes
     db.ref().update(tickerUpdates).then(results => {
     // console.log('results', results);
-    console.log("Send "+tickers.length+" records to firebase v2114");
+    console.log("Send "+tickers.length+" market-tickers to Firebase");
     //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
     }).catch(err => {
     console.log('err', err);
     })
-
 })
 }
 
 function generatePortfolioTickers(tickers2) {
-  var total = 0;
   var db = admin.database();
-  return db.ref('UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2').once('value')
-    .then(snapshot => {
+  db.ref('users').once('value')
+    .then(userdata => {
+    users = userdata.val();
+  console.log(users);
+  let usersKeys = Object.keys(users);
+  console.log(usersKeys);
+
+// new line of code
+  for (let userKey of usersKeys) {
+
+    var total = 0;
+    // return db.ref('UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2').once('value')
+    return db.ref('UserPortfolios/' + userKey).once('value')
+      .then(function(snapshot) {
       portfolio = snapshot.val();
-      console.log("finding out if tickers is succesfullt imported in generatePortfolioTickers");
-      console.log(tickers2);
-      console.log("using tickerdata in function generatePortoflioTickers");
-      // console.log(tickers);
-      // console.log(portfolio);
-      // return rp('https://api.coinmarketcap.com/v1/ticker/?limit=275');}).then(marketString => {
-      //  market = JSON.parse(marketString);
-  count = 0;
-      for (let object of portfolio) {
-        count = count + 1;
-        const index = tickers2.findIndex(p => p.symbol === object.symbol);
-        if (index >= 0) {object['price_usd'] = tickers2[index].price_usd; object['value'] = object.balance * object.price_usd; total += object['value'] }
-        else { console.log(count); console.log(object.symbol); object['value'] = object.balance * object.price_usd; total += object['value']};
-    }}).catch(results => {
+      console.log("users loop started using tickerdata in function generatePortoflioTickers");
+
+    count = 0;
+    for (let object of portfolio) {
+      count = count + 1;
+      const index = tickers2.findIndex(p => p.symbol === object.symbol)
+      ;
+      if (index >= 0) {
+        object['price_usd'] = tickers2[index].price_usd;
+        object['value'] = object.balance * object.price_usd;
+        total += object['value']
+      }
+      else {
+        console.log(count);
+        console.log(object.symbol);
+        object['value'] = object.balance * object.price_usd;
+        total += object['value']
+      }
+      ;
+    }
+  }).catch(results => {
       console.log("generatePortfolioTickers function is not working properly");
-      console.log('error:', results);})
-    };
-  // let updates = {};
+    console.log('error:', results);
+  })
 
-  // // var database = firebase.database();
-  // var db = admin.database();
-  //
-  // // const timestamp = firebase.database.ServerValue.TIMESTAMP;
-  // const timestamp = admin.database.ServerValue.TIMESTAMP;
-  // for (let object of market) {
-  //   const key = db.ref().child('Tickers').push().key;
-  //   const path = '/Tickers/' + object['symbol'] + '/' + key;
-  //   updates[path] = { symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp };
-  // }
+    const timestamp = admin.database.ServerValue.TIMESTAMP;
+    // for (let object of market) {
+    //   const key = db.ref().child('Tickers').push().key;
+    //   const path = '/Tickers/' + object['symbol'] + '/' + key;
+    //   updates[path] = { symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp };
+    // }
 
-  // prepare an json object with portfolio ticker for Firebase
-  // console.log('generating portfolioTickers');
-  // const key2 = db.ref().child('Tickers').push().key;
-  // const path2 = '/PortfolioTickers/V0uICQbXrnfCryghTkRpmbv4sBn2/' + key2;
-  // let updates2 = {};
-  //
-  // updates2[path2] = { symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp };
-  // console.log(updates2);
+    // prepare an json object with portfolio ticker for Firebase
+    console.log('generating portfolioTickers');
+    const key2 = db.ref().child('Tickers').push().key;
+    // const path2 = '/PortfolioTickers/V0uICQbXrnfCryghTkRpmbv4sBn2/' + key2;
+    const path2 = '/PortfolioTickers/' + userKey + '/' + key2;
+    let updates2 = {};
+
+    updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};
+    console.log(updates2);
 
 // update firebase with portfolio ticker, once every hour
-//   db.ref().update(updates2).then(results => {
-//     // console.log('results', results);
-//     console.log("Send "+market.length+" records to firebase");
-// }).catch(err => {
-//     console.log('err', err);
-// })
-
+    db.ref().update(updates2).then(results => {
+      console.log('results', results);
+    console.log("Send " + market.length + " records to firebase");
+  }).
+    catch(err => {
+      console.log('err', err);
+  })
+// new line of code
+  }
+})
+};
 //   // OLD CODE update Firebase with market tickers TO BE DELETED
 //   db.ref().update(updates).then(results => {
 //     // console.log('results', results);
