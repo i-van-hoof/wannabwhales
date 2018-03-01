@@ -21,8 +21,8 @@ import * as firebase from 'firebase/app';
 })
 export class ItemsListComponent implements OnInit {
   // test code
-  userName: Observable<firebase.User>;
-  //userName: string;
+  // userName: Observable<firebase.User>;
+  userName: string;
   optionsStockchart: Object;
   optionsPiechart: Object;
   optionsColumn: Object;
@@ -70,14 +70,11 @@ export class ItemsListComponent implements OnInit {
     private http: Http,
     afAuth: AngularFireAuth,
     private authService: AuthService
-    // private myExampleService: MyExampleService,
-  ) {
-// two lines for TimeObservable
-//     this.display = false;
-//     this.alive = true;
-//     this.interval = 10000;
 
-    this.userName = afAuth.authState;
+  ) {
+
+    this.userName = authService.getUserEmail();
+
     // options of the Highstock portfolio value ticker
     this.optionsStockchart = {
       title: {text: ''},
@@ -450,7 +447,7 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.dataStorageService.retrievePortfolioTicker('Akg620apdUMJSgTowufZe7QHGCo1');
+    this.dataStorageService.retrievePortfolioTicker();
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
 
     this.subscription = this.coinmarketService.portfolioTickersChanged

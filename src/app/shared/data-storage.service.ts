@@ -43,10 +43,10 @@ export class DataStorageService {
               private authService: AuthService,
               public  db: AngularFireDatabase,
               private afAuth: AngularFireAuth
-
-              ) {this.afAuth.authState.subscribe(user => {
+              )
+                  {this.afAuth.authState.subscribe(user => {
                   if(user) this.userId = user.uid
-  })}
+                  })}
 
 
   retrieveTicker(tickerSymbol) {
@@ -65,10 +65,11 @@ export class DataStorageService {
         return this.filteredItems;
       }})};
 
-  retrievePortfolioTicker(portfolioTickerSymbol) {
+  retrievePortfolioTicker() {
     if (this.authService.isAuthenticated()) {
+      const UserId = this.authService.getUserId();
       console.log("getting portfolio ticker from firebase");
-      const itemsRef = this.db.list('PortfolioTickers/' + portfolioTickerSymbol).snapshotChanges();
+      const itemsRef = this.db.list('PortfolioTickers/' + UserId).snapshotChanges();
       itemsRef.subscribe(data => {
         if (data) {
           // console.log('there is ticker data');
@@ -133,10 +134,8 @@ export class DataStorageService {
     alert("start userid process");
     // const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
-    alert(UserId);
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
     return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
-
       .getPortfolio());
   }
 
@@ -221,7 +220,7 @@ export class DataStorageService {
 }
 
 
-// De oude code om coinmarket cap op te halen via http
+//  code om coinmarket cap op te halen via http
 
 // getCoinmarket() {
 //   const array = [ {symbol: 'BTC', name: 'Bitcoin'}, {symbol: 'DASH', name: 'Dash'} ];
@@ -233,22 +232,7 @@ export class DataStorageService {
 //           for (let item of array) {
 //             if (item.symbol === object['symbol']) {object['inportfolio'] = true; console.log('PortfolioItem'); break; } else {object['inportfolio'] = false; }
 //           }
-//             object['balance'] = 0;
-//             object['volume_24h'] = object['24h_volume_usd'];
-//             object['volume_24h'] = +object['volume_24h'];
-//             object['last_updated'] = +object['last_updated'];
-//             object['market_cap_usd'] = +object['market_cap_usd'];
-//             object['price_btc'] = +object['price_btc'];
-//             object['price_usd'] = +object['price_usd'];
-//             object['percent_change_1h'] = +object['percent_change_1h'];
-//             object['percent_change_24h'] = +object['percent_change_24h'];
-//             object['percent_change_7d'] = +object['percent_change_7d'];
-//             object['available_supply'] = +object['available_supply'];
-//             object['total_supply'] = +object['total_supply'];
-//             object['last_updated'] = +object['last_updated'];
-//             delete object['24h_volume_usd'];
 //         }
-//
 //         return coinmarket;
 //       }
 //     )

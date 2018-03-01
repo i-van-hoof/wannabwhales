@@ -11,14 +11,14 @@ import {Http} from '@angular/http';
 @Injectable()
 export class AuthService {
   token: string;
-   user: string;
+  user: string;
    // user: Observable<firebase.User>;
   editMode = false;
-  userName: string;
+  userEmail: string;
   authState: any = null;
   // accessToken: any;
 
-  constructor(private http: Http, private af: AngularFireDatabase, private afAuth: AngularFireAuth ,private router: Router) { // this.user = afAuth.authState;
+  constructor(private http: Http, private af: AngularFireDatabase, private afAuth: AngularFireAuth ,private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth;
       console.log(auth);
@@ -48,6 +48,7 @@ export class AuthService {
       .then(value => {
        // this.writeUserData(name, value.uid, email);
         this.user = value.uid;
+        this.userEmail = value.email;
         console.log('sign in Firebase worked');
         console.log(this.user);
 
@@ -84,15 +85,11 @@ export class AuthService {
 
 // get user ID and name of logged in user from Firebase Real Time Database
   getUserId() {
-    //  this.userName = firebase.auth().currentUser.uid;
-     // return this.userName;
     return this.user;
-
   }
 
-  getUserName() {
-    this.userName = firebase.auth().currentUser.email;
-    return this.userName;
+  getUserEmail() {
+    return this.userEmail;
   }
 
 // returns true when user is successfully authenticated by Firebase

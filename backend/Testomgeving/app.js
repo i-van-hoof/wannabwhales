@@ -151,75 +151,63 @@ function generatePortfolioTickers(tickers2) {
   let usersKeys = Object.keys(users);
   console.log(usersKeys);
 
-// new line of code
+// get for each user from array usersKeys de portfolio
   for (let userKey of usersKeys) {
-
-    var total = 0;
     // return db.ref('UserPortfolios/V0uICQbXrnfCryghTkRpmbv4sBn2').once('value')
-    return db.ref('UserPortfolios/' + userKey).once('value')
+    db.ref('UserPortfolios/' + userKey).once('value')
       .then(function(snapshot) {
-      portfolio = snapshot.val();
-      console.log("users loop started using tickerdata in function generatePortoflioTickers");
+        console.log(userKey);
+        portfolio = snapshot.val();
+        console.log("users loop started using tickerdata in function generatePortoflioTickers");
 
-    count = 0;
+// calculate the value of each portfolio item and total of portfolio
+        var total = 0;
+        var count = 0;
     for (let object of portfolio) {
       count = count + 1;
-      const index = tickers2.findIndex(p => p.symbol === object.symbol)
-      ;
+      // const index = tickers2.findIndex(p => p.symbol === object.symbol);
+      const  index = tickers2.map(function(x) {return x.symbol; }).indexOf(object.symbol);
       if (index >= 0) {
         object['price_usd'] = tickers2[index].price_usd;
-        object['value'] = object.balance * object.price_usd;
-        total += object['value']
+        console.log(object['price_usd']);
+        console.log(object['balance']);
+        object['value'] = object['balance'] * object['price_usd'];
+        total += object['value'];
+        console.log(total);
       }
       else {
         console.log(count);
         console.log(object.symbol);
-        object['value'] = object.balance * object.price_usd;
-        total += object['value']
+        // object['value'] = object.balance * object.price_usd;
+        // total += object['value']
       }
-      ;
     }
-  }).catch(results => {
-      console.log("generatePortfolioTickers function is not working properly");
-    console.log('error:', results);
-  })
+        console.log("first users loop complete");
 
     const timestamp = admin.database.ServerValue.TIMESTAMP;
-    // for (let object of market) {
-    //   const key = db.ref().child('Tickers').push().key;
-    //   const path = '/Tickers/' + object['symbol'] + '/' + key;
-    //   updates[path] = { symbol: object['symbol'], price_usd: object['price_usd'], balance: object['balance'], time: timestamp };
-    // }
-
-    // prepare an json object with portfolio ticker for Firebase
-    console.log('generating portfolioTickers');
+        console.log('generating portfolioTickers');
     const key2 = db.ref().child('Tickers').push().key;
     // const path2 = '/PortfolioTickers/V0uICQbXrnfCryghTkRpmbv4sBn2/' + key2;
     const path2 = '/PortfolioTickers/' + userKey + '/' + key2;
     let updates2 = {};
-
     updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};
     console.log(updates2);
 
-// update firebase with portfolio ticker, once every hour
-    db.ref().update(updates2).then(results => {
+// update Firebase with portfolio ticker
+    db.ref().update(updates2).then(function(results) {
       console.log('results', results);
-    console.log("Send " + market.length + " records to firebase");
-  }).
-    catch(err => {
+    console.log("Send " + usersKeys.length + " portfolio Tickers to firebase");
+  }).catch(function(err) {
       console.log('err', err);
   })
 // new line of code
-  }
-})
-};
-//   // OLD CODE update Firebase with market tickers TO BE DELETED
-//   db.ref().update(updates).then(results => {
-//     // console.log('results', results);
-//     console.log("Send "+market.length+" records to firebase");
-// }).catch(err => {
-//     console.log('err', err);
-// })
+  }).catch(function(results) {
+    console.log("generatePortfolioTickers function is not working properly");
+    console.log('error:', results);
+  });
+}
+})};
+
 
 
 
