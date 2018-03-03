@@ -45,7 +45,7 @@ export class DataStorageService {
               private af: AngularFireAuth,
               )
                   {
-                    this.itemRef = db.object('users');
+                    this.itemRef = db.object('UserPortfolios');
                     this.item = this.itemRef.valueChanges();
                     this.user = af.authState;
                   }
@@ -57,7 +57,6 @@ test() {
     // let testing = this.coinMarketService.getPortfolio()
     updates2[UserId] = {name: 'name5'};
   this.itemRef.update(updates2);
-
 }
 
   retrieveTicker(tickerSymbol) {
@@ -100,8 +99,6 @@ test() {
     }
   };
 
-
-  // code for retrieving ticker of total portfolio value
   retrieveSummaryTicker(DataProvider) {
     const itemsRef = this.db.list('MarketSummary/' + DataProvider).snapshotChanges();
     itemsRef.subscribe( data => {
@@ -118,20 +115,15 @@ test() {
         return this.filteredSummaryItems;
       }})};
 
-  storeMarket() {
-    return this.http.put('https://whales-app.firebaseio.com/market.json', this.coinMarketService
-      .getMarket());
-  }
-
   storePortfolio() {
     // const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
-    // let updates2 = {};
-    // updates2[UserId] = this.coinMarketService.getPortfolio();
-    // this.itemRef.update(updates2).then(console.log('data is saved to User portfolio'));
-     return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
-       .getPortfolio());
+    let updates2 = {};
+    updates2[UserId] = this.coinMarketService.getPortfolio();
+    this.itemRef.update(updates2);
+    //  return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
+    //    .getPortfolio());
   }
 
   storeTransactions() {
@@ -213,28 +205,10 @@ test() {
         }
       );
   }
+
+  storeMarket() {
+    return this.http.put('https://whales-app.firebaseio.com/market.json', this.coinMarketService
+      .getMarket());
+  }
 }
 
-
-//  code om coinmarket cap op te halen via http
-
-// getCoinmarket() {
-//   const array = [ {symbol: 'BTC', name: 'Bitcoin'}, {symbol: 'DASH', name: 'Dash'} ];
-//   this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=150')
-//     .map(
-//       (response: Response) => {
-//         const coinmarket: CoinCryptocoin[] = response.json();
-//         for (let object of coinmarket) {
-//           for (let item of array) {
-//             if (item.symbol === object['symbol']) {object['inportfolio'] = true; console.log('PortfolioItem'); break; } else {object['inportfolio'] = false; }
-//           }
-//         }
-//         return coinmarket;
-//       }
-//     )
-//     .subscribe(
-//       (coinmarket: CoinCryptocoin[]) => {
-//         this.coinMarketService.setCoinmarket(coinmarket);
-//       }
-//     );
-// }
