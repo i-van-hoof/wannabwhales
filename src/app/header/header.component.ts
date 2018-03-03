@@ -28,18 +28,20 @@ export class HeaderComponent {
       );
   }
 
-  // test-code for Database read
-  // retrieveUserPortfolio() {
-  //   this.dataStorageService.retrieveTest();};
+
+
+  //test-code for Database read
+  retrieveUserPortfolio() {
+    this.dataStorageService.test()};
 
   onSavePortfolio() {
     this.dataStorageService.storePortfolio()
-      .subscribe(
-        (response: Response) => {
-          alert("start saving process");
-          console.log(response);
-        }
-      );
+      // .subscribe(
+      //   (response: Response) => {
+      //     alert("start saving process");
+      //     console.log(response);
+      //   }
+      // );
   }
 
   onSaveTransactions() {

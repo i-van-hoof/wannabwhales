@@ -10,7 +10,7 @@ import {Transaction} from './transaction.model';
 import {AuthService} from '../auth/auth.service';
 import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase';
-import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
+import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
 import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 // import Database = firebase.database.Database;
 import 'rxjs/add/operator/map';
@@ -20,9 +20,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class DataStorageService {
-
- item: FirebaseObjectObservable<any>;
- // itemsRef: AngularFireList<any>;
  filteredItems = [];
  userLogedIn: any;
  filteredSummaryItems = [];
@@ -31,23 +28,37 @@ export class DataStorageService {
  tickerValue = {};
  summaryTickerValue = {};
  portfolioTickerValue = {};
- userId: string;
- testArray = {};
 
-  // Bittrex API code work in progress
-  // const secret = '78f97d0ee39042a99d5a8d02d86ab4a2';
+ // userId: string;
+
+  user: Observable<firebase.User>;
+
+  itemRef: AngularFireObject<any>;
+  item: Observable<any>;
+
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
               private transactionService: TransactionService,
               private authService: AuthService,
               public  db: AngularFireDatabase,
-              private afAuth: AngularFireAuth
+              private af: AngularFireAuth,
               )
-                  {this.afAuth.authState.subscribe(user => {
-                  if(user) this.userId = user.uid
-                  })}
+                  {
+                    this.itemRef = db.object('users');
+                    this.item = this.itemRef.valueChanges();
+                    this.user = af.authState;
+                  }
 
+test() {
+    const UserId = this.authService.getUserId();
+    console.log(UserId);
+    let updates2 = {};
+    // let testing = this.coinMarketService.getPortfolio()
+    updates2[UserId] = {name: 'name5'};
+  this.itemRef.update(updates2);
+
+}
 
   retrieveTicker(tickerSymbol) {
     const itemsRef = this.db.list('Tickers/' + tickerSymbol).snapshotChanges();
@@ -89,24 +100,6 @@ export class DataStorageService {
     }
   };
 
-  retrieveTest() {
-    if (this.authService.isAuthenticated()) {
-      console.log("getting portfolio ticker from firebase");
-      const itemsRef = this.db.list('users').snapshotChanges();
-      itemsRef.subscribe(data => {
-        if (data) {
-          this.filteredtestArray = [];
-          console.log(data);
-          data.map(tickerData => {
-            this.filteredtestArray.push(tickerData.key);
-          });
-           console.log(this.filteredtestArray);
-        }
-      })
-    } else {
-      console.log('no data from test')
-    }
-  };
 
   // code for retrieving ticker of total portfolio value
   retrieveSummaryTicker(DataProvider) {
@@ -131,12 +124,14 @@ export class DataStorageService {
   }
 
   storePortfolio() {
-    alert("start userid process");
     // const token = this.authService.getToken();
     const UserId = this.authService.getUserId();
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
-    return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
-      .getPortfolio());
+    // let updates2 = {};
+    // updates2[UserId] = this.coinMarketService.getPortfolio();
+    // this.itemRef.update(updates2).then(console.log('data is saved to User portfolio'));
+     return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
+       .getPortfolio());
   }
 
   storeTransactions() {
@@ -150,6 +145,7 @@ export class DataStorageService {
           console.log('Authenticated: Start fetching portfolio data');
           // const token = this.authService.getToken();
           const UserId = this.authService.getUserId();
+          // alert(UserId);
            // this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/76ZrXBfRFUNj5mWDrtMkZa9b6Np1.json?auth=' + token;
            this.userLogedIn = 'https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/'+ UserId+ '.json';
           // this.userLogedIn = 'https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json';

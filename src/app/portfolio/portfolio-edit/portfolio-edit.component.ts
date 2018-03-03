@@ -49,10 +49,10 @@ export class PortfolioEditComponent implements OnInit {
     } else {
       this.coinmarketService.addPortfolio(this.portfolioForm.value);
     }
-    this.dataStorageService.storePortfolio()
-      .subscribe(
-        (response: Response) => { console.log(response);}
-      );
+    this.dataStorageService.storePortfolio();
+      // .subscribe(
+    //   (response: Response) => { console.log(response);}
+    // );
     this.onCancel();
   }
 
