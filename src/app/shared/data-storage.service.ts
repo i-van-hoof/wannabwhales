@@ -16,6 +16,7 @@ import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/dat
 import 'rxjs/add/operator/map';
 import {PortfolioEditComponent} from '../portfolio/portfolio-edit/portfolio-edit.component';
 import { AngularFireAuth } from 'angularfire2/auth';
+import {Item} from '../items/shared/item';
 
 
 @Injectable()
@@ -29,12 +30,15 @@ export class DataStorageService {
  summaryTickerValue = {};
  portfolioTickerValue = {};
 
- // userId: string;
+  userId: string;
 
   user: Observable<firebase.User>;
 
   itemRef: AngularFireObject<any>;
   item: Observable<any>;
+
+  //test code
+  items: FirebaseListObservable<Item[]> = null;
 
 
   constructor(private http: Http,
@@ -48,15 +52,20 @@ export class DataStorageService {
                     this.itemRef = db.object('UserPortfolios');
                     this.item = this.itemRef.valueChanges();
                     this.user = af.authState;
+                    this.af.authState.subscribe(user => {
+                      if(user) this.userId = user.uid
+                    })
                   }
 
 test() {
-    const UserId = this.authService.getUserId();
-    console.log(UserId);
-    let updates2 = {};
-    // let testing = this.coinMarketService.getPortfolio()
-    updates2[UserId] = {name: 'name5'};
-  this.itemRef.update(updates2);
+  if (!this.userId) return;
+  console.log('start test')
+  const items = this.db.object(`UserPortfolios/${this.userId}`).valueChanges();
+  console.log(items);
+  items.subscribe(data => { console.log(data.payload.toJSON())};
+  return this.items;
+  // return this.items
+ // console.log(this.items);
 }
 
   retrieveTicker(tickerSymbol) {
@@ -76,11 +85,16 @@ test() {
       }})};
 
   retrievePortfolioTicker() {
-    if (this.authService.isAuthenticated()) {
-      const UserId = this.authService.getUserId();
-      console.log("getting portfolio ticker from firebase");
-      const itemsRef = this.db.list('PortfolioTickers/' + UserId).snapshotChanges();
-      itemsRef.subscribe(data => {
+   //  if (this.authService.isAuthenticated()) {
+   //    const UserId = this.authService.getUserId();
+   //   console.log("getting portfolio ticker from firebase");
+   //   const itemsRef = this.db.list('PortfolioTickers/' + UserId).snapshotChanges();
+
+    // new code
+     if (!this.userId) return;
+     const items = this.db.list(`PortfolioTickers/${this.userId}`).snapshotChanges();
+    // old code
+      items.subscribe(data => {
         if (data) {
           // console.log('there is ticker data');
           this.filteredPortfolioItems = [];
@@ -94,10 +108,10 @@ test() {
           return this.filteredPortfolioItems;
         }
       })
-    } else {
-      console.log('user not authenticated')
-    }
-  };
+  //   } else {
+  //     console.log('user not authenticated')
+  //   }
+ };
 
   retrieveSummaryTicker(DataProvider) {
     const itemsRef = this.db.list('MarketSummary/' + DataProvider).snapshotChanges();
