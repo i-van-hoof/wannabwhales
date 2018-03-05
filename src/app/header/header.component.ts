@@ -31,8 +31,8 @@ export class HeaderComponent {
 
 
   //test-code for Database read
-  retrieveUserPortfolio() {
-    this.dataStorageService.test()};
+  // retrieveUserPortfolio() {
+  //   this.dataStorageService.test()};
 
   onSavePortfolio() {
     this.dataStorageService.storePortfolio()
