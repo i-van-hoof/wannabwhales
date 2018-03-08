@@ -7,6 +7,8 @@ export class PortfolioModel {
   public wishlist: boolean;
   public inportfolio: boolean;
   public balance: number;
+  //new line
+  public value: number;
   public available: number;
   public pending: number;
   public firstdate: number;
@@ -23,6 +25,8 @@ export class PortfolioModel {
     wishlist: boolean,
     inportfolio: boolean,
     balance: number,
+    //new line
+    value: number,
     available: number,
     pending: number,
     firstdate: number,
@@ -40,6 +44,7 @@ export class PortfolioModel {
     this.wishlist = wishlist;
     this.inportfolio = inportfolio;
     this.balance = balance;
+    this.value = value;
     this.available = available;
     this.pending = pending;
     this.firstdate = firstdate;

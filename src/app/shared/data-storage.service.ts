@@ -36,12 +36,13 @@ export class DataStorageService {
   user: Observable<firebase.User>;
 
   itemRef: AngularFireObject<any>;
+  portfolioRef: AngularFireObject<any>;
   item: Observable<any>;
 
   //test code
   items: FirebaseListObservable<Item[]> = null;
   testArray = [];
-  portfolioShare ={};
+  portfolio = [];
   portfolioArray = [];
 
 
@@ -65,25 +66,19 @@ export class DataStorageService {
   if (!this.userId) return;
   console.log(this.userId);
   let total = 0;
+  this.portfolio = [];
   this.itemRef = this.db.object(`UserPortfolios/${this.userId}`);
   this.itemRef.snapshotChanges().subscribe(action => {
-    // console.log(action.type);
-    // console.log(action.key);
-    // console.log(action.payload.val())
-    const portfolio = action.payload.val() ;
-   // this.testArray =[];
-   //  for (var key in portfolio) {
-   //    this.testArray.push(portfolio[key]);
-   //  }
-   // console.log(this.testArray);
-    this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=275').map((res: Response) => res.json()).subscribe( data => {
-      console.log(data);
+    if (action.payload.val()) {this.portfolio = action.payload.val()} else {this.portfolio = []};
+   // if (this.portfolio = null) { this.portfolio = [] }
+    return this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=275').map((res: Response) => res.json()).subscribe( data => {
+      // console.log(data);
       for (let object of data) {
-        const portfolioIndex = portfolio.findIndex(p => p.symbol === object.symbol);
+        const portfolioIndex = this.portfolio.findIndex(p => p.symbol === object.symbol);
         // console.log(portfolioIndex);
         object['price_usd'] = +object['price_usd'];
-        if (portfolioIndex >= 0) {object['balance'] = portfolio[portfolioIndex].balance; object['value'] = portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; }
-        if (portfolioIndex >= 0) {object['inportfolio'] = portfolio[portfolioIndex].inportfolio; } else {object['inportfolio'] = false; }
+        if (portfolioIndex >= 0) {object['balance'] = this.portfolio[portfolioIndex].balance; object['value'] = this.portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; }
+        if (portfolioIndex >= 0) {object['inportfolio'] = this.portfolio[portfolioIndex].inportfolio; } else {object['inportfolio'] = false; }
         object['volume_24h'] = object['24h_volume_usd'];
         object['volume_24h'] = +object['volume_24h'];
         object['last_updated'] = +object['last_updated'];
@@ -97,32 +92,22 @@ export class DataStorageService {
         object['total_supply'] = +object['total_supply'];
         object['last_updated'] = +object['last_updated'];
         delete object['24h_volume_usd'];
-
       }
-
-      console.log(total);
+      // console.log(total);
       data.push({id: 'Portfolio_UsID', name: 'Portfolio1', symbol: 'PORTF', rank: '1000', price_usd: total, price_btc
           : 1, balance: 1
       });
-
       if (this.authService.editMode === false) {
         console.log(data);
         this.coinMarketService.setCoinmarket(data);
         this.coinMarketService.setPortfolio(data);
       } else { console.log('is in Edit Mode')}
-
     });
+
 
   });
 
-
-  // items.subscribe(data => { console.log(data.payload.toJSON())});
-  // return items;
-  // for (let object of items) {
-  //   console.log(object)
-  // }
-
-}
+ }
 
   retrieveTicker(tickerSymbol) {
     const itemsRef = this.db.list('Tickers/' + tickerSymbol).snapshotChanges();
@@ -187,23 +172,30 @@ export class DataStorageService {
 
   storePortfolio() {
     // const token = this.authService.getToken();
-    const UserId = this.authService.getUserId();
+   // const UserId = this.authService.getUserId();
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
 
     const updates2 = this.coinMarketService.getPortfolio();
     console.log(updates2);
     //code for testing leaner portoflio database child
-    // for (let object of updates2) {
-    //   if( object['inportfolio']) {
-    //     this.portfolioArray.push({
-    //       id: object['id'],
-    //       balance: object['balance'],
-    //       name: object['name'],
-    //       symbol: object['symbol'],
-    //       // rank: object['rank'],
-    //       price_usd: object['price_usd'],
-    //       price_btc: object['price_btc']});}}
-    this.itemRef.update(updates2);
+    this.portfolioArray = [];
+     for (let object of updates2) {
+       if( object['inportfolio'] == true) {
+        this.portfolioArray.push({
+          symbol: object['symbol'],
+          id: object['id'],
+          inportfolio: true,
+          balance: object['balance'],
+          name: object['name'],
+          value: object['value']
+          // rank: object['rank'],
+          // price_usd: object['price_usd'],
+          // price_btc: object['price_btc']
+        });}
+        }
+    console.log(this.portfolioArray);
+     this.portfolioRef = this.db.object(`UserPortfolios/${this.userId}`);
+      this.portfolioRef.set(this.portfolioArray);
     //  return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
     //    .getPortfolio());
   }
