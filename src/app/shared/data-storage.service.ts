@@ -196,7 +196,7 @@ export class DataStorageService {
     newPortfolio[this.userId] = this.portfolioArray;
     console.log("saving portfolio");
     this.portfolioRef = this.db.object('UserPortfolios/');
-    this.portfolioRef.update(newPortfolio).then(console.log("worked"));
+    this.portfolioRef.update(newPortfolio);
 
 // old code
 
