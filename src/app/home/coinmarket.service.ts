@@ -110,7 +110,7 @@ export class CoinmarketService {
   }
 
   updatePortfolioSymbols(symbol: string) {
-    if ( this.portfoliosymbols.findIndex(p => p.symbol === symbol)) {console.log('symbol is in portfoliosymbols')};
+    if ( this.portfoliosymbols.findIndex(p => p.symbol === symbol)) {console.log('symbol is in portfoliosymbols')}
     this.portfoliosymbolsChanged.next(this.portfoliosymbols.slice());
   }
 

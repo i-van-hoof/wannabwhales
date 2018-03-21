@@ -6,6 +6,7 @@
           <button
             type="submit"
             class="btn btn-success"
+
             [disabled]="!portfolioForm.valid">Save</button>
           <button type="button" class="btn btn-danger" (click)="onCancel()">Cancel</button>
         </div>
@@ -81,46 +82,48 @@
 
 
 
-      <div class="row">
-        <div class="col-xs-12" formArrayName="transactions">
-          <div
-            class="row"
-            *ngFor="let transactionCtrl of portfolioForm.get('transactions').controls; let i = index"
-            [formGroupName]="i"
-            style="margin-top: 10px;">
-            <div class="col-xs-6">
-              <label>Coin Symbol</label>
-              <input
-                type="text"
-                class="form-control"
-                formControlName="symbol">
-            </div>
-            <div class="col-xs-4">
-              <label>Amount</label>
-              <input
-                type="number"
-                class="form-control"
-                formControlName="amount">
-            </div>
-            <div class="col-xs-2">
-              <label>Remove</label>
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="onDeleteTransaction(i)">X</button>
-            </div>
-          </div>
-          <hr>
-          <div class="row">
-            <div class="col-xs-12">
-            <button  type="button"
-               class="btn btn-success"
-               (click)="onAddTransaction()">Add Transaction
-             </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!--<div class="row">-->
+        <!--<div class="col-xs-12" formArrayName="transactions">-->
+          <!--<div-->
+            <!--class="row"-->
+             <!--&lt;!&ndash;*ngFor="let transactionCtrl of portfolioForm.get('transactions').controls; let i = index"&ndash;&gt;-->
+
+            <!--&lt;!&ndash;*ngFor="let form of formArray.controls; let i = index"&ndash;&gt;-->
+            <!--[formGroupName]="i"-->
+            <!--style="margin-top: 10px;">-->
+            <!--<div class="col-xs-6">-->
+              <!--<label>Coin Symbol</label>-->
+              <!--<input-->
+                <!--type="text"-->
+                <!--class="form-control"-->
+                <!--formControlName="symbol">-->
+            <!--</div>-->
+            <!--<div class="col-xs-4">-->
+              <!--<label>Amount</label>-->
+              <!--<input-->
+                <!--type="number"-->
+                <!--class="form-control"-->
+                <!--formControlName="amount">-->
+            <!--</div>-->
+            <!--<div class="col-xs-2">-->
+              <!--<label>Remove</label>-->
+              <!--<button-->
+                <!--type="button"-->
+                <!--class="btn btn-danger"-->
+                <!--(click)="onDeleteTransaction(i)">X</button>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<hr>-->
+          <!--<div class="row">-->
+            <!--<div class="col-xs-12">-->
+            <!--&lt;!&ndash;<button  type="button"&ndash;&gt;-->
+               <!--&lt;!&ndash;class="btn btn-success"&ndash;&gt;-->
+               <!--&lt;!&ndash;(click)="onAddTransaction()">Add Transaction&ndash;&gt;-->
+             <!--&lt;!&ndash;</button>&ndash;&gt;-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
     </form>
   </div>
 </div>

@@ -54,8 +54,8 @@ export class DataStorageService {
               private af: AngularFireAuth,
               )
                   {
-                    this.itemRef = db.object('UserPortfolios');
-                    this.item = this.itemRef.valueChanges();
+                    // this.itemRef = db.object('UserPortfolios');
+                    // this.item = this.itemRef.valueChanges();
                     this.user = af.authState;
                     this.af.authState.subscribe(user => {
                       if(user) this.userId = user.uid
@@ -77,7 +77,7 @@ export class DataStorageService {
         const portfolioIndex = this.portfolio.findIndex(p => p.symbol === object.symbol);
         // console.log(portfolioIndex);
         object['price_usd'] = +object['price_usd'];
-        if (portfolioIndex >= 0) {object['balance'] = this.portfolio[portfolioIndex].balance; object['value'] = this.portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; }
+        if (portfolioIndex >= 0) {object['balance'] = this.portfolio[portfolioIndex].balance; object['value'] = this.portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; object['value'] =0 }
         if (portfolioIndex >= 0) {object['inportfolio'] = this.portfolio[portfolioIndex].inportfolio; } else {object['inportfolio'] = false; }
         object['volume_24h'] = object['24h_volume_usd'];
         object['volume_24h'] = +object['volume_24h'];
@@ -172,15 +172,16 @@ export class DataStorageService {
 
   storePortfolio() {
     // const token = this.authService.getToken();
-   // const UserId = this.authService.getUserId();
+    // const UserId = this.authService.getUserId();
     // return this.http.put('https://whalesapp-dev.firebaseio.com/UserPortfolios/' + UserId + '.json?auth=' + token , this.coinMarketService
 
     const updates2 = this.coinMarketService.getPortfolio();
-    console.log(updates2);
-    //code for testing leaner portoflio database child
+    // console.log(updates2);
+
+    const newPortfolio = {};
     this.portfolioArray = [];
-     for (let object of updates2) {
-       if( object['inportfolio'] == true) {
+    for (let object of updates2) {
+      if( object['inportfolio'] == true) {
         this.portfolioArray.push({
           symbol: object['symbol'],
           id: object['id'],
@@ -188,16 +189,35 @@ export class DataStorageService {
           balance: object['balance'],
           name: object['name'],
           value: object['value']
-          // rank: object['rank'],
-          // price_usd: object['price_usd'],
-          // price_btc: object['price_btc']
         });}
-        }
+    }
+    console.log(this.userId);
     console.log(this.portfolioArray);
-     this.portfolioRef = this.db.object(`UserPortfolios/${this.userId}`);
-      this.portfolioRef.set(this.portfolioArray);
-    //  return this.http.put('https://whalesapp-test-mr2.firebaseio.com/UserPortfolios/' + UserId + '.json' , this.coinMarketService
-    //    .getPortfolio());
+    newPortfolio[this.userId] = this.portfolioArray;
+    console.log("saving portfolio");
+    this.portfolioRef = this.db.object('UserPortfolios/');
+    this.portfolioRef.update(newPortfolio).then(console.log("worked"));
+
+// old code
+
+    // this.portfolioArray = [];
+    //  for (let object of updates2) {
+    //    if( object['inportfolio'] == true) {
+    //     this.portfolioArray.push({
+    //       symbol: object['symbol'],
+    //       id: object['id'],
+    //       inportfolio: true,
+    //       balance: object['balance'],
+    //       name: object['name'],
+    //       value: object['value']
+    //     });}
+    //     }
+    //     console.log(this.userId);
+    //     console.log(this.portfolioArray);
+    //     console.log("saving portfolio");
+    //  this.portfolioRef = this.db.object(`UserPortfolios/${this.userId}`);
+    //  this.portfolioRef.set(this.portfolioArray).then(console.log("worked"));
+
   }
 
   storeTransactions() {

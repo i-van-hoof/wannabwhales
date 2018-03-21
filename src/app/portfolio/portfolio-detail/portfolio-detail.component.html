@@ -5,7 +5,7 @@
     </button>
     <div class="btn-group"
          appDropdown>
-      <button type="button" class="btn btn-primary dropdown-toggle">
+      <button type="button" disabled class="btn btn-primary dropdown-toggle">
         Manage Item <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
@@ -84,7 +84,7 @@
 <div class="row">
   <div class="col-xs-12" style="padding-right: 0 !important;">
     <h3>{{portfolioItem.name}} Chart</h3>
-    <button (click)="updateSeriesData()">Click for update</button>
+    <!--<button (click)="updateSeriesData()">Click for update</button>-->
      <chart style="display:block; padding-right: 0; width: 100% !important;" type="StockChart" [options]="options" (load)="saveInstance($event.context)"></chart>
 
   </div>

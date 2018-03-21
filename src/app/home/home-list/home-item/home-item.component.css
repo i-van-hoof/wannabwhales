@@ -1,11 +1,17 @@
+
+.highlight {
+  background-color: yellow;
+}
+
 .negative {
   color: red;
 }
 
 .positive {
-  color: black;
+  color: mediumseagreen;
 }
 
-.highlight {
-  background-color: yellow;
+.rightAlign {
+  text-align: right;
 }
+

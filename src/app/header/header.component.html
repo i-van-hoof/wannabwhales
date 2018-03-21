@@ -16,27 +16,31 @@
       <ul class="nav navbar-nav navbar-right">
 
         <ng-template [ngIf]="!authService.isAuthenticated()">
-          <li><a routerLink="/signup">Register</a></li>
-          <li><a routerLink="/signin">Login</a></li>
+          <li><a routerLink="/signup"><b>Register</b></a></li>
+          <li><a routerLink="/signin"><b>Login</b></a></li>
         </ng-template>
-        <li> <a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()">Log out</a></li>
+        <li> <a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()"><b>Log out</b></a></li>
+
          <li class="dropdown" appDropdown *ngIf="authService.isAuthenticated()">
-
-
-        <!--<li class="dropdown" appDropdown>-->
-          <a style="cursor: pointer" class="dropdown-toggle" role="button">Manage <span class="caret"></span></a>
+          <a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Manage</b> <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <!--<li><a style="cursor: pointer" (click)="onSaveData()">Save Data</a></li>-->
-
             <li><a style="cursor: pointer" (click)="onSavePortfolio()">Save Portfolio</a></li>
             <li><a style="cursor: pointer" (click)="onSaveTransactions()">Save Transactions</a></li>
-           <!--<li><a style="cursor: pointer" (click)="onGet()">Fetch Market Data</a></li>-->
             <li><a style="cursor: pointer" (click)="onGetPortfolio()">Fetch Portfolio</a></li>
             <li><a style="cursor: pointer" (click)="onGetTransactions()">Fetch Transactions</a></li>
           </ul>
         </li>
+
+        <li class="dropdown" appDropdown *ngIf="true">
+          <a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Info</b> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+           <b>*WannaBeWhales App </b><br>-Alpha release!<br>-A Properview project<br>
+            <li><a href="http://www.properview.nl" class="dropdown-toggle">www.properview.nl</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
+
   </div>
 </nav>
 

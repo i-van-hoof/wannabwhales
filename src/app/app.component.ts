@@ -62,13 +62,13 @@ export class AppComponent implements OnInit {
       // firebase.initializeApp(config);
 
      // Dit is de initialize van de testomgeving
-      var config = {
-        apiKey: "AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys",
-        authDomain: "whalesapp-test-mr2.firebaseapp.com",
-        databaseURL: "https://whalesapp-test-mr2.firebaseio.com",
-        projectId: "whalesapp-test-mr2",
-        storageBucket: "whalesapp-test-mr2.appspot.com",
-        messagingSenderId: "875549240116"
+      const config = {
+        apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
+        authDomain: 'whalesapp-test-mr2.firebaseapp.com',
+        databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
+        projectId: 'whalesapp-test-mr2',
+        storageBucket: 'whalesapp-test-mr2.appspot.com',
+        messagingSenderId: '875549240116'
       };
       firebase.initializeApp(config);
 

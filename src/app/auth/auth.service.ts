@@ -13,19 +13,30 @@ import {DataStorageService} from '../shared/data-storage.service';
 export class AuthService {
   token: string;
   user: string;
- // userId: string;
+
+  //test code
+  userId: string;
+
   editMode = false;
   userEmail: string;
   authState: any = null;
 
 
   constructor(private http: Http, private af: AngularFireDatabase, private afAuth: AngularFireAuth ,private router: Router) {
-    this.afAuth.authState.subscribe((auth) => {
-      this.authState = auth;
+   // this.afAuth.authState.subscribe((auth) => {
+   //   this.authState = auth;
       // this.userId = auth.uid;
-      console.log(auth);
+
+//test code
+      this.afAuth.authState.subscribe(user => {
+        if(user) this.userId = user.uid;
+        this.authState = user;
+      })
+
      // this.user = this.authState.uid;
-    });}
+    }
+    ;
+//}
 
   signupUser(name: string, email: string, password: string) {
     this.afAuth
@@ -33,7 +44,7 @@ export class AuthService {
       .createUserWithEmailAndPassword(email, password)
       .then(value => {
         console.log('Success!', value.uid);
-       // this.writeUserData(name, value.uid, email);
+        this.writeUserData(name, value.uid, email);
         this.router.navigate(['/dashboard']);
       })
       .catch(err => {
@@ -56,6 +67,7 @@ export class AuthService {
       })
       .catch(err => {
         console.log('Something went wrong:',err.message);
+        alert('something went wrong, please use other credentials');
       });
   }
 
@@ -67,12 +79,16 @@ export class AuthService {
   }
 
 
-  // writeUserData(name, userId, email) {
-  //   this.af.database.ref('users/'+ userId ).set({
-  //     name: name,
-  //     email: email,
-  //  }).then(console.log("working")).catch(err=> {console.log(err)});
-  // }
+  writeUserData(name, userId, email) {
+
+    this.af.object('users/' + userId).set({
+      name: name,
+      email: email
+    });
+    this.af.object('UserPortfolios/' + userId).set(null)
+
+      //.then(console.log("working")).catch(err=> {console.log(err)});
+  }
 
 // get ID token of logged in user from Firebase Real Time Database
   getToken() {

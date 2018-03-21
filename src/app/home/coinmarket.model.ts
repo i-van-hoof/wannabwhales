@@ -41,7 +41,7 @@ export class CoinCryptocoin {
 
   )
   // transactions: Transaction[]
-  {
+    {
     this.id = id;
     this.name = name;
     this.symbol = symbol;
@@ -59,9 +59,7 @@ export class CoinCryptocoin {
     this.balance = balance;
     this.value = value;
     this.inportfolio = inportfolio;
-
-
     // this.transactions = transactions;
-  }
+    }
 
 }

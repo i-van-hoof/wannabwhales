@@ -36,7 +36,7 @@ import { AuthService} from './auth/auth.service';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment} from '../environments/environment';
+// import { environment} from '../environments/environment';
 
 // de imports voor Highcharts
 
@@ -65,6 +65,16 @@ export function highchartsFactory() {
   return hc;
 }
 
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
+    authDomain: 'whalesapp-test-mr2.firebaseapp.com',
+    databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
+    projectId: 'whalesapp-test-mr2',
+    storageBucket: 'whalesapp-test-mr2.appspot.com',
+  }
+};
 
 
 @NgModule({

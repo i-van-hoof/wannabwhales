@@ -401,8 +401,8 @@ export class ItemsListComponent implements OnInit {
 
   getPiechartData() {
     let total = 0;
-    let maxChange = 0;
-    let maxChangeSymbol;
+    this.maxChange = 0;
+    // const maxChangeSymbol;
     for (let i = 0; i < this.coinmarket.length; i++) {
       if (this.coinmarket[i].value) {
         if ( this.coinmarket[i].percent_change_24h > this.maxChange) {

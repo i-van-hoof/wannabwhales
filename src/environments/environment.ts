@@ -5,16 +5,16 @@
 
 
 // // // The Firebase test environment:
-export const environment = {
-  production: false,
-  firebase: {
-    apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
-    authDomain: 'whalesapp-test-mr2.firebaseapp.com',
-    databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
-    projectId: 'whalesapp-test-mr2',
-    storageBucket: 'whalesapp-test-mr2.appspot.com',
-  }
-};
+// export const environment = {
+//   production: false,
+//   firebase: {
+//     apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
+//     authDomain: 'whalesapp-test-mr2.firebaseapp.com',
+//     databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
+//     projectId: 'whalesapp-test-mr2',
+//     storageBucket: 'whalesapp-test-mr2.appspot.com',
+//   }
+// };
 
 // // The Firebase production environment:
 // export const environment = {

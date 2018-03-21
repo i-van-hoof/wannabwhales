@@ -18,6 +18,8 @@ export class PortfolioEditComponent implements OnInit {
   symbol: string;
   editMode;
   portfolioForm: FormGroup;
+  formGroup: FormGroup;
+  formArray: FormArray;
 
   constructor(private route: ActivatedRoute,
               private coinmarketService: CoinmarketService,
@@ -49,23 +51,24 @@ export class PortfolioEditComponent implements OnInit {
     } else {
       this.coinmarketService.addPortfolio(this.portfolioForm.value);
     }
+    this.onCancel();
     this.dataStorageService.storePortfolio();
       // .subscribe(
     //   (response: Response) => { console.log(response);}
     // );
-    this.onCancel();
+
   }
 
   // onAddTransaction() {
-   // (<FormArray>this.portfolioForm.get('transactions')).push(
-    //  new FormGroup({
-     //   'name': new FormControl(null, Validators.required),
-      //  'amount': new FormControl(null, [
-        //  Validators.required,
-        //  Validators.pattern(/^[1-9]+[0-9]*$/)
-        // ])
-      // })
-    // );
+  //  (<FormArray>this.portfolioForm.get('transactions')).push(
+  //    new FormGroup({
+  //      'name': new FormControl(null, Validators.required),
+  //      'amount': new FormControl(null, [
+  //        Validators.required,
+  //        Validators.pattern(/^[1-9]+[0-9]*$/)
+  //       ])
+  //     })
+  //   );
   // }
 
   // onDeleteTransaction(index: number) {
@@ -80,6 +83,8 @@ export class PortfolioEditComponent implements OnInit {
 
 
 
+
+
   private initForm() {
     let portfolioSymbol = '';
     let portfolioId = '';
@@ -87,7 +92,7 @@ export class PortfolioEditComponent implements OnInit {
     let portfolioBalance;
     let portfolioValue;
     let portfolioInportfolio: boolean;
-    let portfolioTransactions = new FormArray([]);
+    this.formArray = new FormArray([]);
 
     if (this.editMode) {
       const portfolio = this.coinmarketService.getPortfolioItem(this.symbol);
@@ -100,7 +105,7 @@ export class PortfolioEditComponent implements OnInit {
 
       if (portfolio['transactions']) {
         for (let transaction of portfolio.transactions) {
-          portfolioTransactions.push(
+          this.formArray.push(
             new FormGroup({
 
               'symbol': new FormControl(transaction.symbol, Validators.required),
@@ -121,6 +126,7 @@ export class PortfolioEditComponent implements OnInit {
       'balance': new FormControl(portfolioBalance, Validators.required),
       'value': new FormControl(portfolioValue, Validators.required),
       'inportfolio': new FormControl(portfolioInportfolio, Validators.required),
+      'transactions': this.formArray
     });
   }}
 

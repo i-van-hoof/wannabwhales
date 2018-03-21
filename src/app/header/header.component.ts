@@ -15,7 +15,7 @@ import {CoinmarketService} from '../home/coinmarket.service';
 export class HeaderComponent {
   constructor(private dataStorageService: DataStorageService,
               private coinmarketService: CoinmarketService,
-              private authService: AuthService) {}
+              public authService: AuthService) {}
 
               interval: number;
 
