@@ -68,7 +68,6 @@ export class AppComponent implements OnInit {
         databaseURL: 'https://whalesapp-test-mr2.firebaseio.com',
         projectId: 'whalesapp-test-mr2',
         storageBucket: 'whalesapp-test-mr2.appspot.com',
-        messagingSenderId: '875549240116'
       };
       firebase.initializeApp(config);
 

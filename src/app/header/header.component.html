@@ -1,46 +1,80 @@
+
 <nav class="navbar navbar-default" style="background-color:#d9edf7">
   <div class="container-fluid">
     <div class="navbar-header">
-      <img width="50" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">
       <a routerLink="/" class="navbar-brand">WannaBeWhales</a>
+      <img width="50" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">
+      <button type="button" class="navbar-toggle navbar-toggler-right" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
     </div>
-<!--<Button (click)=" retrieveUserPortfolio()">TEST</Button>-->
-    <div class="collapse navbar-collapse">
+    <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a routerLink="/home">Market</a></li>
+        <li routerLinkActive="active"><a routerLink="/home">Home</a></li>
         <li routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
         <li routerLinkActive="active"><a routerLink="/portfolio">Portfolio</a></li>
         <li routerLinkActive="active"><a routerLink="/transactions">Transactions</a></li>
       </ul>
-
       <ul class="nav navbar-nav navbar-right">
-
-        <ng-template [ngIf]="!authService.isAuthenticated()">
-          <li><a routerLink="/signup"><b>Register</b></a></li>
-          <li><a routerLink="/signin"><b>Login</b></a></li>
-        </ng-template>
-        <li> <a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()"><b>Log out</b></a></li>
-
-         <li class="dropdown" appDropdown *ngIf="authService.isAuthenticated()">
-          <a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Manage</b> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a style="cursor: pointer" (click)="onSavePortfolio()">Save Portfolio</a></li>
-            <li><a style="cursor: pointer" (click)="onSaveTransactions()">Save Transactions</a></li>
-            <li><a style="cursor: pointer" (click)="onGetPortfolio()">Fetch Portfolio</a></li>
-            <li><a style="cursor: pointer" (click)="onGetTransactions()">Fetch Transactions</a></li>
-          </ul>
-        </li>
-
-        <li class="dropdown" appDropdown *ngIf="true">
-          <a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Info</b> <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-           <b>*WannaBeWhales App </b><br>-Alpha release!<br>-A Properview project<br>
-            <li><a href="http://www.properview.nl" class="dropdown-toggle">www.properview.nl</a></li>
-          </ul>
-        </li>
+        <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Register</a></li>
+        <li><a routerLink="/signin"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()"><b>Log out</b></a></li>
       </ul>
     </div>
-
   </div>
 </nav>
+
+
+
+
+<!--<nav class="navbar navbar-default" style="background-color:#d9edf7">-->
+  <!--<div class="container-fluid">-->
+    <!--<div class="navbar-header">-->
+      <!--<img width="50" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">-->
+      <!--<a routerLink="/" class="navbar-brand">WannaBeWhales</a>-->
+    <!--</div>-->
+    <!---->
+    <!--<div class="collapse navbar-collapse">-->
+      <!--<ul class="nav navbar-nav">-->
+        <!--<li routerLinkActive="active"><a routerLink="/home">Market</a></li>-->
+        <!--<li routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>-->
+        <!--<li routerLinkActive="active"><a routerLink="/portfolio">Portfolio</a></li>-->
+        <!--<li routerLinkActive="active"><a routerLink="/transactions">Transactions</a></li>-->
+      <!--</ul>-->
+
+      <!--<ul class="nav navbar-nav navbar-right">-->
+
+        <!--<ng-template [ngIf]="!authService.isAuthenticated()">-->
+          <!--<li><a routerLink="/signup"><b>Register</b></a></li>-->
+          <!--<li><a routerLink="/signin"><b>Login</b></a></li>-->
+        <!--</ng-template>-->
+<!--<li> <a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()"><b>Log out</b></a></li>-->
+
+<!--<li class="dropdown" appDropdown *ngIf="authService.isAuthenticated()">-->
+<!--<a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Manage</b> <span class="caret"></span></a>-->
+<!--<ul class="dropdown-menu">-->
+<!--<li><a style="cursor: pointer" (click)="onSavePortfolio()">Save Portfolio</a></li>-->
+<!--<li><a style="cursor: pointer" (click)="onSaveTransactions()">Save Transactions</a></li>-->
+<!--<li><a style="cursor: pointer" (click)="onGetPortfolio()">Fetch Portfolio</a></li>-->
+<!--<li><a style="cursor: pointer" (click)="onGetTransactions()">Fetch Transactions</a></li>-->
+<!--</ul>-->
+<!--</li>-->
+
+        <!--<li class="dropdown" appDropdown *ngIf="true">-->
+          <!--<a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Info</b> <span class="caret"></span></a>-->
+          <!--<ul class="dropdown-menu">-->
+           <!--<b>*WannaBeWhales App </b><br>-Alpha release!<br>-A Properview project<br>-->
+            <!--<li><a href="http://www.properview.nl" class="dropdown-toggle">www.properview.nl</a></li>-->
+          <!--</ul>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
+
+  <!--</div>-->
+<!--</nav>-->
+
 

@@ -1,0 +1,7 @@
+.showHide { display:none; }
+
+/* Desktop*/
+@media screen and (min-width: 768px) {
+  .showHide  { display: block; }
+  #leftside > button { display: none; }
+}

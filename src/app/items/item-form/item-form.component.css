@@ -10,4 +10,20 @@
   text-align: right;
 }
 
+/* Mobile*/
+.showHide { display:none; }
+.mobile-backgroundColor {background-color: #d9edf7}
+
+@media screen and (max-width: 768px) {
+  .portfolioList  { font-size: 12px; padding-left: 2px }
+
+}
+
+/* Desktop*/
+@media screen and (min-width: 768px) {
+  .showHide  { display: block; }
+  #leftside > button { display: none; }
+  .mobile-backgroundColor {background-color: white}
+}
+
 
