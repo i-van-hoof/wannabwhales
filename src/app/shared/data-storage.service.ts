@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/Rx';
-
 import {CoinmarketService} from '../home/coinmarket.service';
 import {CoinCryptocoin} from '../home/coinmarket.model';
 import {PortfolioModel} from '../portfolio/portfolio.model';
@@ -12,39 +11,30 @@ import {Observable} from 'rxjs/Observable';
 import * as firebase from 'firebase';
 import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
 import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
-// import Database = firebase.database.Database;
 import 'rxjs/add/operator/map';
 import {PortfolioEditComponent} from '../portfolio/portfolio-edit/portfolio-edit.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {Item} from '../items/shared/item';
 
-
 @Injectable()
 export class DataStorageService {
- filteredItems = [];
-
- userLogedIn: any;
- filteredSummaryItems = [];
- filteredtestArray = [];
- filteredPortfolioItems = [];
- tickerValue = {};
- summaryTickerValue = {};
- portfolioTickerValue = {};
-
+  filteredItems = [];
+  userLogedIn: any;
+  filteredSummaryItems = [];
+  filteredtestArray = [];
+  filteredPortfolioItems = [];
+  tickerValue = {};
+  summaryTickerValue = {};
+  portfolioTickerValue = {};
   userId: string;
-
   user: Observable<firebase.User>;
-
   itemRef: AngularFireObject<any>;
   portfolioRef: AngularFireObject<any>;
   item: Observable<any>;
-
-  //test code
   items: FirebaseListObservable<Item[]> = null;
   testArray = [];
   portfolio = [];
   portfolioArray = [];
-
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
