@@ -7,10 +7,12 @@ import { TransactionService } from '../wish-list/transaction.service';
 import { Subject } from 'rxjs/Subject';
 import { CoinCryptocoin } from './coinmarket.model';
 import { PortfolioModel } from '../portfolio/portfolio.model';
+import { marketDataModel} from './market-data.model';
 
 @Injectable()
 export class CoinmarketService {
   coinmarketChanged = new Subject<CoinCryptocoin[]>();
+  marketDataChanged = new Subject<marketDataModel[]>();
   portfolioChanged = new Subject<PortfolioModel[]>();
   portfoliosymbolsChanged = new Subject();
   tickersChanged = new Subject();
@@ -18,10 +20,10 @@ export class CoinmarketService {
   summaryTickersChanged = new Subject();
 
   private coinmarket: CoinCryptocoin[] = [];
+  private marketData: marketDataModel[] = [];
   private tickers = [];
   private portfolioTickers = [];
   private summaryTickers = [];
-  private filteredItems = [];
   private portfolio: PortfolioModel[] = [];
   private portfoliosymbols = [];
   // private transactions: Transaction[] = [];
@@ -44,7 +46,6 @@ export class CoinmarketService {
     return this.summaryTickers.slice();
   }
 
-
   getPortfolio() {
     return this.portfolio.slice();
   }
@@ -52,6 +53,11 @@ export class CoinmarketService {
   setCoinmarket(coinmarket: CoinCryptocoin[]) {
     this.coinmarket = coinmarket;
     this.coinmarketChanged.next(this.coinmarket.slice());
+  }
+
+  setMarketData(marketData: marketDataModel[]) {
+    this.marketData = marketData;
+    this.marketDataChanged.next(this.marketData.slice());
   }
 
   setTicker(tickers: any) {

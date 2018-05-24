@@ -34,7 +34,7 @@ import { AuthService} from './auth/auth.service';
 // de imports voor Firebase
 
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import {AngularFireModule} from 'angularfire2';
+import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 // import { environment} from '../environments/environment';
 

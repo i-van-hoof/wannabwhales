@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CoinCryptocoin} from '../../coinmarket.model';
+import { CoinCryptocoin} from '../../coinmarket.model';
 import {Observable} from 'rxjs/Observable';
+import { marketDataModel} from '../../market-data.model';
 
 @Component({
   selector: 'app-home-item',
@@ -9,6 +10,7 @@ import {Observable} from 'rxjs/Observable';
 })
 export class HomeItemComponent implements OnInit, OnChanges {
   @Input() coinmarket: CoinCryptocoin;
+  // @Input() marketData: marketDataModel;
   @Input() index: number;
   idArray = {};
   array = [];

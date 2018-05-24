@@ -51,6 +51,82 @@ export class DataStorageService {
                       if(user) this.userId = user.uid
                     })
                   }
+  getMarketData() {
+    return this.http.get('https://api.coinmarketcap.com/v1/ticker/?limit=100').map((res: Response) => res.json()).subscribe( data => {
+      for (let object of data) {
+        object['rank'] = +object['rank'];
+        object['price_usd'] = +object['price_usd'];
+        object['price_btc'] = +object['price_btc'];
+        object['volume_24h'] = object['24h_volume_usd'];
+        object['volume_24h'] = +object['volume_24h'];
+        object['market_cap_usd'] = +object['market_cap_usd'];
+        object['available_supply'] = +object['available_supply'];
+        object['total_supply'] = +object['total_supply'];
+        object['max_supply'] = +object['max_supply'];
+        object['percent_change_1h'] = +object['percent_change_1h'];
+        object['percent_change_24h'] = +object['percent_change_24h'];
+        object['percent_change_7d'] = +object['percent_change_7d'];
+        object['last_updated'] = +object['last_updated'];
+        delete object['24h_volume_usd'];
+      }
+      if (this.authService.editMode === false) {
+        console.log(data);
+        this.coinMarketService.setMarketData(data);
+      } else { console.log('is in Edit Mode')}
+    });
+
+  }
+
+  getUserPortfolioNEW() {
+    if (!this.userId) return;
+    console.log(this.userId);
+    let total = 0;
+    this.portfolio = [];
+    this.itemRef = this.db.object(`UserPortfolios/${this.userId}`);
+    this.itemRef.snapshotChanges().subscribe(action => {
+      if (action.payload.val()) {this.portfolio = action.payload.val()} else {this.portfolio = []}
+      for (let object of this.portfolio) {
+        return this.http.get('https://api.coinmarketcap.com/v1/ticker/' + object['id']).map((res: Response) => res.json()).subscribe( data => {
+          console.log(data)
+        })}})}
+
+
+
+
+  //         const portfolioIndex = this.portfolio.findIndex(p => p.symbol === object.symbol);
+  //         object['price_usd'] = +object['price_usd'];
+  //         if (portfolioIndex >= 0) {object['balance'] = this.portfolio[portfolioIndex].balance; object['value'] = this.portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; object['value'] =0 }
+  //         if (portfolioIndex >= 0) {object['inportfolio'] = this.portfolio[portfolioIndex].inportfolio; } else {object['inportfolio'] = false; }
+  //         object['volume_24h'] = object['24h_volume_usd'];
+  //         object['volume_24h'] = +object['volume_24h'];
+  //         object['last_updated'] = +object['last_updated'];
+  //         object['market_cap_usd'] = +object['market_cap_usd'];
+  //         object['price_btc'] = +object['price_btc'];
+  //         object['price_usd'] = +object['price_usd'];
+  //         object['percent_change_1h'] = +object['percent_change_1h'];
+  //         object['percent_change_24h'] = +object['percent_change_24h'];
+  //         object['percent_change_7d'] = +object['percent_change_7d'];
+  //         object['available_supply'] = +object['available_supply'];
+  //         object['total_supply'] = +object['total_supply'];
+  //         object['last_updated'] = +object['last_updated'];
+  //         delete object['24h_volume_usd'];
+  //       }
+  //       // console.log(total);
+  //       data.push({id: 'Portfolio_UsID', name: 'Portfolio1', symbol: 'PORTF', rank: '1000', price_usd: total, price_btc
+  //           : 1, balance: 1
+  //       });
+  //       if (this.authService.editMode === false) {
+  //         console.log(data);
+  //         this.coinMarketService.setCoinmarket(data);
+  //         this.coinMarketService.setPortfolio(data);
+  //       } else { console.log('is in Edit Mode')}
+  //     });
+  //
+  //
+  //   });
+  //
+  // }
+
 
   getUserPortfolio() {
   if (!this.userId) return;

@@ -49,7 +49,7 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
       .subscribe(
         (portfolio: PortfolioModel[]) => {
           this.portfolio = portfolio; } );
-          this.portfolio = this.coinmarketService.getPortfolio();
+    this.portfolio = this.coinmarketService.getPortfolio();
 
    //  code om de coinmarket data op te halen uit de coinmarket service
     this.subscription2 = this.coinmarketService.coinmarketChanged
