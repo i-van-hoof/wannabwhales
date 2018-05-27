@@ -42,9 +42,7 @@ export class HomeListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription2.unsubscribe();
   }
-
-  clickButton() {
-    this.dataService.getMarketData()
-  }
-
+ button() {
+    this.dataService.getUserPortfolioNEW();
+ }
 }

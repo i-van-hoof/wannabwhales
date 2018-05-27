@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import 'rxjs/Rx';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 import {CoinmarketService} from '../home/coinmarket.service';
 import {CoinCryptocoin} from '../home/coinmarket.model';
 import {PortfolioModel} from '../portfolio/portfolio.model';
@@ -29,12 +31,19 @@ export class DataStorageService {
   userId: string;
   user: Observable<firebase.User>;
   itemRef: AngularFireObject<any>;
+  itemRef2: AngularFireObject<any>;
   portfolioRef: AngularFireObject<any>;
   item: Observable<any>;
   items: FirebaseListObservable<Item[]> = null;
   testArray = [];
   portfolio = [];
+  portfolio2 = [];
   portfolioArray = [];
+  coin: string;
+  maxChange = 0;
+  maxChangeSymbol: string;
+  minChange = 0;
+  minChangeSymbol: string;
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
@@ -74,59 +83,50 @@ export class DataStorageService {
         this.coinMarketService.setMarketData(data);
       } else { console.log('is in Edit Mode')}
     });
-
   }
 
   getUserPortfolioNEW() {
     if (!this.userId) return;
     console.log(this.userId);
     let total = 0;
-    this.portfolio = [];
-    this.itemRef = this.db.object(`UserPortfolios/${this.userId}`);
-    this.itemRef.snapshotChanges().subscribe(action => {
-      if (action.payload.val()) {this.portfolio = action.payload.val()} else {this.portfolio = []}
-      for (let object of this.portfolio) {
-        return this.http.get('https://api.coinmarketcap.com/v1/ticker/' + object['id']).map((res: Response) => res.json()).subscribe( data => {
-          console.log(data)
-        })}})}
+    this.maxChange = 0;
+    this.coin = "burst";
+    this.portfolio2 = [];
+    this.itemRef2 = this.db.object(`UserPortfolios/${this.userId}`);
+    // code for getting snapshot data
+    this.itemRef2.snapshotChanges().subscribe(action => {
+      if (action.payload.val()) {this.portfolio2 = action.payload.val()} else {this.portfolio2 = []};
+      console.log(this.portfolio2);
+      for (let coinItem of this.portfolio2) {this.coin = coinItem['id'];console.log(this.coin);
 
-
-
-
-  //         const portfolioIndex = this.portfolio.findIndex(p => p.symbol === object.symbol);
-  //         object['price_usd'] = +object['price_usd'];
-  //         if (portfolioIndex >= 0) {object['balance'] = this.portfolio[portfolioIndex].balance; object['value'] = this.portfolio[portfolioIndex].balance * object['price_usd'] ; total += object['value'];} else {object['balance'] = 0; object['value'] =0 }
-  //         if (portfolioIndex >= 0) {object['inportfolio'] = this.portfolio[portfolioIndex].inportfolio; } else {object['inportfolio'] = false; }
-  //         object['volume_24h'] = object['24h_volume_usd'];
-  //         object['volume_24h'] = +object['volume_24h'];
-  //         object['last_updated'] = +object['last_updated'];
-  //         object['market_cap_usd'] = +object['market_cap_usd'];
-  //         object['price_btc'] = +object['price_btc'];
-  //         object['price_usd'] = +object['price_usd'];
-  //         object['percent_change_1h'] = +object['percent_change_1h'];
-  //         object['percent_change_24h'] = +object['percent_change_24h'];
-  //         object['percent_change_7d'] = +object['percent_change_7d'];
-  //         object['available_supply'] = +object['available_supply'];
-  //         object['total_supply'] = +object['total_supply'];
-  //         object['last_updated'] = +object['last_updated'];
-  //         delete object['24h_volume_usd'];
-  //       }
-  //       // console.log(total);
-  //       data.push({id: 'Portfolio_UsID', name: 'Portfolio1', symbol: 'PORTF', rank: '1000', price_usd: total, price_btc
-  //           : 1, balance: 1
-  //       });
-  //       if (this.authService.editMode === false) {
-  //         console.log(data);
-  //         this.coinMarketService.setCoinmarket(data);
-  //         this.coinMarketService.setPortfolio(data);
-  //       } else { console.log('is in Edit Mode')}
-  //     });
-  //
-  //
-  //   });
-  //
-  // }
-
+      this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin).map((res: Response) => res.json()).subscribe(data => {
+        for (let object of data) {
+          coinItem['value'] = coinItem['balance'] * object['price_usd'];
+          coinItem['rank'] = +object['rank'];
+          coinItem['price_usd'] = +object['price_usd'];
+          coinItem['price_btc'] = +object['price_btc'];
+          coinItem['volume_24h'] = +object['24h_volume_usd'];
+          coinItem['market_cap_usd'] = +object['market_cap_usd'];
+          coinItem['available_supply'] = +object['available_supply'];
+          coinItem['total_supply'] = +object['total_supply'];
+          coinItem['max_supply'] = +object['max_supply'];
+          coinItem['percent_change_1h'] = +object['percent_change_1h'];
+          coinItem['percent_change_24h'] = +object['percent_change_24h'];
+          coinItem['percent_change_7d'] = +object['percent_change_7d'];
+          coinItem['last_updated'] = +object['last_updated'];
+          delete object['24h_volume_usd'];
+            if ( coinItem['percent_change_24h'] > this.maxChange) { this.maxChange = coinItem['percent_change_24h'];
+                                                                    this.maxChangeSymbol = coinItem['id'];
+                                                                    console.log('change higher', this.maxChange, this.maxChangeSymbol)}
+                                                                    else {console.log('change lower')}
+          }
+        });
+          console.log(this.portfolio2);
+      }
+          this.portfolio2.push({id_portfolio: 'Portfolio_UsID', user_id: this.userId, name_portfolio: 'Portfolio1', symbol_portfolio: 'PORTF', rank: 1000, price_usd: 1000, price_btc
+          : 1, balance: 1, max_change_coin_24h: this.maxChangeSymbol, max_change_coin_percentage_24h: this.maxChange});
+    })
+  }
 
   getUserPortfolio() {
   if (!this.userId) return;
