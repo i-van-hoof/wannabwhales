@@ -128,7 +128,7 @@ export class DataStorageService {
     })
   }
 
-  // old function for fetching data
+  // this is old function for fetching data
   getUserPortfolio() {
   if (!this.userId) return;
   console.log(this.userId);
