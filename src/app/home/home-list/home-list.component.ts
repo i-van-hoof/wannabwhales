@@ -3,7 +3,12 @@ import { Subscription} from 'rxjs/Subscription';
 // import { ActivatedRoute, Router} from '@angular/router';
 import { CoinCryptocoin} from '../coinmarket.model';
 import { CoinmarketService} from '../coinmarket.service';
+<<<<<<< HEAD
 import {DataStorageService} from "../../shared/data-storage.service";
+=======
+import {marketDataModel} from '../market-data.model';
+import {DataStorageService} from '../../shared/data-storage.service';
+>>>>>>> 901612b1c6110336e6fe49add0d5ad30ed5c69cc
 
 @Component({
   selector: 'app-home-list',
@@ -12,17 +17,33 @@ import {DataStorageService} from "../../shared/data-storage.service";
 })
 export class HomeListComponent implements OnInit, OnDestroy {
   coinmarket: CoinCryptocoin[];
+  marketData: marketDataModel[];
   subscription: Subscription;
+  subscription2: Subscription;
 
+  constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService) {}
+
+<<<<<<< HEAD
   constructor(private coinmarketService: CoinmarketService, private _client: DataStorageService) {}
+=======
+>>>>>>> 901612b1c6110336e6fe49add0d5ad30ed5c69cc
 
 
   ngOnInit() {
-    this.subscription = this.coinmarketService.coinmarketChanged
+
+    this.dataService.getMarketData();
+
+    // this.subscription = this.coinmarketService.coinmarketChanged
+    //   .subscribe(
+    //     (coinmarket: CoinCryptocoin[]) => {
+    //       this.coinmarket = coinmarket; } );
+    //       // this.coinmarket = this.coinmarketService.getMarket();
+
+    this.subscription2 = this.coinmarketService.marketDataChanged
       .subscribe(
-        (coinmarket: CoinCryptocoin[]) => {
-          this.coinmarket = coinmarket; } );
-          this.coinmarket = this.coinmarketService.getMarket();
+        (marketData: marketDataModel[]) => {
+          this.marketData = marketData; } );
+    // this.coinmarket = this.coinmarketService.getMarket();
   }
 
   runTickerCall() {
@@ -31,7 +52,9 @@ export class HomeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
   }
-
+ button() {
+    this.dataService.getUserPortfolioNEW();
+ }
 }
