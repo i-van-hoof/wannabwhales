@@ -12,6 +12,9 @@
     <button type="button" class="btn btn-basic" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
     <hr>
 
+    <button type="button" class="btn btn-basic" (click)="testing()">Testing</button>
+    <hr>
+
     <div> <h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}} </h3></div>
     <app-portfolio-item
       *ngFor="let coinmarketEl of coinmarket; let i = index;"

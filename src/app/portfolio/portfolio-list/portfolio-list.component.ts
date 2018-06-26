@@ -1,15 +1,12 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-
 import { PortfolioModel} from '../portfolio.model';
 import { Subscription} from 'rxjs/Subscription';
 import { CoinmarketService} from '../../home/coinmarket.service';
 import { ActivatedRoute, Router} from '@angular/router';
 // import { SharedService} from '../filter.service';
-
 import 'rxjs/Rx';
 import { CoinCryptocoin} from '../../home/coinmarket.model';
-
-import {DataStorageService} from '../../shared/data-storage.service';
+import { ItemsListComponent} from "../../items/items-list/items-list.component";
 
 
 @Component({
@@ -27,11 +24,9 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   active: Boolean = false;
   show1: Boolean = true;
 
-  constructor(private coinmarketService: CoinmarketService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private dataStorage: DataStorageService,
+  constructor(private coinmarketService: CoinmarketService, private _itemService: ItemsListComponent
               ) {}
+
 
   getTotal() {
     let total = 0;
@@ -43,7 +38,15 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
     return total;
   }
 
+  testing() {
+    const test = this._itemService.coinmarketCap;
+    console.log('testing ' +test);
+  }
+
   ngOnInit() {
+
+
+
 
     this.subscription = this.coinmarketService.portfolioChanged
       .subscribe(

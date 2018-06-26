@@ -2,7 +2,7 @@
 <div class="row">
   <h2 class="showHide"><b>DASHBOARD | user </b> {{userName}}</h2>
   <hr class="showHide" style="border-color: dimgrey">
-  <!--<button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>-->
+  <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>
 </div>
 
 <div class="row">
@@ -10,7 +10,7 @@
     <h3 class="showHide">Portfolio Chart</h3>
 
     <hr class="showHide">
-    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceStock($event.context)"></chart>
+    <chart style="display:block;  width: 100% !important;" type="StockChart" (click)="onClickPortfolioButton($event)" [options]="optionsStockchart" (load)="saveInstanceStock($event.context)"></chart>
 
   </div>
   <div class="showHide col-xs-12 col-md-6">
@@ -71,19 +71,16 @@
     <hr>
   </div>
 
-
-
-
   <hr style="margin-bottom: 10; border: 0">
 
   <div class="col-xs-12 col-md-6">
     <br class="breakRemove">
-    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (load)="saveInstanceSummary($event.context)"></chart>
+    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (click)="onClickSummaryButton($event)" (load)="saveInstanceSummary($event.context)"></chart>
 
   </div>
 
   <div class="showHide col-xs-12 col-md-6">
-    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsColumn" (load)="saveInstanceColumn($event.context)"></chart>
+    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsColumn" (load)="saveInstanceColumn($event.context)" ></chart>
 
   </div>
 </div>

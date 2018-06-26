@@ -58,10 +58,10 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.dataStorageService.getUserPortfolio();
+     this.dataStorageService.getUserPortfolio2();
     this.interval = window.setInterval(() => {
-      this.dataStorageService.getUserPortfolio();
-    }, 10000);
+      this.dataStorageService.getUserPortfolio2();
+    }, 5000);
   }
 
   ngOnDestroy() {

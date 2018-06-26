@@ -51,6 +51,9 @@ export class ItemsListComponent implements OnInit {
   maxChangeSymbol: any;
   minChange= 0;
   minChangeSymbol: any;
+  test: any;
+
+
 
 
 // three lines for TimeObservable
@@ -78,6 +81,8 @@ export class ItemsListComponent implements OnInit {
     // options of the Highstock portfolio value ticker
     this.optionsStockchart = {
       title: {text: ''},
+
+
       rangeSelector: {
 
         buttons: [{
@@ -369,7 +374,8 @@ export class ItemsListComponent implements OnInit {
         name: false,
         data: [0, 0, 0, 0, 0]
       }]
-    };}
+    };};
+
 
   saveInstanceStock(chartInstance): void {
     this.chartStock = chartInstance;}
@@ -386,14 +392,84 @@ export class ItemsListComponent implements OnInit {
     this.chartSummary = chartInstance;
   }
 
+  onClickPortfolioButton(e) {
+    // console.log("clicked chart");
+    // console.log('You clicked '+e.toElement.innerHTML+" button");
+    if(typeof(e.toElement.innerHTML)!== 'undefined') {
+      let c = e.toElement.innerHTML;
+      let btn_index = 0;
+      let range = 700;
+      if(c == "3d"){
+        btn_index = 0;
+        range = 250;
+      } else if(c == "1w"){
+        btn_index = 1;
+        range = 700
+      } else if(c == "1m"){
+        btn_index = 2;
+        range = 2700;
+      } else if(c == "6m"){
+        btn_index = 3;
+        range = 16500;
+      } else if(c == "1y"){
+        btn_index = 4;
+        range = 32000;
+      } else if(c == "All"){
+        btn_index = 5;
+        range = 32000;
+      }
+      // Store btn_index in a cookie here and use it
+      // to initialise rangeSelector -> selected next
+      // time the chart is loaded
+      // console.log(btn_index);
+      // console.log(range);
+      this.dataStorageService.retrievePortfolioTicker(range);
+    }
+  }
+
+  onClickSummaryButton(e) {
+    // console.log("clicked chart");
+    // console.log('You clicked '+e.toElement.innerHTML+" button");
+    if(typeof(e.toElement.innerHTML)!== 'undefined') {
+      let c = e.toElement.innerHTML;
+      let btn_index = 0;
+      let range = 700;
+      if(c == "3d"){
+        btn_index = 0;
+        range = 250;
+      } else if(c == "1w"){
+        btn_index = 1;
+        range = 700
+      } else if(c == "1m"){
+        btn_index = 2;
+        range = 2700;
+      } else if(c == "6m"){
+        btn_index = 3;
+        range = 16500;
+      } else if(c == "1y"){
+        btn_index = 4;
+        range = 32000;
+      } else if(c == "All"){
+        btn_index = 5;
+        range = 32000;
+      }
+      // Store btn_index in a cookie here and use it
+      // to initialise rangeSelector -> selected next
+      // time the chart is loaded
+      // console.log(btn_index);
+      // console.log(range);
+      this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', range);
+    }
+  }
+
  // update Stockchart Highcharts
   updateSeriesData() {
    // console.log('button UpdateSeriesData()');
     this.chartStock['series'][0].setData(this.portfolioTickers);
     this.getPiechartData();
-    console.log(this.sharesArray);
+    // console.log(this.sharesArray);
     this.chartPie['series'][0].setData(this.sharesArray);
-    console.log(this.summaryTickers);
+    // console.log(this.summaryTickers);
     this.chartSummary['series'][0].setData(this.summaryTickers);
     this.chartColumn['series'][0].setData(this.coinsChangeArray);
     this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
@@ -422,7 +498,7 @@ export class ItemsListComponent implements OnInit {
         this.coinsChangeArray.push(this.coinmarket[i].percent_change_24h);
         }
       }
-      console.log(this.coinsSymbolsArray);
+      // console.log(this.coinsSymbolsArray);
     }
 
   getTotal() {
@@ -447,8 +523,8 @@ export class ItemsListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.dataStorageService.retrievePortfolioTicker();
-    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
+    this.test = this.dataStorageService.retrievePortfolioTicker(700);
+    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 700);
 
     this.subscription = this.coinmarketService.portfolioTickersChanged
       .subscribe(
@@ -477,6 +553,23 @@ export class ItemsListComponent implements OnInit {
       let total = 0;
       let maxChange = 0;
       let maxChangeSymbol;
+
+      const coins = this.coinmarket.map(a => a.id);
+      // console.log(coins);
+
+      const coinsChange = this.coinmarket.map(a => a.percent_change_24h);
+      // console.log(coinsChange);
+
+      const xMax = Math.max.apply(undefined, this.coinmarket.map(function(o) { return o.percent_change_24h; }));
+      const maxXObject = this.coinmarket.filter(function(o) { return o.percent_change_24h === xMax; })[0];
+      // console.log('biggest gaining coin');
+      // console.log(maxXObject);
+
+      const xMin = Math.min.apply(undefined, this.coinmarket.map(function(o) { return o.percent_change_24h; }));
+      const minXObject = this.coinmarket.filter(function(o) { return o.percent_change_24h === xMin; })[0];
+           // console.log('biggest losing coin');
+      // console.log(minXObject);
+
       for (let i = 0; i < this.coinmarket.length; i++) {
         if (this.coinmarket[i].value) {
           if ( this.coinmarket[i].percent_change_24h > this.maxChange) {
