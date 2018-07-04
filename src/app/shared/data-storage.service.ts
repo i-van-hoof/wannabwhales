@@ -174,21 +174,21 @@ export class DataStorageService {
       // this.coinMarketService.setPortfolio(portfolio);
     }
 
-
-  getUserPortfolioNEW() {
-    this.af.authState.toPromise().then
-    (user => {if(user) this.userId = user.uid; console.log(this.userId) });
-    if (!this.userId) return;
-    console.log(this.userId);
-    let total = 0;
-    this.portfolio = [];
-    this.itemRef = this.db.object(`UserPortfolios/${this.userId}`);
-    this.itemRef.snapshotChanges().subscribe(action => {
-      if (action.payload.val()) {this.portfolio = action.payload.val()} else {this.portfolio = []}
-      for (let object of this.portfolio) {
-        return this.http.get('https://api.coinmarketcap.com/v1/ticker/' + object['id']).map((res: Response) => res.json()).subscribe( data => {
-          console.log(data)
-        })}})}
+// test welke van de twee functies niet klopt
+  // getUserPortfolioNEW() {
+  //   this.af.authState.toPromise().then
+  //   (user => {if(user) this.userId = user.uid; console.log(this.userId) });
+  //   if (!this.userId) return;
+  //   console.log(this.userId);
+  //   let total = 0;
+  //   this.portfolio = [];
+  //   this.itemRef = this.db.object(`UserPortfolios/${this.userId}`);
+  //   this.itemRef.snapshotChanges().subscribe(action => {
+  //     if (action.payload.val()) {this.portfolio = action.payload.val()} else {this.portfolio = []}
+  //     for (let object of this.portfolio) {
+  //       return this.http.get('https://api.coinmarketcap.com/v1/ticker/' + object['id']).map((res: Response) => res.json()).subscribe( data => {
+  //         console.log(data)
+  //       })}})}
 
 
 
@@ -227,9 +227,9 @@ export class DataStorageService {
   //
   // }
 
-  getUserPortfolio2() {
-    this.af.authState.first().toPromise().then
-    (user => {if(user) console.log(user.uid); this.getUserPortfolio()  });}
+  // getUserPortfolio2() {
+  //   this.af.authState.first().toPromise().then
+  //   (user => {if(user) console.log(user.uid); this.getUserPortfolio()  });}
 
   // getUserPortfolio() {
   // // if (!this.userId) return;

@@ -52,17 +52,10 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-<<<<<<< HEAD
     this.dataStorageService.getUserPortfolioAuth();
 
     this.interval = setInterval(() =>
       this.dataStorageService.getUserPortfolioAuth(), 10000);
-=======
-     this.dataStorageService.getUserPortfolio2();
-    this.interval = window.setInterval(() => {
-      this.dataStorageService.getUserPortfolio2();
-    }, 5000);
->>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
   }
 
   ngOnDestroy() {

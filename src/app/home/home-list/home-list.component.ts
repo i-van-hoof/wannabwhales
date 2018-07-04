@@ -4,6 +4,7 @@ import { Subscription} from 'rxjs/Subscription';
 import { CoinCryptocoin} from '../coinmarket.model';
 import { CoinmarketService} from '../coinmarket.service';
 import { DataStorageService} from "../../shared/data-storage.service";
+import { marketDataModel } from '../market-data.model';
 
 @Component({
   selector: 'app-home-list',

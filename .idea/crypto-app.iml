@@ -9,9 +9,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
-=======
-    <orderEntry type="library" name="tsconfig$roots" level="project" />
->>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
   </component>
 </module>
