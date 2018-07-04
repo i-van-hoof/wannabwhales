@@ -28,12 +28,6 @@ export class HeaderComponent {
       );
   }
 
-
-
-  //test-code for Database read
-  // retrieveUserPortfolio() {
-  //   this.dataStorageService.test()};
-
   onSavePortfolio() {
     this.dataStorageService.storePortfolio()
       // .subscribe(
@@ -58,10 +52,10 @@ export class HeaderComponent {
   }
 
   ngOnInit() {
-    this.dataStorageService.getUserPortfolio();
-    this.interval = window.setInterval(() => {
-      this.dataStorageService.getUserPortfolio();
-    }, 10000);
+    this.dataStorageService.getUserPortfolioAuth();
+
+    this.interval = setInterval(() =>
+      this.dataStorageService.getUserPortfolioAuth(), 10000);
   }
 
   ngOnDestroy() {

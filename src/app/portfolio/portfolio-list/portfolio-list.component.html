@@ -2,28 +2,57 @@
 <div class="row">
   <div class="col-xs-12">
   </div>
-
 </div>
 
 <div class="row">
-
   <div class="col-xs-12">
-
-    <button type="button" class="btn btn-basic" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
-    <hr>
-
-    <div> <h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}} </h3></div>
-    <app-portfolio-item
-      *ngFor="let coinmarketEl of coinmarket; let i = index;"
-      [coinmarketItem]="coinmarketEl"
-      [symbol]="coinmarket[i]['symbol']"
-      [hidden]="coinmarket[i]['inportfolio'] === false && !show1"
-      [inportfolio]="coinmarket[i]['inportfolio']"
-    ></app-portfolio-item>
+    <button type="button" class="btn btn-primary" (click)="show()" [ngClass]="{'btn-success': active}">Filter portfolio</button>
+    <button type="button" class="btn btn-basic" (click)="button('')" [ngClass]="{'btn-success': active}">0-20</button>
+    <button type="button" class="btn btn-basic" (click)="button100('')" [ngClass]="{'btn-success': active}">0-50</button>
+    <button type="button" class="btn btn-basic" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Prev 100</button>
+    <button type="button" class="btn btn-basic" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
 
   </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-xs-8">
+      <form class="form-inline" style="text-align: left">
+        <div class="form-group">
+          <input type="search"
+                 class="form-control"
+                 placeholder="Enter search string"
+                 [formControl]="searchField"
+                 #search>
+        </div>
+        <button class="btn btn-primary" (click)="buttonCoin(search.value)">Search</button>
+      </form>
+    </div>
+      <div class="col-xs-3">
+        <!--<p style="margin-top: 10%;" *ngIf="loading">Loading</p>-->
+        <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+      </div>
 
 </div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+  <div><h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}}</h3>
+  </div></div>
+</div>
+
+    <app-portfolio-item
+      *ngFor="let coinmarketEl of marketData; let i = index;"
+      [coinmarketItem]="coinmarketEl"
+      [symbol]="marketData[i]['symbol']"
+      [hidden]="marketData[i]['inportfolio'] === false && !show1"
+      [inportfolio]="marketData[i]['inportfolio']"
+    ></app-portfolio-item>
+
+
+
+
 
 
 

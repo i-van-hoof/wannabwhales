@@ -102,6 +102,9 @@ function generateTickers() {
     for (let object of tickers) {
       object['volume_24h'] = +object['24h_volume_usd'];
       delete object['24h_volume_usd'];
+      // new code for replacing special characters
+      object['symbol'] = object['symbol'].replace(/[^a-zA-Z ]/g, '');
+
       object['market_cap_usd'] = +object['market_cap_usd'];
       object['price_btc'] = +object['price_btc'];
       object['price_usd'] = +object['price_usd'];

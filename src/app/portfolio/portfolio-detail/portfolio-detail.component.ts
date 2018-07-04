@@ -5,6 +5,8 @@ import {ActivatedRoute, NavigationEnd, NavigationStart, Params, Router} from '@a
 import {CoinCryptocoin} from '../../home/coinmarket.model';
 import {DataStorageService} from '../../shared/data-storage.service';
 import {Subscription} from 'rxjs/Subscription';
+import {portfolioDataModel} from '../../home/portfolio-data.model';
+import {PortfolioListComponent} from '../portfolio-list/portfolio-list.component';
 
 @Component({
   selector: 'app-portfolio-detail',
@@ -14,18 +16,21 @@ import {Subscription} from 'rxjs/Subscription';
 export class PortfolioDetailComponent implements OnInit {
    portfolioItem: PortfolioModel;
    coinmarketItem: CoinCryptocoin;
+   portfolioDataItem: portfolioDataModel;
    symbol: string;
    routeSymbol: string;
    options: Object;
    chart: Object;
    tickers: any;
-   nIntervId: any;
+   // nIntervId: any;
    subscription: Subscription;
+   filteredItems: any;
 
    constructor(private coinMarketservice: CoinmarketService,
                private dataStorageService: DataStorageService,
                private route: ActivatedRoute,
-               private router: Router) {
+               private router: Router,
+               private _list: PortfolioListComponent) {
 
      this.options = {
        title: {text: ''},
@@ -63,67 +68,73 @@ export class PortfolioDetailComponent implements OnInit {
        },
      };
 
-     setTimeout(() => {
-       // this.chart['series'][0].setData([[1508768560076, 6005.46],[1508768560085, 6505.46],
-       //  [1508768627592, 7200.46]]);
-        this.chart['series'][0].setData(this.tickers);
-       // console.log(this.chart['series'][0].data);
-     }, 100);
+     // setTimeout(() => {
+     //   // this.chart['series'][0].setData([[1508768560076, 6005.46],[1508768560085, 6505.46],[1508768627592, 7200.46]]);
+     //    this.chart['series'][0].setData(this.tickers);
+     //   // console.log(this.chart['series'][0].data);
+     // }, 1000);
+     //
+     // router.events.subscribe((val) => {
+     //   if (val instanceof NavigationEnd) {console.log('true');}
+     //   });
+     //
+     //  setInterval(() =>
+     //    this.updateSeriesData(this.tickers), 3000);
 
+      }
 
-     router.events.subscribe((val) => {
-      // console.log('router events navigationEnd');
-       if (val instanceof NavigationEnd) {console.log('true');}
-     });
+    saveInstance(chartInstance): void {
+      this.chart = chartInstance;
+    //  console.log(this.chart['series']);
+    }
 
-     setInterval(() => this.updateSeriesData(this.tickers), 1000);
-   }
-
-
-  saveInstance(chartInstance): void {
-    this.chart = chartInstance;
-  //  console.log(this.chart['series']);
-  }
-
-  updateSeriesData(data: any) {
-   // console.log('UpdateSeriesData()');
-    // this.chart['series'][0].setData([[1508768560076, 505.46],[1508768560085, 6505.46],
-    //   [1508768627592, 100.46]]);
-     this.chart['series'][0].setData(data);
-  }
+    updateSeriesData(data: any) {
+      // this.chart['series'][0].setData([[1508768560076, 505.46],[1508768560085, 6505.46],[1508768627592, 100.46]]);
+       this.chart['series'][0].setData(data);
+    }
 
 // de router params functie geeft de symbol van de coin in de array via het Symbol, bijv XRP.
   ngOnInit() {
 
-    this.dataStorageService.retrieveTicker(this.symbol);
 
-    this.coinMarketservice.getTickers();
 
     this.subscription = this.coinMarketservice.tickersChanged
       .subscribe(
         (tickers: any) => {
-          this.tickers = tickers; } );
-
-    this.tickers = this.coinMarketservice.getTickers();
-
+            this.filteredItems = [];
+            tickers.map(tickerData => {
+            this.filteredItems.push([tickerData['time'], tickerData['price_usd']])
+            });
+            console.log(this.filteredItems);
+            this.chart['series'][0].setData(this.filteredItems)
+        });
 
     this.route.params
       .subscribe(
         (params: Params) => {
           this.symbol = params['symbol'];
-          this.portfolioItem = this.coinMarketservice.getPortfolioItem(this.symbol);
-          this.coinmarketItem = this.coinMarketservice.getCoinmarketItem(this.symbol);
-          this.tickers = this.dataStorageService.retrieveTicker(this.symbol);
-          console.log('dit is this.route.params.this.tickers');
-         // console.log(this.tickers);
+          console.log(this.symbol);
+          // this.dataStorageService.getUserPortfolioAuth();
+
+          // this.portfolioDataItem = this.coinMarketservice.getPortfolioDataItem(this.symbol);
+          this.portfolioDataItem = this.coinMarketservice.getPortfolioItem(this.symbol);
+          // this.dataStorageService.getUserPortfolioAuth();
+          this.dataStorageService.retrieveTicker(this.symbol).subscribe(items => {
+            this.filteredItems = [];
+            items.map(tickerData => {
+              this.filteredItems.push([tickerData['time'], tickerData['price_usd']])
+            });
+            // console.log(this.filteredItems);
+            this.chart['series'][0].setData(this.filteredItems)
+          });
           // this.updateSeriesData();
           // this.chart['series'][0].setData(this.tickers);
-
-          // console.log('dit is this.route.params[symbol]');
-          // console.log(this.symbol);
-          // console.log('dit is this.portfolioItem');
-          // console.log(this.portfolioItem);
-          // console.log(this.coinmarketItem);
+          // this.filteredItems = [];
+          // data.map( tickerData => {
+          //   this.tickerValue = tickerData.payload.toJSON();
+          //   // console.log( this.tickerValue['time'], this.tickerValue['price_usd'] );
+          //   this.filteredItems.push([this.tickerValue['time'], this.tickerValue['price_usd']]);
+          console.log(this.portfolioDataItem);
         }
       );
   }
@@ -131,9 +142,8 @@ export class PortfolioDetailComponent implements OnInit {
 
 
   onEditPortfolioItem() {
-    this.routeSymbol = this.coinmarketItem['symbol'];
+    this.routeSymbol = this.portfolioDataItem['symbol'];
     // console.log(this.routeSymbol);
     this.router.navigate(['../', this.routeSymbol, 'edit'], {relativeTo: this.route});
-
   }
 }

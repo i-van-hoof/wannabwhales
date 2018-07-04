@@ -6,9 +6,43 @@
       <h2 style="text-align:center">Cryptocurrency Market Info</h2>
     </div>
     <br>
+  <div class="col-xs-12">
 
-  <button type="button" class="btn btn-basic" (click)="button()" [ngClass]="{'btn-success': active}">Portfolio</button>
-  <hr>
+    <div class="col-xs-6">
+      <button type="button" class="btn btn-info" (click)="button('')" [ngClass]="{'btn-success': active}">Top 100</button>
+      <button type="button" class="btn btn-info" (click)="button100('', 100, 100)" [ngClass]="{'btn-success': active}">100-200</button>
+      <button type="button" class="btn btn-info" (click)="button200('')" [ngClass]="{'btn-success': active}">200-300</button>
+      <button type="button" class="btn btn-basic" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Previous 100</button>
+      <button type="button" class="btn btn-basic" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
+    </div>
+
+
+
+    <div class="col-xs-2">
+      <!--<p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning-->
+      <button *ngIf="loading" class="btn btn-info" style=" background-color: #f7f3de; border-color: white; color: grey" ><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+    </div>
+
+    <div class="col-xs-4">
+
+      <form class="form-inline" style="text-align: right">
+        <div class="form-group">
+          <input type="search"
+                 class="form-control"
+                 placeholder="Enter search string"
+                 [formControl]="searchField"
+                 #search>
+        </div>
+        <button class="btn btn-primary" (click)="button(search.value)">Search</button>
+      </form>
+
+    </div>
+
+  </div>
+
+  <br>
+  <br>
+  <br>
 
   <div class="col-xs-12">
         <a

@@ -13,6 +13,8 @@ import {Http} from '@angular/http';
 import {AuthService} from '../../auth/auth.service';
 import {AngularFireAuth} from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import {marketDataModel} from '../../home/market-data.model';
+import {portfolioDataModel} from '../../home/portfolio-data.model';
 
 @Component({
   selector: 'app-items-list',
@@ -31,6 +33,11 @@ export class ItemsListComponent implements OnInit {
   subscription: Subscription;
   subscription2: Subscription;
   subscription3: Subscription;
+  subscription4: Subscription;
+  subscriptionTimer: Subscription;
+  subscriptionChartTimer: Subscription;
+  timerChartsObervable: Observable<any>;
+  timer: Observable<any>;
   tickers: any;
   portfolioTickers: any;
   summaryTickers: any;
@@ -39,6 +46,7 @@ export class ItemsListComponent implements OnInit {
   chartSummary: Object;
   chartColumn: Object;
   coinmarket: CoinCryptocoin[];
+  portfolioData: portfolioDataModel[];
   sharesArray = [];
   coinsSymbolsArray = [];
   coinsChangeArray = [];
@@ -47,10 +55,12 @@ export class ItemsListComponent implements OnInit {
   totalMarketVolume: number;
   totalMarketCap: number;
   totalMarketBitcoin: number;
-  maxChange= 0;
-  maxChangeSymbol: any;
-  minChange= 0;
-  minChangeSymbol: any;
+  maxChangeSymbol: string;
+  minChangeSymbol: string;
+  xMax: number;
+  xMin: number;
+
+
 
 
 // three lines for TimeObservable
@@ -386,69 +396,177 @@ export class ItemsListComponent implements OnInit {
     this.chartSummary = chartInstance;
   }
 
- // update Stockchart Highcharts
-  updateSeriesData() {
-   // console.log('button UpdateSeriesData()');
-    this.chartStock['series'][0].setData(this.portfolioTickers);
-    this.getPiechartData();
-    console.log(this.sharesArray);
-    this.chartPie['series'][0].setData(this.sharesArray);
-    console.log(this.summaryTickers);
-    this.chartSummary['series'][0].setData(this.summaryTickers);
-    this.chartColumn['series'][0].setData(this.coinsChangeArray);
-    this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
+  onClickPortfolioButton(e) {
+    // console.log("clicked chart");
+    // console.log('You clicked '+e.toElement.innerHTML+" button");
+    if(typeof(e.toElement.innerHTML)!== 'undefined') {
+      let c = e.toElement.innerHTML;
+      let btn_index = 0;
+      let range = 700;
+      if(c == "3d"){
+        btn_index = 0;
+        range = 250;
+      } else if(c == "1w"){
+        btn_index = 1;
+        range = 700
+      } else if(c == "1m"){
+        btn_index = 2;
+        range = 2700;
+      } else if(c == "6m"){
+        btn_index = 3;
+        range = 16500;
+      } else if(c == "1y"){
+        btn_index = 4;
+        range = 32000;
+      } else if(c == "All"){
+        btn_index = 5;
+        range = 32000;
+      }
+      // Store btn_index in a cookie here and use it
+      // to initialise rangeSelector -> selected next
+      // time the chart is loaded
+      console.log(btn_index);
+      console.log(range);
+      this.dataStorageService.retrievePortfolioTicker(range);
+    }
   }
 
-  getPiechartData() {
-    let total = 0;
-    this.maxChange = 0;
-    // const maxChangeSymbol;
-    for (let i = 0; i < this.coinmarket.length; i++) {
-      if (this.coinmarket[i].value) {
-        if ( this.coinmarket[i].percent_change_24h > this.maxChange) {
-        this.maxChange = this.coinmarket[i].percent_change_24h; this.maxChangeSymbol = this.coinmarket[i].symbol; console.log(this.maxChange)};
-        if ( this.coinmarket[i].percent_change_24h < this.minChange) {
-          this.minChange = this.coinmarket[i].percent_change_24h; this.minChangeSymbol = this.coinmarket[i].symbol; console.log(this.minChangeSymbol)};
-        total += 1;
-        this.sharesArray.push({
-          name: this.coinmarket[i].symbol,
-          y: this.coinmarket[i].value,
-          price_usd: this.coinmarket[i].price_usd,
-          balance: this.coinmarket[i].balance,
-          percent_change_1h: this.coinmarket[i].percent_change_1h,
-          price_btc: this.coinmarket[i].price_btc,
-          percent_change_24h: this.coinmarket[i].percent_change_24h});
-        this.coinsSymbolsArray.push(this.coinmarket[i].symbol);
-        this.coinsChangeArray.push(this.coinmarket[i].percent_change_24h);
-        }
+  onClickSummaryButton(e) {
+    // console.log("clicked chart");
+    // console.log('You clicked '+e.toElement.innerHTML+" button");
+    if(typeof(e.toElement.innerHTML)!== 'undefined') {
+      let c = e.toElement.innerHTML;
+      let btn_index = 0;
+      let range = 700;
+      if(c == "3d"){
+        btn_index = 0;
+        range = 250;
+      } else if(c == "1w"){
+        btn_index = 1;
+        range = 700
+      } else if(c == "1m"){
+        btn_index = 2;
+        range = 2700;
+      } else if(c == "6m"){
+        btn_index = 3;
+        range = 16500;
+      } else if(c == "1y"){
+        btn_index = 4;
+        range = 32000;
+      } else if(c == "All"){
+        btn_index = 5;
+        range = 32000;
       }
-      console.log(this.coinsSymbolsArray);
+      // Store btn_index in a cookie here and use it
+      // to initialise rangeSelector -> selected next
+      // time the chart is loaded
+      console.log(btn_index);
+      console.log(range);
+      this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', range);
     }
+  }
+
+  // update Stockchart Highcharts
+  updateSeriesData() {
+   // // console.log('button UpdateSeriesData()');
+   //  this.chartStock['series'][0].setData(this.portfolioTickers);
+   //  // this.getPiechartData();
+   //  console.log(this.sharesArray);
+   //  this.chartPie['series'][0].setData(this.sharesArray);
+   //  console.log(this.summaryTickers);
+   //  this.chartSummary['series'][0].setData(this.summaryTickers);
+   //  this.chartColumn['series'][0].setData(this.coinsChangeArray);
+   //  this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
+  }
+
+  // getPiechartData() {
+  //   let total = 0;
+  //   this.maxChange = 0;
+  //   // const maxChangeSymbol;
+  //   for (let i = 0; i < this.coinmarket.length; i++) {
+  //     if (this.coinmarket[i].value) {
+  //       if ( this.coinmarket[i].percent_change_24h > this.maxChange) {
+  //       this.maxChange = this.coinmarket[i].percent_change_24h; this.maxChangeSymbol = this.coinmarket[i].symbol; console.log(this.maxChange)};
+  //       if ( this.coinmarket[i].percent_change_24h < this.minChange) {
+  //         this.minChange = this.coinmarket[i].percent_change_24h; this.minChangeSymbol = this.coinmarket[i].symbol; console.log(this.minChangeSymbol)};
+  //       total += 1;
+  //       this.sharesArray.push({
+  //         name: this.coinmarket[i].symbol,
+  //         y: this.coinmarket[i].value,
+  //         price_usd: this.coinmarket[i].price_usd,
+  //         balance: this.coinmarket[i].balance,
+  //         percent_change_1h: this.coinmarket[i].percent_change_1h,
+  //         price_btc: this.coinmarket[i].price_btc,
+  //         percent_change_24h: this.coinmarket[i].percent_change_24h});
+  //       this.coinsSymbolsArray.push(this.coinmarket[i].symbol);
+  //       this.coinsChangeArray.push(this.coinmarket[i].percent_change_24h);
+  //       }
+  //     }
+  //     console.log(this.coinsSymbolsArray);
+  //   }
 
   getTotal() {
     let total = 0;
-    for (let i = 0; i < this.coinmarket.length; i++) {
-      if (this.coinmarket[i].value) {
-        total += this.coinmarket[i].value;
+    for (let i = 0; i < this.portfolioData.length; i++) {
+      if (this.portfolioData[i].y) {
+        total += this.portfolioData[i].y;
       }
     }
     return total;
   }
 
-  // getTotal() {
-  //   let total = 0;
-  //   for (let i = 0; i < this.summaryTickers.length; i++) {
-  //     if (this.coinmarket[i].value) {
-  //       total += this.coinmarket[i].value;
-  //     }
-  //   }
-  //   return total;
-  // }
+  testDataButton() {
+    console.log(this.dataStorageService.portfolio2);
+
+  }
 
   ngOnInit() {
 
-    this.dataStorageService.retrievePortfolioTicker();
-    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap');
+    // this.dataStorageService.getUserPortfolioAuth();
+    this.dataStorageService.retrievePortfolioTicker(700);
+    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 700);
+
+    this.timerChartsObervable = Observable.timer(1000, 5000);
+    this.subscriptionChartTimer = this.timerChartsObervable
+      .subscribe(x => {
+      console.log(this.portfolioData);
+      this.sharesArray = [];
+      this.coinsSymbolsArray = [];
+      this.coinsChangeArray = [];
+
+        // get arrays of portfolio for coins and percent change
+        const coinsSymbolsArray = this.portfolioData.map(a => a.id);
+        const coinsChangeArray = this.portfolioData.map(a => a.percent_change_24h);
+
+        // get max symbol and max percentage change from portfolio changes array
+        this.xMax = Math.max.apply(undefined, coinsChangeArray);
+        const a = coinsChangeArray.indexOf(this.xMax);
+        this.maxChangeSymbol = coinsSymbolsArray[a];
+        // get min symbol and min percentage change from portfolio changes array
+        this.xMin = Math.min.apply(undefined, coinsChangeArray);
+        const a2 = coinsChangeArray.indexOf(this.xMin);
+        this.minChangeSymbol = coinsSymbolsArray[a2];
+
+        // load data in Highcharts.js graphs
+        this.chartPie['series'][0].setData(this.portfolioData);
+        this.chartStock['series'][0].setData(this.portfolioTickers);
+        this.chartSummary['series'][0].setData(this.summaryTickers);
+        this.chartColumn['series'][0].setData(coinsChangeArray);
+        this.chartColumn['xAxis'][0].setCategories(coinsSymbolsArray);
+    });
+
+    this.timer = Observable.timer(10000);
+    // .interval(2000)
+    // .startWith(500)
+    this.subscriptionTimer =
+      this.timer.subscribe(x => {
+        this.chartPie['series'][0].setData(this.portfolioData);
+        this.chartStock['series'][0].setData(this.portfolioTickers);
+        this.chartSummary['series'][0].setData(this.summaryTickers);
+        this.chartColumn['series'][0].setData(this.coinsChangeArray);
+        this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
+      });
+
 
     this.subscription = this.coinmarketService.portfolioTickersChanged
       .subscribe(
@@ -469,40 +587,13 @@ export class ItemsListComponent implements OnInit {
           this.summaryTickers = tickers2; } );
           this.summaryTickers = this.coinmarketService.getSummaryTickers();
 
-    Observable.interval(3000).subscribe(x => {
-      // this.userName = this.authService.getUserName();
-      this.sharesArray = [];
-      this.coinsSymbolsArray = [];
-      this.coinsChangeArray = [];
-      let total = 0;
-      let maxChange = 0;
-      let maxChangeSymbol;
-      for (let i = 0; i < this.coinmarket.length; i++) {
-        if (this.coinmarket[i].value) {
-          if ( this.coinmarket[i].percent_change_24h > this.maxChange) {
-            this.maxChange = this.coinmarket[i].percent_change_24h; this.maxChangeSymbol = this.coinmarket[i].symbol; console.log(this.maxChange)};
-          if ( this.coinmarket[i].percent_change_24h < this.minChange) {
-            this.minChange = this.coinmarket[i].percent_change_24h; this.minChangeSymbol = this.coinmarket[i].symbol; console.log(this.minChangeSymbol)};
-          total += 1;
-          this.sharesArray.push({
-            name: this.coinmarket[i].symbol,
-            y: this.coinmarket[i].value,
-            price_usd: this.coinmarket[i].price_usd,
-            balance: this.coinmarket[i].balance,
-            percent_change_1h: this.coinmarket[i].percent_change_1h,
-            price_btc: this.coinmarket[i].price_btc,
-            percent_change_24h: this.coinmarket[i].percent_change_24h});
-          this.coinsSymbolsArray.push(this.coinmarket[i].symbol);
-          this.coinsChangeArray.push(this.coinmarket[i].percent_change_24h);
-        }
-      }
-          this.chartPie['series'][0].setData(this.sharesArray);
-          this.chartStock['series'][0].setData(this.portfolioTickers);
-          this.chartSummary['series'][0].setData(this.summaryTickers);
-          this.chartColumn['series'][0].setData(this.coinsChangeArray);
-          this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
-          // console.log(this.coinsSymbolsArray);
-    });
+    this.subscription4 = this.coinmarketService.portfolioDataChanged
+      .subscribe(
+        (portfolioData: portfolioDataModel[]) => {
+          this.portfolioData = portfolioData; } );
+          this.portfolioData = this.coinmarketService.getPortfolioData();
+
+
 
     Observable.interval(3000)
       .flatMap(() => this.http.get('https://api.coinmarketcap.com/v1/global/')
@@ -514,6 +605,18 @@ export class ItemsListComponent implements OnInit {
         this.totalMarketCap = data.total_market_cap_usd;
         this.totalMarketBitcoin = data.bitcoin_percentage_of_market_cap;
           });
+
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.subscription2.unsubscribe();
+    this.subscription3.unsubscribe();
+    this.subscription4.unsubscribe();
+    this.subscriptionTimer.unsubscribe();
+    this.subscriptionChartTimer.unsubscribe();
+
+
 
   }
 }

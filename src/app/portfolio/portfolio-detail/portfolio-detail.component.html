@@ -30,16 +30,16 @@
 <div class="row" style="background-color: #f8f8f8">
 <br>
     <img
-      src="./assets/SVG/{{portfolioItem.symbol}}.svg"
-      ngClass= {{portfolioItem.symbol}}
+      src="./assets/PNG/{{portfolioDataItem.symbol}}.png"
+      ngClass= {{portfolioDataItem.symbol}}
       style="max-height: 90px; padding-left: 15px; padding-top: 15px;">
 
 
   <div class="col-xs-12">
-    <h1>{{portfolioItem.name}}</h1>
-    <h4>Balance: {{portfolioItem.balance}} Value <b>{{ coinmarketItem.value | number : '1.2-2'}} $ </b></h4>
-    <h4>Price: {{ coinmarketItem.price_usd}} $ ({{ coinmarketItem.price_btc}} BTC)</h4>
-    <h4> {{ coinmarketItem.last_updated * 1000 | date:'yyyy-MM-dd HH:mm:ss'}} </h4>
+    <h1>{{portfolioDataItem.name}}</h1>
+    <h4>Balance: {{portfolioDataItem.balance}} Value <b>{{ portfolioDataItem.value | number : '1.2-2'}} $ </b></h4>
+    <h4>Price: {{ portfolioDataItem.price_usd}} $ ({{ portfolioDataItem.price_btc}} BTC)</h4>
+    <!--<h4> {{ coinmarketItem.last_updated * 1000 | date:'yyyy-MM-dd HH:mm:ss'}} </h4>-->
   </div>
 </div>
 
@@ -48,15 +48,15 @@
 <div class="row">
 
   <div class="col-xs-4">
-    Market Cap <br><b> {{coinmarketItem.market_cap_usd | number}} </b>
+    Market Cap <br><b> {{portfolioDataItem.market_cap_usd | number}} </b>
   </div>
 
   <div class="col-xs-4">
-    Supply <br><b> {{coinmarketItem.available_supply | number}} </b>
+    Supply <br><b> {{portfolioDataItem.available_supply | number}} </b>
   </div>
 
   <div class="col-xs-4">
-    Volume (24h) <br><b> {{coinmarketItem.volume_24h | number}} </b>
+    Volume (24h) <br><b> {{portfolioDataItem.volume_24h | number}} </b>
   </div>
 
 </div>
@@ -64,17 +64,17 @@
 <br>
 <div class="row">
   <div class="col-xs-4">
-    Change 1h <br><b [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}"> {{coinmarketItem.percent_change_1h}} % </b>
+    Change 1h <br><b [ngClass]="{'negative': portfolioDataItem.percent_change_1h < 0, 'positive' : portfolioDataItem.percent_change_1h > 0}"> {{portfolioDataItem.percent_change_1h}} % </b>
   </div>
 
 
 
   <div class="col-xs-4">
-    Change 24h <br><b [ngClass]="{'negative': coinmarketItem.percent_change_24h < 0, 'positive' : coinmarketItem.percent_change_24h > 0}"> {{coinmarketItem.percent_change_24h}} % </b>
+    Change 24h <br><b [ngClass]="{'negative': portfolioDataItem.percent_change_24h < 0, 'positive' : portfolioDataItem.percent_change_24h > 0}"> {{portfolioDataItem.percent_change_24h}} % </b>
   </div>
 
   <div class="col-xs-4">
-    Change 7d <br><b [ngClass]="{'negative': coinmarketItem.percent_change_7d < 0, 'positive' : coinmarketItem.percent_change_7d > 0}"> {{coinmarketItem.percent_change_7d}} %  </b>
+    Change 7d <br><b [ngClass]="{'negative': portfolioDataItem.percent_change_7d < 0, 'positive' : portfolioDataItem.percent_change_7d > 0}"> {{portfolioDataItem.percent_change_7d}} %  </b>
   </div>
 
 </div>
@@ -83,7 +83,7 @@
 
 <div class="row">
   <div class="col-xs-12" style="padding-right: 0 !important;">
-    <h3>{{portfolioItem.name}} Chart</h3>
+    <h3>{{portfolioDataItem.name}} Chart</h3>
     <!--<button (click)="updateSeriesData()">Click for update</button>-->
      <chart style="display:block; padding-right: 0; width: 100% !important;" type="StockChart" [options]="options" (load)="saveInstance($event.context)"></chart>
 

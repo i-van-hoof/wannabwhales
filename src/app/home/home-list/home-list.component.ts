@@ -16,6 +16,8 @@ export class HomeListComponent implements OnInit, OnDestroy {
   marketData: marketDataModel[];
   subscription: Subscription;
   subscription2: Subscription;
+  private loading: boolean = false;
+  private start: number = 0;
 
   constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService) {}
 
@@ -23,7 +25,8 @@ export class HomeListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.dataService.getMarketData();
+    this.loading = true;
+    this.dataService.getHTTPcall('market','', 0 ,  100).then( () => this.loading = false);
 
     // this.subscription = this.coinmarketService.coinmarketChanged
     //   .subscribe(
@@ -42,7 +45,34 @@ export class HomeListComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscription2.unsubscribe();
   }
- button() {
-    this.dataService.getUserPortfolioNEW();
+
+ button(portfolio: string, coin: string, start: number, limit: number) {
+   this.loading = true;
+   this.start = 0;
+   this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
  }
+
+  button100(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start = 100;
+    this.dataService.getHTTPcall('market', '', this.start, 200).then( () => this.loading = false);
+  }
+
+  button200(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start = 200;
+    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+  }
+
+  buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start -= 100;
+    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+  }
+
+  buttonNext(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start += 100;
+    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+  }
 }

@@ -34,8 +34,9 @@ export class PortfolioEditComponent implements OnInit {
         (params: Params) => {
           this.symbol = params['symbol'];
           this.editMode = params['symbol'] != null;
+          console.log('system in edit mode for symbol: ' + params['symbol']);
           this.authService.isInEditmode();
-          this.initForm();
+          this.initForm(this.symbol);
         }
       );
   }
@@ -43,21 +44,20 @@ export class PortfolioEditComponent implements OnInit {
   onSubmit() {
     console.log(this.editMode);
     if (this.editMode) {
-      console.log('hier updatePortfolio() vanuit form portfolio-edit');
+      console.log('updatePortfolio() vanuit portfolio-edit');
       console.log(this.symbol);
-      console.log(this.portfolioForm.value);
-      this.coinmarketService.updatePortfolio(this.symbol, this.portfolioForm.value);
+       if (this.portfolioForm.value.inportfolio) {
+          this.coinmarketService.updateUserPortfolio(this.symbol, this.portfolioForm.value);
      // this.coinmarketService.updatePortfolioSymbols(this.symbol, this.portfolioForm.value);
-    } else {
-      this.coinmarketService.addPortfolio(this.portfolioForm.value);
-    }
-    this.onCancel();
-    this.dataStorageService.storePortfolio();
-      // .subscribe(
-    //   (response: Response) => { console.log(response);}
-    // );
-
-  }
+        } else { console.log('this data added to the UserPortfolio');
+          this.coinmarketService.addToUserPortfolio(this.portfolioForm.value);
+        }
+        this.onCancel();
+        this.dataStorageService.storePortfolio()
+         //  .subscribe(
+         //   (response: Response) => {console.log(response);}
+         // );
+      }
 
   // onAddTransaction() {
   //  (<FormArray>this.portfolioForm.get('transactions')).push(
@@ -73,7 +73,7 @@ export class PortfolioEditComponent implements OnInit {
 
   // onDeleteTransaction(index: number) {
     // (<FormArray>this.portfolioForm.get('transactions')).removeAt(index);
- // }
+ }
 
   onCancel() {
     this.router.navigate(['../'], {relativeTo: this.route});
@@ -81,11 +81,7 @@ export class PortfolioEditComponent implements OnInit {
     this.authService.isOutEditmode();
   }
 
-
-
-
-
-  private initForm() {
+  private initForm(symbol) {
     let portfolioSymbol = '';
     let portfolioId = '';
     let portfolioName = '';
@@ -95,28 +91,30 @@ export class PortfolioEditComponent implements OnInit {
     this.formArray = new FormArray([]);
 
     if (this.editMode) {
-      const portfolio = this.coinmarketService.getPortfolioItem(this.symbol);
-      portfolioSymbol = portfolio.symbol;
-      portfolioId = portfolio.id;
-      portfolioName = portfolio.name;
-      portfolioBalance = portfolio.balance;
-      portfolioValue = portfolio.value;
-      portfolioInportfolio = portfolio.inportfolio;
+      const portfolio = this.coinmarketService.getPortfolioItem(symbol);
+      console.log('getPortfolioItem:' + portfolio.symbol);
+        portfolioSymbol = portfolio.symbol;
+        console.log(portfolioSymbol);
+        portfolioId = portfolio.id;
+        portfolioName = portfolio.name;
+        portfolioBalance = portfolio.balance;
+        portfolioValue = portfolio.value;
+        portfolioInportfolio = portfolio.inportfolio;
 
-      if (portfolio['transactions']) {
-        for (let transaction of portfolio.transactions) {
-          this.formArray.push(
-            new FormGroup({
-
-              'symbol': new FormControl(transaction.symbol, Validators.required),
-              'amount': new FormControl(transaction.amount, [
-                Validators.required,
-                Validators.pattern(/^[1-9]+[0-9]*$/)
-              ])
-            })
-          );
-        }
-      }
+      // if (portfolio['transactions']) {
+      //   for (let transaction of portfolio.transactions) {
+      //     this.formArray.push(
+      //       new FormGroup({
+      //
+      //         'symbol': new FormControl(transaction.symbol, Validators.required),
+      //         'amount': new FormControl(transaction.amount, [
+      //           Validators.required,
+      //           Validators.pattern(/^[1-9]+[0-9]*$/)
+      //         ])
+      //       })
+      //     );
+      //   }
+      // }
     }
 
     this.portfolioForm = new FormGroup({

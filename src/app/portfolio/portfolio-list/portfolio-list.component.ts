@@ -10,6 +10,8 @@ import 'rxjs/Rx';
 import { CoinCryptocoin} from '../../home/coinmarket.model';
 
 import {DataStorageService} from '../../shared/data-storage.service';
+import { portfolioDataModel} from '../../home/portfolio-data.model';
+import {marketDataModel} from '../../home/market-data.model';
 
 
 @Component({
@@ -20,24 +22,26 @@ import {DataStorageService} from '../../shared/data-storage.service';
 export class PortfolioListComponent implements OnInit, OnDestroy {
   portfolio: PortfolioModel[];
   coinmarket: CoinCryptocoin[];
+  marketData: marketDataModel[];
+  portfolioData: portfolioDataModel[];
   tickers: any;
-  subscription: Subscription;
+
+  subscription1: Subscription;
   subscription2: Subscription;
-  subscription3: Subscription;
+
+  private loading: boolean = false;
+  private start: number = 0;
   active: Boolean = false;
   show1: Boolean = true;
 
-  constructor(private coinmarketService: CoinmarketService,
-              private router: Router,
-              private route: ActivatedRoute,
-              private dataStorage: DataStorageService,
+  constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService
               ) {}
 
   getTotal() {
     let total = 0;
-    for (let i = 0; i < this.coinmarket.length; i++) {
-      if (this.coinmarket[i].value) {
-        total += this.coinmarket[i].value;
+    for (let i = 0; i < this.marketData.length; i++) {
+      if (this.marketData[i].y) {
+        total += this.marketData[i].y;
       }
     }
     return total;
@@ -45,38 +49,72 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.subscription = this.coinmarketService.portfolioChanged
-      .subscribe(
-        (portfolio: PortfolioModel[]) => {
-          this.portfolio = portfolio; } );
-    this.portfolio = this.coinmarketService.getPortfolio();
+    this.dataService.getHTTPcall('portfolio','', 0 ,  10).then( () => this.loading = false);
 
-   //  code om de coinmarket data op te halen uit de coinmarket service
-    this.subscription2 = this.coinmarketService.coinmarketChanged
-      .subscribe(
-        (coinmarket: CoinCryptocoin[]) => {
-          this.coinmarket = coinmarket; } );
-          this.coinmarket = this.coinmarketService.getMarket();
+    // this.portfolioData = this.coinmarketService.getPortfolio();
 
-    this.subscription3 = this.coinmarketService.tickersChanged
+// this is new code for getting market data for 100s, to be mixed with portoflio
+    this.subscription1 = this.coinmarketService.portfolioChanged
       .subscribe(
-        (tickers: any) => {
-          this.tickers = tickers; } );
-          this.tickers = this.coinmarketService.getTickers();
-       }
+        (marketData: marketDataModel[]) => {
+            this.marketData = marketData;
+          });
+
+    this.subscription2 = this.coinmarketService.tickersChanged
+          .subscribe(
+      (data: any) => {
+            this.portfolioData = data; } );
+}
+
+  getPortfolioDataItem(symbol: string) {
+    // console.log(symbol);
+    const index = this.marketData.findIndex(p => p['symbol'] === symbol);
+    return this.marketData[index];
+  }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 
   show() {
     this.show1 = !this.show1;
   }
 
-  // useFilter() {
-   // this.ss.change();
-   // this.active = !this.active;
-   // this.portfolio = this.coinmarketService.getPortfolio();
+
+
+  buttonCoin(coin: string) {
+    this.loading = true;
+    this.dataService.getHTTPcall('portfolio', coin,  0, 20).then( () => this.loading = false);
+  }
+
+  button(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.dataService.getHTTPcall('portfolio', '',  0, 20).then( () => this.loading = false);
+    // this.router.navigate(['../'], {relativeTo: this.route});
+  }
+
+  button100(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.dataService.getHTTPcall('portfolio', '', 20, 30).then( () => this.loading = false);
+  }
+
+  buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start -= 100;
+    this.dataService.getHTTPcall('portfolio', '', this.start, 100).then( () => this.loading = false);
+  }
+
+  buttonNext(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start += 100;
+    this.dataService.getHTTPcall('portfolio', '', this.start, 100).then( () => this.loading = false);
+  }
+
+  // buttonAll(portfolio: string, coin: string, start: number, limit: number) {
+  //   this.loading = true;
+  //   this.dataService.getHTTPcall('portfolio', '', 0, 1000).then( () => this.loading = false);
   // }
 
 }
