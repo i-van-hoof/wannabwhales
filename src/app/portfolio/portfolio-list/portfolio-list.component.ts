@@ -1,17 +1,19 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-
 import { PortfolioModel} from '../portfolio.model';
 import { Subscription} from 'rxjs/Subscription';
 import { CoinmarketService} from '../../home/coinmarket.service';
 import { ActivatedRoute, Router} from '@angular/router';
 // import { SharedService} from '../filter.service';
-
 import 'rxjs/Rx';
 import { CoinCryptocoin} from '../../home/coinmarket.model';
+<<<<<<< HEAD
 
 import {DataStorageService} from '../../shared/data-storage.service';
 import { portfolioDataModel} from '../../home/portfolio-data.model';
 import {marketDataModel} from '../../home/market-data.model';
+=======
+import { ItemsListComponent} from "../../items/items-list/items-list.component";
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
 
 
 @Component({
@@ -34,8 +36,13 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   active: Boolean = false;
   show1: Boolean = true;
 
+<<<<<<< HEAD
   constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService
+=======
+  constructor(private coinmarketService: CoinmarketService, private _itemService: ItemsListComponent
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
               ) {}
+
 
   getTotal() {
     let total = 0;
@@ -47,9 +54,25 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
     return total;
   }
 
+  testing() {
+    const test = this._itemService.coinmarketCap;
+    console.log('testing ' +test);
+  }
+
   ngOnInit() {
 
+<<<<<<< HEAD
     this.dataService.getHTTPcall('portfolio','', 0 ,  10).then( () => this.loading = false);
+=======
+
+
+
+    this.subscription = this.coinmarketService.portfolioChanged
+      .subscribe(
+        (portfolio: PortfolioModel[]) => {
+          this.portfolio = portfolio; } );
+    this.portfolio = this.coinmarketService.getPortfolio();
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
 
     // this.portfolioData = this.coinmarketService.getPortfolio();
 

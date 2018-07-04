@@ -120,7 +120,11 @@ export const environment = {
     ChartModule
 
   ],
+<<<<<<< HEAD
   providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard, PortfolioListComponent,
+=======
+  providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard, ItemsListComponent,
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
    {
    provide: HighchartsStatic,
    useFactory: highchartsFactory

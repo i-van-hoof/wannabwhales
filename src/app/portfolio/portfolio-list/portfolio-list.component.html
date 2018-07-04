@@ -36,12 +36,19 @@
 </div>
 
 
+<<<<<<< HEAD
 <div class="row">
   <div class="col-xs-12">
   <div><h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}}</h3>
   </div></div>
 </div>
 
+=======
+    <button type="button" class="btn btn-basic" (click)="testing()">Testing</button>
+    <hr>
+
+    <div> <h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}} </h3></div>
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
     <app-portfolio-item
       *ngFor="let coinmarketEl of marketData; let i = index;"
       [coinmarketItem]="coinmarketEl"

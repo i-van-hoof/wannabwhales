@@ -2,7 +2,7 @@
 <div class="row">
   <h2 class="showHide"><b>DASHBOARD | user </b> {{userName}}</h2>
   <hr class="showHide" style="border-color: dimgrey">
-  <!--<button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>-->
+  <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>
 </div>
 
 <!--<button type="button" class="btn btn-basic" (click)="testDataButton()" [ngClass]="{'btn-success': active}">Load data</button>-->
@@ -12,7 +12,11 @@
     <h3 class="showHide">Portfolio Chart</h3>
 
     <hr class="showHide">
+<<<<<<< HEAD
     <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (click)="onClickPortfolioButton($event)" (load)="saveInstanceStock($event.context)"></chart>
+=======
+    <chart style="display:block;  width: 100% !important;" type="StockChart" (click)="onClickPortfolioButton($event)" [options]="optionsStockchart" (load)="saveInstanceStock($event.context)"></chart>
+>>>>>>> 164e2de2c9699e0d7fd486846e971064824bde7e
 
   </div>
   <div class="showHide col-xs-12 col-md-6">
@@ -82,7 +86,7 @@
   </div>
 
   <div class="showHide col-xs-12 col-md-6">
-    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsColumn" (load)="saveInstanceColumn($event.context)"></chart>
+    <chart style="display:block; padding-right: 0; height: auto; width: 100% !important;" [options]="optionsColumn" (load)="saveInstanceColumn($event.context)" ></chart>
 
   </div>
 </div>
