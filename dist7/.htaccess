@@ -1,0 +1,4 @@
+
+RewriteEngine On
+
+RewriteRule ^www/(.*)$ / [R=301,NC,L]
