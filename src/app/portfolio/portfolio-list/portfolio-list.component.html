@@ -6,9 +6,9 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button type="button" class="btn btn-primary" (click)="show()" [ngClass]="{'btn-success': active}">Filter portfolio</button>
-    <button type="button" class="btn btn-basic" (click)="button('')" [ngClass]="{'btn-success': active}">0-20</button>
-    <button type="button" class="btn btn-basic" (click)="button100('')" [ngClass]="{'btn-success': active}">0-50</button>
+    <button type="button" class="btn btn-primary" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
+    <button type="button" class="btn btn-basic" (click)="button('')" [ngClass]="{'btn-success': active}">0-50</button>
+    <!-- <button type="button" class="btn btn-basic" (click)="button50('')" [ngClass]="{'btn-success': active}">0-50</button> -->
     <button type="button" class="btn btn-basic" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Prev 100</button>
     <button type="button" class="btn btn-basic" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
 
@@ -16,24 +16,45 @@
 </div>
 <br>
 <div class="row">
-    <div class="col-xs-8">
-      <form class="form-inline" style="text-align: left">
-        <div class="form-group">
-          <input type="search"
-                 class="form-control"
-                 placeholder="Enter search string"
-                 [formControl]="searchField"
-                 #search>
+
+    <div class="form-inline">
+        <div class="form-group col-xs-5">
+            <input type="search" class="form-control" placeholder="Enter search string" [formControl]="searchField" #search>
+
         </div>
-        <button class="btn btn-primary" (click)="buttonCoin(search.value)">Search</button>
-      </form>
+        <div class="form-group col-xs-6" style="padding-left: 0px">
+            <button class="btn btn-primary"  (click)="buttonCoin(search.value)">Search</button>
+
+        </div>
     </div>
-      <div class="col-xs-3">
+    <!-- <div class="col-xs-6">
+      <form class="navbar-form navbar-left" style="text-align: left">
+        <div class="form-group">
+
+          <button class="btn btn-primary" (click)="buttonCoin(search.value)">Search</button>
+        </div>
+
+
+      </form>
+      <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+    </div> -->
+ </div>
+      <div class="col-xs-6">
+
+          <!-- <form class="navbar-form navbar-left" action="/action_page.php">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form> -->
+
+
+
         <!--<p style="margin-top: 10%;" *ngIf="loading">Loading</p>-->
-        <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+
       </div>
 
-</div>
+<!-- </div> -->
 
 
 <div class="row">

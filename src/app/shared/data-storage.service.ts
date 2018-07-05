@@ -18,6 +18,9 @@ import 'rxjs/add/operator/map';
 import {PortfolioEditComponent} from '../portfolio/portfolio-edit/portfolio-edit.component';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {Item} from '../items/shared/item';
+import { map } from 'rxjs/operators';
+
+
 
 @Injectable()
 export class DataStorageService {
@@ -43,13 +46,13 @@ export class DataStorageService {
   portfolioSummary = {};
   portfolioArray = [];
   coin: string;
-  maxChange : number;
+  maxChange: number;
   maxChangeSymbol: string;
   minChange = 0;
   minChangeSymbol: string;
-  apiRoot:string = 'https://api.coinmarketcap.com/v1/ticker/';
+  apiRoot: string = 'https://api.coinmarketcap.com/v1/ticker/';
   results = [];
-  loading:boolean;
+  loading: boolean;
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
@@ -57,12 +60,11 @@ export class DataStorageService {
               private authService: AuthService,
               public  db: AngularFireDatabase,
               private af: AngularFireAuth,
-              )
-                  {
+              ) {
                     this.user = af.authState;
                     this.af.authState.subscribe(user => {
-                      if(user) this.userId = user.uid});
-
+                      if (user) { this.userId = user.uid; }
+                    });
                     this.results = [];
                     this.loading = false;
                   }
@@ -93,7 +95,7 @@ export class DataStorageService {
 
   getUserPortfolioAuth() {
     this.af.authState.first().toPromise().then
-    (user => {if(user) this.getUserPortfolioNEW()});}
+    (user => {if (user) {this.getUserPortfolioNEW(); console.log('auth worked'); } }); }
 // (user => {if(user) console.log('fetching data of: '+user.uid); this.getUserPortfolioNEW()  });}
 
   getUserPortfolioNEW() {
@@ -104,53 +106,20 @@ export class DataStorageService {
     // method with Promise
     this.itemRef2
       .snapshotChanges()
-      .map(res => { this.portfolio2 = res.payload.val();})
+      .map(res => { this.portfolio2 = res.payload.val(); })
       .first()
       .toPromise().then(() => this.setData(this.portfolio2))
-      .catch(result => console.log('Promise not working', result))
-    // method with observable
-    // this.itemRef2.snapshotChanges()
-    //   .subscribe(action => {
-    //   if (action.payload.val()) {this.portfolio2 = action.payload.val()} else {this.portfolio2 = []}
-    //
-    //   for (let coinItem of this.portfolio2) {this.coin = coinItem['id'];
-    //     // console.log("variable coinItem from dataStorageService: ")
-    //     // console.log(coinItem);
-    //   this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin)
-    //     .map((res: Response) => res.json()).subscribe(data => {
-    //       for (let object of data) {
-    //         coinItem['y'] = coinItem['balance'] * object['price_usd'];
-    //         coinItem['rank'] = +object['rank'];
-    //         coinItem['price_usd'] = +object['price_usd'];
-    //         coinItem['price_btc'] = +object['price_btc'];
-    //         coinItem['volume_24h'] = +object['24h_volume_usd'];
-    //         coinItem['market_cap_usd'] = +object['market_cap_usd'];
-    //         coinItem['available_supply'] = +object['available_supply'];
-    //         coinItem['total_supply'] = +object['total_supply'];
-    //         coinItem['max_supply'] = +object['max_supply'];
-    //         coinItem['percent_change_1h'] = +object['percent_change_1h'];
-    //         coinItem['percent_change_24h'] = +object['percent_change_24h'];
-    //         coinItem['percent_change_7d'] = +object['percent_change_7d'];
-    //         coinItem['last_updated'] = +object['last_updated'];
-    //         delete object['24h_volume_usd'];
-    //       }
-    //
-    //     }, data => {console.log(data +'error')});
-    //   }
-    //   // console.log(this.portfolio2);
-    //     this.coinMarketService.setPortfolioData(this.portfolio2);
-    // });
-    // console.log(this.portfolio2);
-
+      .catch(result => console.log('Promise not working', result));
   }
 
   setData(portfolio) {
+    console.log(portfolio);
       for (let coinItem of portfolio) {
-
         this.coin = coinItem['id'];
-
-      this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin)
-        .map((res: Response) => res.json()).subscribe(data => {
+        const url = 'https://api.coinmarketcap.com/v1/ticker/' + this.coin;
+        console.log(url);
+      this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin).map((res: Response) => res.json()).subscribe(data => {
+          console.log(data);
           for (let object of data) {
             coinItem['y'] = coinItem['balance'] * object['price_usd'];
             coinItem['rank'] = +object['rank'];
@@ -167,7 +136,7 @@ export class DataStorageService {
             coinItem['last_updated'] = +object['last_updated'];
             delete object['24h_volume_usd'];
           }
-        }, data => {console.log(data +'error')});
+        }, error => {console.log('error getting coinmarket coin info: ' + error); });
       }
       // console.log(portfolio);
       this.coinMarketService.setPortfolioData(portfolio);

@@ -90,24 +90,26 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
 
   button(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
-    this.dataService.getHTTPcall('portfolio', '',  0, 20).then( () => this.loading = false);
+    this.dataService.getHTTPcall('portfolio', '',  0, 50).then( () => this.loading = false);
     // this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  button100(portfolio: string, coin: string, start: number, limit: number) {
-    this.loading = true;
-    this.dataService.getHTTPcall('portfolio', '', 20, 30).then( () => this.loading = false);
-  }
+  // button50(portfolio: string, coin: string, start: number, limit: number) {
+  //   this.loading = true;
+  //   this.dataService.getHTTPcall('portfolio', '', 20, 30).then( () => this.loading = false);
+  // }
 
   buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     this.start -= 100;
+    console.log(this.start);
     this.dataService.getHTTPcall('portfolio', '', this.start, 100).then( () => this.loading = false);
   }
 
   buttonNext(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     this.start += 100;
+    console.log(this.start);
     this.dataService.getHTTPcall('portfolio', '', this.start, 100).then( () => this.loading = false);
   }
 

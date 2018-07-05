@@ -2,7 +2,7 @@
 <div class="row">
   <h2 class="showHide"><b>DASHBOARD | user </b> {{userName}}</h2>
   <hr class="showHide" style="border-color: dimgrey">
-  <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button>
+  <!-- <button class="btn btn-basic" (click)="updateSeriesData()">Update market info</button> -->
 </div>
 
 <!--<button type="button" class="btn btn-basic" (click)="testDataButton()" [ngClass]="{'btn-success': active}">Load data</button>-->
@@ -94,18 +94,20 @@
     <a
       style="background-color: #f3f3f4; border-bottom:2px solid #ddd; border-right:0px solid #ddd; border-left:0px solid #ddd"
       class="portfolioHead list-group-item clearfix">
-      <div class="portfolioHead col-md-1"><b>Coin</b></div>
+
+      <div class="showHide portfolioHead col-md-1"><b>Coin</b></div>
+
       <div class="portfolioHead col-xs-2 col-md-1"><b>Security</b></div>
-      <div class="col-xs-2 col-md-4">
-        <div class="col-xs-6 col-md-6" style="text-align: right"><b>USD</b></div>
+      <div class="col-xs-3 col-md-4">
+        <div class="col-xs-12 col-md-6" style="text-align: right"><b>USD</b></div>
         <div class="showHide col-xs-6 col-md-6" style="text-align: right"><b>BTC</b></div>
       </div>
-     <div class="col-xs-5 col-md-3">
+     <div class="col-xs-4 col-md-3">
        <div class="col-xs-6 col-md-6" style="text-align: right"><b>1h</b></div>
        <div class="col-xs-6 col-md-6" style="text-align: right"><b>24h</b></div>
 
      </div>
-    <div class="col-xs-3 col-md-3">
+    <div class="col-xs-2 col-md-3">
       <div class="col-xs-12 col-md-6" style="text-align: right"><b>Balance</b></div>
       <div class="showHide col-md-6" style="text-align: right"><b>Value</b></div>
     </div>
