@@ -14,15 +14,15 @@
       <p [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}" class="list-group-item-text"> {{coinmarketItem.percent_change_24h}} %</p>
     </div>
 
-    <div class="col-xs-2">
+    <!-- <div class="col-xs-2">
       <p class="list-group-item-text"> Cap </p>
       <p class="list-group-item-text"> Balance </p>
       <p class="list-group-item-text"> Value </p>
-    </div>
-    <div class="col-xs-4">
-      <p class="list-group-item-text"> {{coinmarketItem.market_cap_usd | number}} $</p>
-      <p class="list-group-item-text"> {{coinmarketItem.balance}}</p>
-      <p class="list-group-item-text"> {{coinmarketItem.value | number : '1.0-0'}} $</p>
+    </div> -->
+    <div class="col-xs-6" style="padding-right: 4px">
+      <p class="list-group-item-text"> Cap: {{coinmarketItem.market_cap_usd | number}} $</p>
+      <p class="list-group-item-text"> Balance : {{coinmarketItem.balance}}</p>
+      <p class="list-group-item-text"> Value: {{coinmarketItem.value | number : '1.0-0'}} $</p>
     </div>
   </div>
 </a>

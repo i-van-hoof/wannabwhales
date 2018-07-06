@@ -14,18 +14,18 @@
       <div class="col-xs-2 col-md-1" ><b>{{portfolioCoin.name}}</b></div>
 
       <div class="col-xs-4 col-md-4">
-        <div class="portfolioList col-xs-12 col-md-6" style="text-align: right;">${{portfolioCoin.price_usd | number: '1.0-5' }}</div>
+        <div class="portfolioList col-xs-12 col-md-6" style="text-align: right; padding-right: 1px">${{portfolioCoin.price_usd | number: '1.0-5' }}</div>
         <div class="showHide col-xs-6 col-md-6" style="text-align: right">{{portfolioCoin.price_btc | number: '1.6-6' }} </div>
       </div>
 
-      <div class="col-xs-4 col-md-3">
+      <div class="col-xs-4 col-md-3" style="padding-left: 0px">
         <div class="col-xs-6" style="text-align: right; padding-right: 1px" [ngClass]="{'negative': portfolioCoin.percent_change_1h < 0, 'positive' : portfolioCoin.percent_change_1h > 0}"> <b>{{portfolioCoin.percent_change_1h | number: '1.2-2'}}%</b></div>
         <div class="col-xs-6" style="text-align: right; padding-right: 1px" [ngClass]="{'negative': portfolioCoin.percent_change_24h < 0, 'positive' : portfolioCoin.percent_change_24h > 0}"> <b> {{portfolioCoin.percent_change_24h | number: '1.2-2'}}%</b></div>
 
       </div>
       <div class="col-xs-2 col-md-3">
       <!--<div class="col-xs-2"> <b> {{ portfolioCoin.volume_24h | number }} </b></div>-->
-       <div class="col-xs-10 col-md-6" style="text-align: right" >{{portfolioCoin.balance | number: '1.0-4'  }}</div>
+       <div class="col-xs-12 col-md-6" style="text-align: right" >{{portfolioCoin.balance | number: '1.0-4'  }}</div>
        <div class="showHide col-xs-6 col-md-6" style="text-align: right" ><b>{{portfolioCoin.y| number: '1.0-0'}} $</b></div>
       </div>
     </div>

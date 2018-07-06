@@ -9,3 +9,8 @@
 .red-title {
   color: red
 }
+
+@media screen and (max-width: 768px) {
+    p { font-size: 10px }
+}
+

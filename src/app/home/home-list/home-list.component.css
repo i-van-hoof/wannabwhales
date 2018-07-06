@@ -6,6 +6,9 @@
 @media screen and (max-width: 768px) {
   .dataBanner  { font-size: 11px; padding-left: 5px; padding-right: 5px }
   .portfolioHead {padding-left: 2px}
+  .homepageBar { margin-top: 5px; margin-right: 0px}
+  .homepageButtons {font-size: 10px}
+  .searchButtons { }
 
 }
 /* Desktop*/
@@ -14,6 +17,8 @@
   .breakRemove {display: none}
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}
+  .searchBarDesktop { text-align: right}
+
 }
 
 .glyphicon-refresh-animate {

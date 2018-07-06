@@ -53,17 +53,22 @@ export class HomeListComponent implements OnInit, OnDestroy {
    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
  }
 
-  button100(portfolio: string, coin: string, start: number, limit: number) {
-    this.loading = true;
-    this.start = 100;
-    this.dataService.getHTTPcall('market', '', this.start, 200).then( () => this.loading = false);
-  }
+ buttonCoin(coin: string) {
+  this.loading = true;
+  this.dataService.getHTTPcall('market', coin,  0, 20).then( () => this.loading = false);
+}
 
-  button200(portfolio: string, coin: string, start: number, limit: number) {
-    this.loading = true;
-    this.start = 200;
-    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
-  }
+  // button100(portfolio: string, coin: string, start: number, limit: number) {
+  //   this.loading = true;
+  //   this.start = 100;
+  //   this.dataService.getHTTPcall('market', '', this.start, 200).then( () => this.loading = false);
+  // }
+
+  // button200(portfolio: string, coin: string, start: number, limit: number) {
+  //   this.loading = true;
+  //   this.start = 200;
+  //   this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+  // }
 
   buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;

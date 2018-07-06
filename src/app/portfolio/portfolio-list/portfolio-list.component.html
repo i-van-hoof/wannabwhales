@@ -6,25 +6,23 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button type="button" class="btn btn-primary" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
-    <button type="button" class="btn btn-basic" (click)="button('')" [ngClass]="{'btn-success': active}">0-50</button>
+    <button type="button" class="btn btn-primary portfolioButtons" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="button('')" [ngClass]="{'btn-success': active}">Top 50</button>
     <!-- <button type="button" class="btn btn-basic" (click)="button50('')" [ngClass]="{'btn-success': active}">0-50</button> -->
-    <button type="button" class="btn btn-basic" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Prev 100</button>
-    <button type="button" class="btn btn-basic" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
-
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Prev 100</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
   </div>
 </div>
-<br>
-<div class="row">
+<div class="row searchBar" style="margin-top: 5px">
 
     <div class="form-inline">
-        <div class="form-group col-xs-5">
-            <input type="search" class="form-control" placeholder="Enter search string" [formControl]="searchField" #search>
+        <div class="form-group col-xs-5 searchField">
+            <input type="search" class="form-control" placeholder="Enter name" [formControl]="searchField" #search>
 
         </div>
-        <div class="form-group col-xs-6" style="padding-left: 0px">
-            <button class="btn btn-primary"  (click)="buttonCoin(search.value)">Search</button>
-
+        <div class="form-group col-xs-7" style="padding-left: 0px">
+            <button class="btn btn-primary"  (click)="buttonCoin(search.value)"><span class="glyphicon glyphicon-search"></span></button>
+            <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
         </div>
     </div>
     <!-- <div class="col-xs-6">
@@ -36,10 +34,10 @@
 
 
       </form>
-      <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+
     </div> -->
  </div>
-      <div class="col-xs-6">
+
 
           <!-- <form class="navbar-form navbar-left" action="/action_page.php">
             <div class="form-group">
@@ -52,7 +50,6 @@
 
         <!--<p style="margin-top: 10%;" *ngIf="loading">Loading</p>-->
 
-      </div>
 
 <!-- </div> -->
 
