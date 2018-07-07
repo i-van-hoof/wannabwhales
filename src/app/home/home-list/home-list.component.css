@@ -7,7 +7,8 @@
   .dataBanner  { font-size: 11px; padding-left: 5px; padding-right: 5px }
   .portfolioHead {padding-left: 2px}
   .homepageBar { margin-top: 5px; margin-right: 0px}
-  .homepageButtons {font-size: 10px}
+  .homepageButtonTop {font-size: 12px; width: 23%}
+  .homepageButtonScroll {font-size: 12px; width: 36.5%}
   .searchButtons { }
 
 }
