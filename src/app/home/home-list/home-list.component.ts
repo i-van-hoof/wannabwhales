@@ -16,8 +16,9 @@ export class HomeListComponent implements OnInit, OnDestroy {
   marketData: marketDataModel[];
   subscription: Subscription;
   subscription2: Subscription;
-  private loading: boolean = false;
-  private start: number = 0;
+  loading = false;
+  start: number = 0;
+  active: Boolean = false;
 
   constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService) {}
 
@@ -27,7 +28,7 @@ export class HomeListComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.loading = true;
-    this.dataService.getHTTPcall('market','', 0 ,  100).then( () => this.loading = false);
+    this.dataService.getHTTPcall('market', '', 0 ,  100).then( () => this.loading = false);
 
     // this.subscription = this.coinmarketService.coinmarketChanged
     //   .subscribe(

@@ -1,20 +1,22 @@
 
 /* Mobile*/
 .showHide { display:none; }
+.showMobile { display: block; }
 .mobile-backgroundColor {background-color: #d9edf7}
 
 @media screen and (max-width: 768px) {
   .dataBanner  { font-size: 11px; padding-left: 5px; padding-right: 5px }
   .portfolioHead {padding-left: 2px}
   .homepageBar { margin-top: 5px; margin-right: 0px}
-  .homepageButtonTop {font-size: 12px; width: 23%}
-  .homepageButtonScroll {font-size: 12px; width: 36.5%}
+  .homepageButtonTop {font-size: 14px; width: 26%}
+  .homepageButtonScroll {font-size: 14px; width: 35%}
   .searchButtons { }
 
 }
 /* Desktop*/
 @media screen and (min-width: 768px) {
   .showHide  { display: block; }
+  .showMobile { display:none; }
   .breakRemove {display: none}
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}

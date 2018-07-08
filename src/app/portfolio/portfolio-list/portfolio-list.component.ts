@@ -27,7 +27,7 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   subscription1: Subscription;
   subscription2: Subscription;
 
-  private loading: boolean = false;
+  loading: boolean = false;
   private start: number = 0;
   active: Boolean = false;
   show1: Boolean = true;

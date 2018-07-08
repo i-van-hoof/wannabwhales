@@ -1,29 +1,27 @@
-
-  <!--<div class="col-lg12">-->
-    <div class="showHide" style="text-align:center">
+<div class="showHide" style="text-align:center">
       <h3>Welcome to <b> WannaBeWhales</b></h3>
       <img style="text-align:center" width="140" src="https://media.giphy.com/media/qhhamrBnxSKNG/giphy.gif">
       <h2 style="text-align:center">Cryptocurrency Market Info</h2>
-    </div>
+</div>
+
     <br class="showHide">
-
-
-    <div class="col-xs-12 col-md-5 ">
-      <button type="button" class="btn btn-primary homepageButtonTop" (click)="button('')" [ngClass]="{'btn-success': active}">Top 100</button>
-      <!-- <button type="button" class="btn btn-info" (click)="button100('', 100, 100)" [ngClass]="{'btn-success': active}">100-200</button>
-      <button type="button" class="btn btn-info" (click)="button200('')" [ngClass]="{'btn-success': active}">200-300</button> -->
-      <button type="button" class="btn btn-basic homepageButtonScroll" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Previous 100</button>
-      <button type="button" class="btn btn-basic homepageButtonScroll" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
+    <div class="col-xs-12 col-md-3 ">
+      <button type="button" class="btn btn-primary homepageButtonTop" (click)="button('market', '', 0, 100)" [ngClass]="{'btn-success': active}">Top 100</button>
+      <button type="button" class="btn btn-basic homepageButtonScroll" (click)="buttonPrevious('market', '', 0 , 100)" [ngClass]="{'btn-success': active}"><span class="glyphicon glyphicon-chevron-left"></span> 100</button>
+      <button type="button" class="btn btn-basic homepageButtonScroll" (click)="buttonNext('market', '', 0 , 100)" [ngClass]="{'btn-success': active}">100 <span class="glyphicon glyphicon-chevron-right"></span></button>
     </div>
-
-
+    <div class="showHide col-xs-12 col-md-2" style="margin-right: 0px; text-align: left; padding-left: 1px"><h5>Showing page: {{this.start}} - {{this.start + 100}}</h5></div>
     <div class="col-xs-8 col-md-5 homepageBar">
       <div class="form-inline">
         <div class="form-group col-xs-8 searchBarDesktop" style="padding-right: 2px; padding-left: 0px; text-align: right">
-          <input type="search"
+            <!-- <input type="search"
                  class="form-control"
                  placeholder="Enter name"
                  [formControl]="searchField"
+                 #search> -->
+          <input type="search"
+                 class="form-control"
+                 placeholder="Enter name"
                  #search>
         </div>
         <div class="form-group col-xs-4" style="padding-left: 0px; padding-right: 0px; ">
@@ -31,11 +29,17 @@
         </div>
     </div>
     </div>
-
-    <div class="col-xs-4 col-md-2 homepageBar" style="margin-right: 0px; text-align: right">
-        <!--<p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning-->
+<!--
+    <div class="showHide col-xs-4 col-md-2 homepageBar" style="margin-right: 0px; text-align: right">
+        <p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning
         <button *ngIf="loading" class="btn btn-info homepageButtons" style="margin-top: 5p; background-color: #f7f3de; border-color: white; color: grey" ><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
-      </div>
+      </div> -->
+
+ <!-- // hier de mobile loading info -->
+      <div class="col-xs-4 col-md-2 homepageBar" style="margin-right: 0px; text-align: right">
+          <!--<p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning-->
+          <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
+        </div>
 
     <!-- <div class="form-inline">
         <div class="form-group col-xs-5">
@@ -47,6 +51,7 @@
 
         </div>
     </div> -->
+    <div class="showMobile col-xs-12 col-md-12" style="margin-right: 0px; text-align: left"><h5>Showing page: {{this.start}} - {{this.start + 100}}</h5></div>
 
 
   <br>
@@ -55,7 +60,7 @@
 
   <div class="col-xs-12">
         <a
-        style="background-color: #f3f3f4; border-bottom:2px solid #ddd; border-right:0px solid #ddd; border-left:0px solid #ddd"
+        style="background-color: #f3f3f4; border-bottom:2px solid #ddd; border-right:0px solid #ddd; border-left:0px solid #ddd; margin: 2px"
         class="portfolioHead list-group-item clearfix">
 
         <div class="portfolioHead col-xs-3 col-md-3"><b>Coin</b></div>

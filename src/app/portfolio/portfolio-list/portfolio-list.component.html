@@ -7,17 +7,18 @@
 <div class="row">
   <div class="col-xs-12">
     <button type="button" class="btn btn-primary portfolioButtons" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="button('')" [ngClass]="{'btn-success': active}">Top 50</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="button('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Top 50</button>
     <!-- <button type="button" class="btn btn-basic" (click)="button50('')" [ngClass]="{'btn-success': active}">0-50</button> -->
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('')" [ngClass]="{'btn-success': active}">← Prev 100</button>
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('')" [ngClass]="{'btn-success': active}">Next 100 →</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">← Prev 100</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Next 100 →</button>
   </div>
 </div>
 <div class="row searchBar" style="margin-top: 5px">
 
     <div class="form-inline">
         <div class="form-group col-xs-5 searchField">
-            <input type="search" class="form-control" placeholder="Enter name" [formControl]="searchField" #search>
+            <!-- <input type="search" class="form-control" placeholder="Enter name" [formControl]="searchField" #search> -->
+            <input type="search" class="form-control" placeholder="Enter name" #search>
 
         </div>
         <div class="form-group col-xs-7" style="padding-left: 0px">
