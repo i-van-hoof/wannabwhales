@@ -47,6 +47,13 @@ export class HomeListComponent implements OnInit, OnDestroy {
     this.subscription2.unsubscribe();
   }
 
+  test() {
+    console.log('test starting');
+    // this.dataService.testFirebaseQuery();
+    this.dataService.getUserPortfolioAuth();
+  }
+
+
  button(portfolio: string, coin: string, start: number, limit: number) {
    this.loading = true;
    this.start = 0;

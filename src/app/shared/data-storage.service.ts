@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Http, Response, Headers, Jsonp} from '@angular/http';
 import 'rxjs/Rx';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/map';
@@ -16,9 +16,10 @@ import {AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfi
 import {FirebaseListObservable, FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 import 'rxjs/add/operator/map';
 import {PortfolioEditComponent} from '../portfolio/portfolio-edit/portfolio-edit.component';
-import { AngularFireAuth } from 'angularfire2/auth';
+import {AngularFireAuth} from 'angularfire2/auth';
 import {Item} from '../items/shared/item';
-import { map } from 'rxjs/operators';
+import {map} from 'rxjs/operators';
+// import { constants } from 'os';
 
 
 
@@ -37,6 +38,9 @@ export class DataStorageService {
   user: Observable<firebase.User>;
   itemRef: AngularFireObject<any>;
   itemRef2: AngularFireObject<any>;
+  // Firebase reference for market info
+  marketRef: any;
+
   portfolioRef: AngularFireObject<any>;
   item: Observable<any>;
   items: FirebaseListObservable<Item[]> = null;
@@ -50,9 +54,17 @@ export class DataStorageService {
   maxChangeSymbol: string;
   minChange = 0;
   minChangeSymbol: string;
-  apiRoot: string = 'https://api.coinmarketcap.com/v1/ticker/';
+  apiRoot = 'https://api.coinmarketcap.com/v1/ticker/';
+  apiRootCors = 'https://api.coinmarketcap.com/v1/ticker';
+  // apiRootCors = 'https://cors-anywhere.herokuapp.com/https://api.coinmarketcap.com/v1/ticker';
   results = [];
   loading: boolean;
+
+  headerDict = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
@@ -60,6 +72,7 @@ export class DataStorageService {
               private authService: AuthService,
               public  db: AngularFireDatabase,
               private af: AngularFireAuth,
+              private jsonp: Jsonp
               ) {
                     this.user = af.authState;
                     this.af.authState.subscribe(user => {
@@ -108,42 +121,78 @@ export class DataStorageService {
       .snapshotChanges()
       .map(res => { this.portfolio2 = res.payload.val(); })
       .first()
-      .toPromise().then(() => this.setData(this.portfolio2))
+      .toPromise().then(() =>
+      // this.setData(this.portfolio2);
+      this.firebaseQuery(this.portfolio2))
       .catch(result => console.log('Promise not working', result));
   }
 
-  setData(portfolio) {
-    console.log(portfolio);
-      for (let coinItem of portfolio) {
-        this.coin = coinItem['id'];
-        const url = 'https://api.coinmarketcap.com/v1/ticker/' + this.coin;
-        console.log(url);
-      this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin).map((res: Response) => res.json()).subscribe(data => {
-          console.log(data);
-          for (let object of data) {
-            coinItem['y'] = coinItem['balance'] * object['price_usd'];
-            coinItem['rank'] = +object['rank'];
-            coinItem['price_usd'] = +object['price_usd'];
-            coinItem['price_btc'] = +object['price_btc'];
-            coinItem['volume_24h'] = +object['24h_volume_usd'];
-            coinItem['market_cap_usd'] = +object['market_cap_usd'];
-            coinItem['available_supply'] = +object['available_supply'];
-            coinItem['total_supply'] = +object['total_supply'];
-            coinItem['max_supply'] = +object['max_supply'];
-            coinItem['percent_change_1h'] = +object['percent_change_1h'];
-            coinItem['percent_change_24h'] = +object['percent_change_24h'];
-            coinItem['percent_change_7d'] = +object['percent_change_7d'];
-            coinItem['last_updated'] = +object['last_updated'];
-            delete object['24h_volume_usd'];
-          }
-        }, error => {console.log('error getting coinmarket coin info: ' + error); });
-      }
-      // console.log(portfolio);
-      this.coinMarketService.setPortfolioData(portfolio);
-      // this.coinMarketService.setPortfolio(portfolio);
+  // setData(portfolio) {
+  //   console.log(portfolio);
+  //     for (let coinItem of portfolio) {
+  //       this.coin = coinItem['id'];
+  //       const url = 'https://api.coinmarketcap.com/v1/ticker/' + this.coin;
+  //       console.log(url);
+  //     this.http.get('https://api.coinmarketcap.com/v1/ticker/' + this.coin).map((res: Response) => res.json()).subscribe(data => {
+  //         console.log(data);
+  //         for (let object of data) {
+  //           coinItem['y'] = coinItem['balance'] * object['price_usd'];
+  //           coinItem['rank'] = +object['rank'];
+  //           coinItem['price_usd'] = +object['price_usd'];
+  //           coinItem['price_btc'] = +object['price_btc'];
+  //           coinItem['volume_24h'] = +object['24h_volume_usd'];
+  //           coinItem['market_cap_usd'] = +object['market_cap_usd'];
+  //           coinItem['available_supply'] = +object['available_supply'];
+  //           coinItem['total_supply'] = +object['total_supply'];
+  //           coinItem['max_supply'] = +object['max_supply'];
+  //           coinItem['percent_change_1h'] = +object['percent_change_1h'];
+  //           coinItem['percent_change_24h'] = +object['percent_change_24h'];
+  //           coinItem['percent_change_7d'] = +object['percent_change_7d'];
+  //           coinItem['last_updated'] = +object['last_updated'];
+  //           delete object['24h_volume_usd'];
+  //         }
+  //       }, error => {console.log('error getting coinmarket coin info: ' + error); });
+  //     }
+  //     // console.log(portfolio);
+  //     this.coinMarketService.setPortfolioData(portfolio);
+  //     // this.coinMarketService.setPortfolio(portfolio);
+  //   }
+
+    firebaseQuery(portfolio) {
+      const coinsToFetch = [];
+      for (const coinItem of portfolio) {
+        coinsToFetch.push(coinItem['symbol']); }
+        console.log('Fetched coins from UserPortfolio in Firebase: ' + coinsToFetch);
+
+      // Map the Firebase promises into an array
+      const coinPromises = coinsToFetch.map(id => {
+        return this.db.object('market/' + id).valueChanges().first().toPromise();
+       });
+      // Wait for all the async requests mapped into
+      // the array to complete
+      Promise.all(coinPromises)
+        .then(coins => {
+            coins.forEach((value, index) => {
+              portfolio[index]['y'] = portfolio[index]['balance'] * value['price_usd'];
+              portfolio[index]['volume_24h'] = value['volume_24h'];
+              portfolio[index]['last_updated'] = value['last_updated'];
+              portfolio[index]['market_cap_usd'] = value['market_cap'];
+              portfolio[index]['price_usd'] = value['price_usd'];
+              portfolio[index]['percent_change_1h'] = value['percent_change_1h'];
+              portfolio[index]['percent_change_24h'] = value['percent_change_24h'];
+              portfolio[index]['percent_change_7d'] = value['percent_change_7d'];
+              portfolio[index]['total_supply'] = value['total_supply'];
+              portfolio[index]['available_supply'] = value['circulating_supply'];
+            });
+            console.log(portfolio);
+        })
+        .catch(err => {
+          console.log(err, 'error');
+        });
+        this.coinMarketService.setPortfolioData(portfolio);
     }
 
-// test welke van de twee functies niet klopt
+// testing
   // getUserPortfolioNEW() {
   //   this.af.authState.toPromise().then
   //   (user => {if(user) this.userId = user.uid; console.log(this.userId) });
@@ -158,9 +207,6 @@ export class DataStorageService {
   //       return this.http.get('https://api.coinmarketcap.com/v1/ticker/' + object['id']).map((res: Response) => res.json()).subscribe( data => {
   //         console.log(data)
   //       })}})}
-
-
-
 
   //         const portfolioIndex = this.portfolio.findIndex(p => p.symbol === object.symbol);
   //         object['price_usd'] = +object['price_usd'];
@@ -248,11 +294,32 @@ export class DataStorageService {
   //     } else { console.log('is in Edit Mode')}
   //   });
 
+  // voorbeeld code http headers
+  // https://cors-anywhere.herokuapp.com/https://api.coinmarketcap.com/v2/ticker/1/
+
+
+// return this.http.get(this.heroesUrl, requestOptions)
+
+// let headers = new Headers();
+// headers.append('Content-Type', 'application/json');
+// headers.append('authentication', `${student.token}`);
+
+// let options = new RequestOptions({ headers: headers });
+
+
+  testHTTPcall(type: string, coin: string, start: number,  limit: number) {
+    // const requestOptions = {
+    //   headers: new Headers(this.headerDict),
+    // };
+      const apiURL = `${this.apiRootCors}/?callback=foo`;
+      // test
+      console.log(apiURL);
+      this.http.get(apiURL).subscribe(data => console.log(data));
+    }
 
   getHTTPcall(type: string, coin: string, start: number,  limit: number) {
     let promise = new Promise((resolve, reject) => {
       let apiURL = `${this.apiRoot}${coin}/?start=${start}&limit=${limit}`;
-      // test
       console.log(apiURL);
       this.http.get(apiURL)
         .toPromise()

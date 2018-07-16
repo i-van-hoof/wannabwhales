@@ -26,6 +26,7 @@
     "angularfire2": "^5.0.0-rc.3",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.3",
+    "cors-anywhere": "^0.4.1",
     "firebase": "^4.11.0",
     "google-cloud": "^0.57.0",
     "highcharts": "^6.0.7",
