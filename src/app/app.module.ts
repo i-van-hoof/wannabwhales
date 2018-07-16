@@ -16,7 +16,7 @@ import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio
 import { DropdownDirective} from './shared/dropdown.directive';
 import { TransactionService} from './wish-list/transaction.service';
 import { MarketService} from './market/market.service';
-import { HttpModule} from '@angular/http';
+import { HttpModule, JsonpModule} from '@angular/http';
 import { AppRoutingModule} from './app-routing.module';
 import { HomeComponent } from './home/home.component';
 import { DataStorageService} from './shared/data-storage.service';
@@ -44,12 +44,17 @@ import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import * as highcharts from 'highcharts';
 
-// de imports voor de grafiek van highcharts
+// imports for graphs of highcharts
 import { ItemsListComponent } from './items/items-list/items-list.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ItemFormComponent } from './items/item-form/item-form.component';
 import {DecimalPipe} from '@angular/common';
 import {AuthGuard} from './auth/auth-guard.service';
+
+ // imports for CORS
+// import { provide } from '@angular/core';
+import { BrowserXhr } from '@angular/http';
+import { CustExtBrowserXhr} from './shared/cust-ext-browser-xhr';
 
 
 // export function highchartsFactory() {
@@ -117,17 +122,17 @@ export const environment = {
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     // ChartModule.forRoot(require('highcharts'))
-    ChartModule
+    ChartModule,
+    JsonpModule
 
   ],
   providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard, PortfolioListComponent,
    {
-   provide: HighchartsStatic,
-   useFactory: highchartsFactory
-  }
+   provide: HighchartsStatic, useFactory: highchartsFactory
+  },
+  {provide: BrowserXhr, useClass: CustExtBrowserXhr},
+    // {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
-
-
   bootstrap: [AppComponent]
 })
 export class AppModule { }
