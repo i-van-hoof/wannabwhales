@@ -174,10 +174,13 @@ export class DataStorageService {
         .then(coins => {
             coins.forEach((value, index) => {
               portfolio[index]['y'] = portfolio[index]['balance'] * value['price_usd'];
+              portfolio[index]['previous_value'] = portfolio[index]['value'];
+              delete portfolio[index]['value'];
               portfolio[index]['volume_24h'] = value['volume_24h'];
               portfolio[index]['last_updated'] = value['last_updated'];
               portfolio[index]['market_cap_usd'] = value['market_cap'];
               portfolio[index]['price_usd'] = value['price_usd'];
+              portfolio[index]['price_btc'] = value['price_btc'];
               portfolio[index]['percent_change_1h'] = value['percent_change_1h'];
               portfolio[index]['percent_change_24h'] = value['percent_change_24h'];
               portfolio[index]['percent_change_7d'] = value['percent_change_7d'];

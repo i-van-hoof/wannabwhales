@@ -221,7 +221,7 @@ function saveMarketInfo() {
 
   let start = i * 100;
   console.log(start);
-  rp('https://api.coinmarketcap.com/v2/ticker/?start=' + start + '&limit=100').then(marketString => {
+  rp('https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=' + start + '&limit=100').then(marketString => {
     market = JSON.parse(marketString);
     let marketInfo = {};
     keyList = Object.keys(market['data']);
@@ -238,12 +238,13 @@ function saveMarketInfo() {
         circulating_supply: market['data'][item].circulating_supply,
         total_supply: market['data'][item].total_supply,
         price_usd: market['data'][item]['quotes']['USD'].price,
+        price_btc: market['data'][item]['quotes']['BTC'].price,
         volume_24h: market['data'][item]['quotes']['USD'].volume_24h,
         market_cap: market['data'][item]['quotes']['USD'].market_cap,
         percent_change_1h: market['data'][item]['quotes']['USD'].percent_change_1h,
         percent_change_24h: market['data'][item]['quotes']['USD'].percent_change_24h,
         percent_change_7d: market['data'][item]['quotes']['USD'].percent_change_7d,
-        last_updated: market['data'][item]['quotes'].last_updated
+        last_updated: market['data'][item].last_updated
       }
     }
     // console.log(marketInfo)

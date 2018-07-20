@@ -14,6 +14,153 @@ import { marketDataModel } from '../market-data.model';
 export class HomeListComponent implements OnInit, OnDestroy {
   coinmarket: CoinCryptocoin[];
   marketData: marketDataModel[];
+  // marketData =
+  // [{ id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00}
+  //   ,
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00},
+  //   { id: 'bitcoin',
+  //   name: 'Bitcoin',
+  //   symbol: 'BTC',
+  //   rank: 1,
+  //   price_usd: 6717.18,
+  //   price_btc: 1,
+  //   market_cap_usd: 100000,
+  //   volume_24h: 25000000,
+  //   percent_change_1h: 0.06,
+  //   percent_change_7d: 4.90,
+  //   percent_change_24h: 56.00}
+  // ];
+
   subscription: Subscription;
   subscription2: Subscription;
   loading = false;
@@ -22,27 +169,16 @@ export class HomeListComponent implements OnInit, OnDestroy {
 
   constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService) {}
 
-
-
-
   ngOnInit() {
 
     this.loading = true;
     this.dataService.getHTTPcall('market', '', 0 ,  100).then( () => this.loading = false);
 
-    // this.subscription = this.coinmarketService.coinmarketChanged
-    //   .subscribe(
-    //     (coinmarket: CoinCryptocoin[]) => {
-    //       this.coinmarket = coinmarket; } );
-    //       // this.coinmarket = this.coinmarketService.getMarket();
-
     this.subscription2 = this.coinmarketService.marketDataChanged
       .subscribe(
         (marketData: marketDataModel[]) => {
           this.marketData = marketData; } );
-    // this.coinmarket = this.coinmarketService.getMarket();
   }
-
 
   ngOnDestroy() {
     this.subscription2.unsubscribe();
@@ -53,7 +189,6 @@ export class HomeListComponent implements OnInit, OnDestroy {
     // this.dataService.testFirebaseQuery();
     this.dataService.getUserPortfolioAuth();
   }
-
 
  button(portfolio: string, coin: string, start: number, limit: number) {
    this.loading = true;

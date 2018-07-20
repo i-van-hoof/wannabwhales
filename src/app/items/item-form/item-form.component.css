@@ -15,7 +15,7 @@
 .mobile-backgroundColor {background-color: #d9edf7}
 
 @media screen and (max-width: 768px) {
-  .portfolioList  { font-size: 12px; padding-left: 2px }
+  .portfolioList  { font-size: 10px; padding-left: 2px }
 
 }
 
