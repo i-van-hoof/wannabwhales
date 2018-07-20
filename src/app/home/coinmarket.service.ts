@@ -65,11 +65,10 @@ export class CoinmarketService {
       if (index >= 0) {
         object['balance'] = this.portfolioData[index].balance;
         object['value'] = this.portfolioData[index].balance * object['price_usd'];
-        object['inportfolio'] = true}
-      else {
+        object['inportfolio'] = true; } else {
         object['balance'] = 0;
         object['value'] = 0;
-        object['inportfolio'] = false}
+        object['inportfolio'] = false; }
     }
     console.log(this.portfolio);
     this.portfolioChanged.next(this.portfolio.slice());

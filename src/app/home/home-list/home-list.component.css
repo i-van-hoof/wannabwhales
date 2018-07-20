@@ -11,6 +11,7 @@
   .homepageButtonTop {font-size: 14px; width: 26%}
   .homepageButtonScroll {font-size: 14px; width: 35%}
   .searchButtons { }
+  .portfolioList {padding-left: 2px}
 
 }
 /* Desktop*/
@@ -21,6 +22,7 @@
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}
   .searchBarDesktop { text-align: right}
+
 
 }
 

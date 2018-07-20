@@ -38,11 +38,13 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
 
   getTotal() {
     let total = 0;
+    console.log(this.marketData);
     for (let i = 0; i < this.marketData.length; i++) {
-      if (this.marketData[i].y) {
-        total += this.marketData[i].y;
+      if (this.marketData[i].value) {
+        total += this.marketData[i].value;
       }
     }
+    console.log(total);
     return total;
   }
 

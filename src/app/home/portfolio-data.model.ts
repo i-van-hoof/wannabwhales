@@ -5,6 +5,7 @@ export class portfolioDataModel {
   public symbol: string;
   public rank: string;
   public value: number;
+  public previous_value: number;
   public y: number;
   public price_usd: number;
   public price_btc: number;
@@ -30,6 +31,7 @@ export class portfolioDataModel {
     symbol: string,
     rank: string,
     value: number,
+    previous_value: number,
     y: number,
     price_usd: number,
     price_btc: number,
@@ -56,6 +58,7 @@ export class portfolioDataModel {
     this.symbol = symbol;
     this.rank = rank;
     this.value  = value;
+    this.previous_value = previous_value;
     this.y  = y;
     this.price_usd = price_usd;
     this.price_btc = price_btc;

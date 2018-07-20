@@ -17,19 +17,28 @@
 
 /* Mobile*/
 .showHide { display:none; }
+.hideName { display:none; }
 .mobile-backgroundColor {background-color: #d9edf7}
 
 @media screen and (max-width: 768px) {
   .dataBanner  { font-size: 11px; padding-left: 5px; padding-right: 5px }
   .portfolioHead {padding-left: 2px}
   .portfolioList  { font-size: 12px; padding-left: 2px }
+  /* #child {
+    line-height: 20px;
+  } */
 
 }
 /* Desktop*/
 @media screen and (min-width: 768px) {
   .showHide  { display: block; }
+  .hideName  { display: inline; }
   .breakRemove {display: none}
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}
+  #child { line-height: 30px;}
+
 }
+
+
 

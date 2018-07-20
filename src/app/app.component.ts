@@ -50,6 +50,11 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
 
+      // var parent = document.getElementById('container1');
+      const child = document.getElementById('container2');
+      child.style.paddingRight = child.offsetWidth - child.clientWidth + 'px';
+
+
       // Dit is de initialize van de productie omgeving
       // var config = {
       //   apiKey: "AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA",
