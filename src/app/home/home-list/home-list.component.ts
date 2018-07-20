@@ -80,7 +80,7 @@ export class HomeListComponent implements OnInit, OnDestroy {
 
   buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
-    this.start -= 100;
+    if (this.start > 0) { this.start -= 100; }
     this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
   }
 

@@ -54,7 +54,7 @@ import {AuthGuard} from './auth/auth-guard.service';
  // imports for CORS
 // import { provide } from '@angular/core';
 import { BrowserXhr } from '@angular/http';
-import { CustExtBrowserXhr} from './shared/cust-ext-browser-xhr';
+// import { CustExtBrowserXhr} from './shared/cust-ext-browser-xhr';
 
 
 // export function highchartsFactory() {
@@ -129,8 +129,9 @@ export const environment = {
   providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard, PortfolioListComponent,
    {
    provide: HighchartsStatic, useFactory: highchartsFactory
-  },
-  {provide: BrowserXhr, useClass: CustExtBrowserXhr},
+  }
+  // ,
+  // {provide: BrowserXhr, useClass: CustExtBrowserXhr},
     // {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
