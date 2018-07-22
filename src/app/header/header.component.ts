@@ -1,10 +1,12 @@
-import {Component} from '@angular/core';
+import {Component, ElementRef, Renderer, ViewChild} from '@angular/core';
 
 import {Response} from '@angular/http';
 
 import {DataStorageService} from '../shared/data-storage.service';
 import {AuthService} from '../auth/auth.service';
 import {CoinmarketService} from '../home/coinmarket.service';
+import { Router, NavigationEnd } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -13,11 +15,30 @@ import {CoinmarketService} from '../home/coinmarket.service';
 })
 
 export class HeaderComponent {
+  @ViewChild('navbarToggler') navbarToggler: ElementRef;
+
   constructor(private dataStorageService: DataStorageService,
               private coinmarketService: CoinmarketService,
-              public authService: AuthService) {}
+              public authService: AuthService,
+              private el: ElementRef, private renderer: Renderer, private router: Router) {
+                router.events.subscribe(val => {
+                  if (val instanceof NavigationEnd) {
+                   console.log('end of router');
+                  }
+                });
+              }
 
               interval: number;
+
+              navBarTogglerIsVisible() {
+                return this.navbarToggler.nativeElement.offsetParent !== null;
+              }
+
+              collapseNav() {
+                if (this.navBarTogglerIsVisible()) {
+                  this.navbarToggler.nativeElement.click();
+                }
+              }
 
   onSaveData() {
     this.dataStorageService.storeMarket()
@@ -28,8 +49,17 @@ export class HeaderComponent {
       );
   }
 
+
+
+  // onMenuClick() {
+  //   // this.el.nativeElement.querySelector('.navbar-ex1-collapse')  get the DOM
+  //       // this.renderer.setElementClass('DOM-Element', 'css-class-you-want-to-add', false) if 3rd value is true
+  //       // it will add the css class. 'in' class is responsible for showing the menu.
+  //       this.renderer.setElementClass(this.el.nativeElement.querySelector('navbar-ex1-collapse'), 'in', false);
+  // }
+
   onSavePortfolio() {
-    this.dataStorageService.storePortfolio()
+    this.dataStorageService.storePortfolio();
       // .subscribe(
       //   (response: Response) => {
       //     alert("start saving process");

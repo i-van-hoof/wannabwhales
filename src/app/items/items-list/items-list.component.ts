@@ -95,7 +95,7 @@ export class ItemsListComponent implements OnInit {
         buttons: [{
           type: 'day',
           count: 3,
-          text: '3d'
+          text: '3d',
         }, {
           type: 'week',
           count: 1,
@@ -116,7 +116,7 @@ export class ItemsListComponent implements OnInit {
           type: 'all',
           text: 'All'
         }],
-        selected: 2,
+        selected: 3,
 
         buttonTheme: {
           fill: '#505053',
@@ -401,27 +401,28 @@ export class ItemsListComponent implements OnInit {
 
   onClickPortfolioButton(e) {
     // console.log("clicked chart");
-    // console.log('You clicked '+e.toElement.innerHTML+" button");
-    if(typeof(e.toElement.innerHTML)!== 'undefined') {
-      let c = e.toElement.innerHTML;
+    console.log('clicked');
+    console.log('You clicked ' + e.toElement.innerHTML + ' button');
+    if (typeof(e.toElement.innerHTML) !== 'undefined') {
+      const c = e.toElement.innerHTML;
       let btn_index = 0;
-      let range = 700;
-      if(c == "3d"){
+      let range = 2700;
+      if (c === '3d') {
         btn_index = 0;
         range = 250;
-      } else if(c == "1w"){
+      } else if (c === '1w') {
         btn_index = 1;
-        range = 700
-      } else if(c == "1m"){
+        range = 700;
+      } else if (c === '1m') {
         btn_index = 2;
         range = 2700;
-      } else if(c == "6m"){
+      } else if (c === '6m') {
         btn_index = 3;
         range = 16500;
-      } else if(c == "1y"){
+      } else if (c === '1y') {
         btn_index = 4;
         range = 32000;
-      } else if(c == "All"){
+      } else if (c === 'All') {
         btn_index = 5;
         range = 32000;
       }
@@ -440,7 +441,7 @@ export class ItemsListComponent implements OnInit {
     if(typeof(e.toElement.innerHTML)!== 'undefined') {
       let c = e.toElement.innerHTML;
       let btn_index = 0;
-      let range = 700;
+      let range = 2700;
       if(c == "3d"){
         btn_index = 0;
         range = 250;
@@ -526,8 +527,8 @@ export class ItemsListComponent implements OnInit {
   ngOnInit() {
 
     // this.dataStorageService.getUserPortfolioAuth();
-    this.dataStorageService.retrievePortfolioTicker(700);
-    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 700);
+    this.dataStorageService.retrievePortfolioTicker(2700);
+    this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 1000);
 
     this.timerChartsObervable = Observable.timer(1000, 5000);
     this.subscriptionChartTimer = this.timerChartsObervable

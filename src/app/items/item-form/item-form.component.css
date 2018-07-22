@@ -16,7 +16,9 @@
 
 @media screen and (max-width: 768px) {
   .portfolioList  { padding-left: 2px }
-  .fontResponsive { font-size: 12px}
+  .fontResponsive { font-size: 10px}
+  .hideDesktop { display: block; }
+  .paddingLeft { padding-left: 2px}
 
 
 }
@@ -26,6 +28,7 @@
   .showHide  { display: block; }
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}
+  .hideDesktop { display: none; }
 }
 
 

@@ -9,8 +9,8 @@
       <span class="pull-left"><img src="./assets/PNG/{{coinmarketItem.symbol}}.png" alt="" class="img-responsive" style="max-height: 50px"></span>
     </div>
 
-    <div class="col-xs-4"><b>{{coinmarketItem.symbol}} ({{coinmarketItem.name}})<br>
-      <p [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}" class="list-group-item-text"> {{coinmarketItem.price_usd}} $</p></b>
+    <div class="col-xs-4"><p>{{coinmarketItem.symbol}} ({{coinmarketItem.name}})<br>
+      <p class="list-group-item-text"> {{coinmarketItem.price_usd}} $</p>
       <p [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}" class="list-group-item-text"> {{coinmarketItem.percent_change_24h}} %</p>
     </div>
 

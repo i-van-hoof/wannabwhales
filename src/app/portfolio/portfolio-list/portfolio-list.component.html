@@ -9,11 +9,11 @@
     <button type="button" class="btn btn-primary portfolioButtons" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
     <button type="button" class="btn btn-basic portfolioButtons" (click)="button('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Top 50</button>
     <!-- <button type="button" class="btn btn-basic" (click)="button50('')" [ngClass]="{'btn-success': active}">0-50</button> -->
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">← Prev 100</button>
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Next 100 →</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}"><span class="glyphicon glyphicon-chevron-left"></span> 100</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">100 <span class="glyphicon glyphicon-chevron-right"></span></button>
   </div>
 </div>
-<div class="row searchBar" style="margin-top: 5px">
+<div class="row searchBar" style="margin-top: 5px; margin-bottom: 5px">
 
     <div class="form-inline">
         <div class="form-group col-xs-5 col-md-4 searchField">
@@ -29,12 +29,12 @@
 
           <!-- <button class="btn btn-primary" (click)="getTotal()">TEST</button> -->
  </div>
-
+<!--
 <div class="row">
   <div class="col-xs-12">
   <div><h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}}</h3>
   </div></div>
-</div>
+</div> -->
 
     <app-portfolio-item
       *ngFor="let coinmarketEl of marketData; let i = index;"

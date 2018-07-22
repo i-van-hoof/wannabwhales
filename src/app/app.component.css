@@ -6,6 +6,7 @@
     border: 0px solid red;
     overflow:hidden;
 
+
   }
 
   #container1{
@@ -14,6 +15,7 @@
     border: 0px solid green;
     overflow: hidden;
     margin: 0px;
+    /* background-color: #011A27; */
 
 }
 
@@ -24,6 +26,6 @@
     overflow: auto;
     padding-right: 0px;
 }
-a  { background-color: black}
+.list-group-item { background-color: #063852}
 
   }

@@ -1,2 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 .btn-info {background-color: #d9edf7; color: #777}
+
+.col-xs-8   {padding-left: 12px; padding-right: 12px}
+.col-xs-12  {padding-left: 12px; padding-right: 12px}
+
