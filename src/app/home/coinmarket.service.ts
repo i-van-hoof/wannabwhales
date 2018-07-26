@@ -64,10 +64,10 @@ export class CoinmarketService {
       const index = this.portfolioData.findIndex(p => p.symbol === object.symbol);
       if (index >= 0) {
         object['balance'] = this.portfolioData[index].balance;
-        object['value'] = this.portfolioData[index].balance * object['price_usd'];
+        object['y'] = this.portfolioData[index].balance * object['price_usd'];
         object['inportfolio'] = true; } else {
         object['balance'] = 0;
-        object['value'] = 0;
+        object['y'] = 0;
         object['inportfolio'] = false; }
     }
     console.log(this.portfolio);

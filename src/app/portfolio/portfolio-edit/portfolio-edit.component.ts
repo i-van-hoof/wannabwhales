@@ -98,7 +98,7 @@ export class PortfolioEditComponent implements OnInit {
         portfolioId = portfolio.id;
         portfolioName = portfolio.name;
         portfolioBalance = portfolio.balance;
-        portfolioValue = portfolio.value;
+        portfolioValue = portfolio.y;
         portfolioInportfolio = portfolio.inportfolio;
 
       // if (portfolio['transactions']) {
@@ -122,7 +122,7 @@ export class PortfolioEditComponent implements OnInit {
       'id': new FormControl(portfolioId, Validators.required),
       'name': new FormControl(portfolioName, Validators.required),
       'balance': new FormControl(portfolioBalance, Validators.required),
-      'value': new FormControl(portfolioValue, Validators.required),
+      'y': new FormControl(portfolioValue, Validators.required),
       'inportfolio': new FormControl(portfolioInportfolio, Validators.required),
       'transactions': this.formArray
     });

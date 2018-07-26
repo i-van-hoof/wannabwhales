@@ -193,6 +193,9 @@ export class DataStorageService {
           console.log(err, 'error');
         });
         this.coinMarketService.setPortfolioData(portfolio);
+        if (this.authService.editMode === false) {
+          this.coinMarketService.setPortfolioData(portfolio);
+                } else { console.log('is in Edit Mode'); }
     }
 
 // testing
@@ -451,7 +454,7 @@ export class DataStorageService {
           inportfolio: true,
           balance: object['balance'],
           name: object['name'],
-          value: object['value']
+          value: object['y']
         });}
 
     console.log(this.userId);
