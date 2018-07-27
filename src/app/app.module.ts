@@ -15,7 +15,7 @@ import { PortfolioItemComponent } from './portfolio/portfolio-list/portfolio-ite
 import { PortfolioDetailComponent } from './portfolio/portfolio-detail/portfolio-detail.component';
 import { DropdownDirective} from './shared/dropdown.directive';
 import { TransactionService} from './wish-list/transaction.service';
-import { MarketService} from './market/market.service';
+// import { MarketService} from './market/market.service';
 import { HttpModule, JsonpModule} from '@angular/http';
 import { AppRoutingModule} from './app-routing.module';
 import { HomeComponent } from './home/home.component';
@@ -31,14 +31,14 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AuthService} from './auth/auth.service';
 
-// de imports voor Firebase
+// imports for Firebase
 
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireModule} from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 // import { environment} from '../environments/environment';
 
-// de imports voor Highcharts
+// imports for Highcharts
 
 import { ChartModule } from 'angular2-highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
@@ -48,12 +48,12 @@ import * as highcharts from 'highcharts';
 import { ItemsListComponent } from './items/items-list/items-list.component';
 import { ItemDetailComponent } from './items/item-detail/item-detail.component';
 import { ItemFormComponent } from './items/item-form/item-form.component';
-import {DecimalPipe} from '@angular/common';
-import {AuthGuard} from './auth/auth-guard.service';
+import { DecimalPipe} from '@angular/common';
+import { AuthGuard} from './auth/auth-guard.service';
 
- // imports for CORS
+// imports for CORS
 // import { provide } from '@angular/core';
-import { BrowserXhr } from '@angular/http';
+// import { BrowserXhr } from '@angular/http';
 // import { CustExtBrowserXhr} from './shared/cust-ext-browser-xhr';
 
 
@@ -126,7 +126,7 @@ export const environment = {
     JsonpModule
 
   ],
-  providers: [TransactionService, MarketService, DataStorageService, CoinmarketService, AuthService, AuthGuard, PortfolioListComponent,
+  providers: [TransactionService, DataStorageService, CoinmarketService, AuthService, AuthGuard, PortfolioListComponent,
    {
    provide: HighchartsStatic, useFactory: highchartsFactory
   }

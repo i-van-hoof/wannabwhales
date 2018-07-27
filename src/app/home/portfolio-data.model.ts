@@ -19,9 +19,6 @@ export class portfolioDataModel {
   public percent_change_7d: number;
   public last_updated: number;
   public inportfolio: boolean;
-  // public balance: number;
-  // public value: number;
-  // public inportfolio: boolean;
   // public transactions: Transaction[];
 
   constructor(
@@ -45,10 +42,6 @@ export class portfolioDataModel {
     percent_change_7d: number,
     last_updated: number,
     inportfolio: boolean
-    // balance: number,
-    // value: number,
-    // inportfolio: boolean,
-
   )
   // transactions: Transaction[]
   {
@@ -72,9 +65,6 @@ export class portfolioDataModel {
     this.percent_change_7d = percent_change_7d;
     this.last_updated = last_updated;
     this.inportfolio = inportfolio;
-    // this.balance = balance;
-    // this.value = value;
-    // this.inportfolio = inportfolio;
     // this.transactions = transactions;
   }
 

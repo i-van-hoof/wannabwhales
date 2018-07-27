@@ -1,6 +1,5 @@
 
 import { Component, Input, OnInit } from '@angular/core';
-import { PortfolioModel} from '../../portfolio.model';
 import { portfolioDataModel} from '../../../home/portfolio-data.model';
 
 @Component({
@@ -11,7 +10,6 @@ import { portfolioDataModel} from '../../../home/portfolio-data.model';
 export class PortfolioItemComponent implements OnInit {
 
   @Input() index: number;
-  @Input() marketItem: PortfolioModel;
   @Input() inportfolio: boolean;
   @Input() coinmarketItem: portfolioDataModel;
   @Input() symbol: string;

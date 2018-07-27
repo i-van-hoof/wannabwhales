@@ -1,20 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {AngularFireDatabase} from 'angularfire2/database';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireDatabase } from 'angularfire2/database';
 import { ChartModule } from 'angular2-highcharts';
-import {DataStorageService} from '../../shared/data-storage.service';
-import {Subscription} from 'rxjs/Subscription';
-import {CoinmarketService} from '../../home/coinmarket.service';
-import {CoinCryptocoin} from '../../home/coinmarket.model';
-import {MyExampleService} from '../../shared/marketsummary.service';
-import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
-import {TimerObservable} from 'rxjs/observable/TimerObservable';
-import {Http} from '@angular/http';
-import {AuthService} from '../../auth/auth.service';
-import {AngularFireAuth} from 'angularfire2/auth';
+import { DataStorageService } from '../../shared/data-storage.service';
+import { Subscription } from 'rxjs/Subscription';
+import { CoinmarketService } from '../../home/coinmarket.service';
+import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+import { TimerObservable } from 'rxjs/observable/TimerObservable';
+import { Http } from '@angular/http';
+import { AuthService } from '../../auth/auth.service';
+import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-import {marketDataModel} from '../../home/market-data.model';
-import {portfolioDataModel} from '../../home/portfolio-data.model';
+import { portfolioDataModel } from '../../home/portfolio-data.model';
 
 @Component({
   selector: 'app-items-list',
@@ -22,18 +19,15 @@ import {portfolioDataModel} from '../../home/portfolio-data.model';
   styleUrls: ['./items-list.component.css']
 })
 export class ItemsListComponent implements OnInit {
-  // test code
-  // userName: Observable<firebase.User>;
   userName: string;
   optionsStockchart: Object;
   optionsPiechart: Object;
   optionsColumn: Object;
   items: Observable<any[]>;
   data: any;
-  subscription: Subscription;
+  subscription1: Subscription;
   subscription2: Subscription;
   subscription3: Subscription;
-  subscription4: Subscription;
   subscriptionTimer: Subscription;
   subscriptionChartTimer: Subscription;
   timerChartsObervable: Observable<any>;
@@ -45,7 +39,6 @@ export class ItemsListComponent implements OnInit {
   chartPie: Object;
   chartSummary: Object;
   chartColumn: Object;
-  coinmarket: CoinCryptocoin[];
   portfolioData: portfolioDataModel[];
   sharesArray = [];
   coinsSymbolsArray = [];
@@ -59,8 +52,6 @@ export class ItemsListComponent implements OnInit {
   minChangeSymbol: string;
   xMax: number;
   xMin: number;
-
-
 
 
 // three lines for TimeObservable
@@ -519,11 +510,6 @@ export class ItemsListComponent implements OnInit {
     return total;
   }
 
-  testDataButton() {
-    console.log(this.dataStorageService.portfolio2);
-
-  }
-
   ngOnInit() {
 
     // this.dataStorageService.getUserPortfolioAuth();
@@ -571,27 +557,19 @@ export class ItemsListComponent implements OnInit {
         this.chartColumn['xAxis'][0].setCategories(this.coinsSymbolsArray);
       });
 
-
-    this.subscription = this.coinmarketService.portfolioTickersChanged
+    this.subscription1 = this.coinmarketService.portfolioTickersChanged
       .subscribe(
         (tickers: any) => {
           this.portfolioTickers = tickers; } );
           this.portfolioTickers = this.coinmarketService.getPortfolioTickers();
 
-    //  code om de coinmarket data op te halen uit de coinmarket service
-    this.subscription2 = this.coinmarketService.coinmarketChanged
-      .subscribe(
-        (coinmarket: CoinCryptocoin[]) => {
-          this.coinmarket = coinmarket; } );
-          this.coinmarket = this.coinmarketService.getMarket();
-
-    this.subscription3 = this.coinmarketService.summaryTickersChanged
+    this.subscription2 = this.coinmarketService.summaryTickersChanged
       .subscribe(
         (tickers2: any) => {
           this.summaryTickers = tickers2; } );
           this.summaryTickers = this.coinmarketService.getSummaryTickers();
 
-    this.subscription4 = this.coinmarketService.portfolioDataChanged
+    this.subscription3 = this.coinmarketService.portfolioDataChanged
       .subscribe(
         (portfolioData: portfolioDataModel[]) => {
           this.portfolioData = portfolioData; } );
@@ -611,10 +589,9 @@ export class ItemsListComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription1.unsubscribe();
     this.subscription2.unsubscribe();
     this.subscription3.unsubscribe();
-    this.subscription4.unsubscribe();
     this.subscriptionTimer.unsubscribe();
     this.subscriptionChartTimer.unsubscribe();
 

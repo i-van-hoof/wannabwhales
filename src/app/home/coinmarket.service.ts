@@ -1,19 +1,13 @@
-
-
 import { Injectable} from '@angular/core';
 import { Transaction} from '../shared/transaction.model';
 import { TransactionService } from '../wish-list/transaction.service';
-
 import { Subject } from 'rxjs/Subject';
-import { CoinCryptocoin } from './coinmarket.model';
-import { PortfolioModel } from '../portfolio/portfolio.model';
-import { marketDataModel} from './market-data.model';
+import { MarketDataModel} from './market-data.model';
 import { portfolioDataModel} from './portfolio-data.model';
 
 @Injectable()
 export class CoinmarketService {
-  coinmarketChanged = new Subject<CoinCryptocoin[]>();
-  marketDataChanged = new Subject<marketDataModel[]>();
+  marketDataChanged = new Subject<MarketDataModel[]>();
   portfolioChanged = new Subject<portfolioDataModel[]>();
   portfolioDataChanged = new Subject<portfolioDataModel[]>();
   portfoliosymbolsChanged = new Subject();
@@ -21,8 +15,7 @@ export class CoinmarketService {
   portfolioTickersChanged = new Subject();
   summaryTickersChanged = new Subject();
 
-  private coinmarket: CoinCryptocoin[] = [];
-  private marketData: marketDataModel[] = [];
+  private marketData: MarketDataModel[] = [];
   private portfolioData: portfolioDataModel[] = [];
   private tickers = [];
   private portfolioTickers = [];
@@ -53,10 +46,6 @@ export class CoinmarketService {
     return this.portfolioData.slice();
   }
 
-  getMarket() {
-    return this.marketData.slice();
-  }
-
   setPortfolio(portfolio: portfolioDataModel[]) {
     this.portfolio = portfolio;
     console.log('setPortfolio() in coinmarket-service');
@@ -79,13 +68,8 @@ export class CoinmarketService {
     this.portfolioDataChanged.next(this.portfolioData.slice());
   }
 
-  setCoinmarket(coinmarket: CoinCryptocoin[]) {
-    this.coinmarket = coinmarket;
-    this.coinmarketChanged.next(this.coinmarket.slice());
-  }
-
-  // set data voor Home page met coinmarket cap info
-  setMarketData(marketData: marketDataModel[]) {
+  // set data for Home page with coinmarket cap info
+  setMarketData(marketData: MarketDataModel[]) {
     this.marketData = marketData;
     this.marketDataChanged.next(this.marketData.slice());
   }
@@ -120,10 +104,10 @@ export class CoinmarketService {
     return this.portfolioData[index];
   }
 
-  getCoinmarketItem(symbol: string) {
-    const index2 = this.coinmarket.findIndex(p => p.symbol === symbol);
-    return this.coinmarket[index2];
-  }
+  // getCoinmarketItem(symbol: string) {
+  //   const index2 = this.coinmarket.findIndex(p => p.symbol === symbol);
+  //   return this.coinmarket[index2];
+  // }
 
   // getTickerItem(symbol: string) {
   //   console.log(symbol);
@@ -140,12 +124,13 @@ export class CoinmarketService {
     //this.portfolio.next(this.portfolio.slice());
   //}
 
-  updatePortfolio(symbol: string, newPortfolio: portfolioDataModel) {
+  // TEST find out if code can be removed
+  // updatePortfolio(symbol: string, newPortfolio: portfolioDataModel) {
 
-    const index = this.portfolio.findIndex(p => p.symbol === symbol);
-    this.portfolio[index] = newPortfolio;
-    this.portfolioChanged.next(this.portfolio.slice());
-  }
+  //   const index = this.portfolio.findIndex(p => p.symbol === symbol);
+  //   this.portfolio[index] = newPortfolio;
+  //   this.portfolioChanged.next(this.portfolio.slice());
+  // }
 
   updateUserPortfolio(symbol: string, newPortfolio: portfolioDataModel) {
     console.log(this.portfolioData);
@@ -156,7 +141,7 @@ export class CoinmarketService {
   }
 
   updatePortfolioSymbols(symbol: string) {
-    if ( this.portfoliosymbols.findIndex(p => p.symbol === symbol)) {console.log('symbol is in portfoliosymbols')}
+    if ( this.portfoliosymbols.findIndex(p => p.symbol === symbol)) { console.log('symbol is in portfoliosymbols'); }
     this.portfoliosymbolsChanged.next(this.portfoliosymbols.slice());
   }
 

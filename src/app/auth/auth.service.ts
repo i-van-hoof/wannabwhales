@@ -13,8 +13,6 @@ import {DataStorageService} from '../shared/data-storage.service';
 export class AuthService {
   token: string;
   user: string;
-
-  //test code
   userId: string;
 
   editMode = false;
@@ -23,20 +21,11 @@ export class AuthService {
 
 
   constructor(private http: Http, private af: AngularFireDatabase, private afAuth: AngularFireAuth ,private router: Router) {
-   // this.afAuth.authState.subscribe((auth) => {
-   //   this.authState = auth;
-      // this.userId = auth.uid;
-
-//test code
       this.afAuth.authState.subscribe(user => {
         if(user) this.userId = user.uid;
         this.authState = user;
-      })
-
-     // this.user = this.authState.uid;
+      });
     }
-    ;
-//}
 
   signupUser(name: string, email: string, password: string) {
     this.afAuth
@@ -78,7 +67,6 @@ export class AuthService {
       this.router.navigate(['/signin']);
   }
 
-
   writeUserData(name, userId, email) {
 
     this.af.object('users/' + userId).set({
@@ -86,8 +74,7 @@ export class AuthService {
       email: email
     });
     this.af.object('UserPortfolios/' + userId).set(null)
-
-      //.then(console.log("working")).catch(err=> {console.log(err)});
+      // .then(console.log("working")).catch(err=> {console.log(err)});
   }
 
 // get ID token of logged in user from Firebase Real Time Database
@@ -103,7 +90,6 @@ export class AuthService {
   getUserId() {
     return this.user;
   }
-
 
   getUserEmail() {
     return this.userEmail;
@@ -122,7 +108,5 @@ export class AuthService {
 
   isOutEditmode() {
     this.editMode = false;
-
   }
-
 }

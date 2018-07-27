@@ -1,10 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { Subscription} from 'rxjs/Subscription';
 // import { ActivatedRoute, Router} from '@angular/router';
-import { CoinCryptocoin} from '../coinmarket.model';
 import { CoinmarketService} from '../coinmarket.service';
-import { DataStorageService} from "../../shared/data-storage.service";
-import { marketDataModel } from '../market-data.model';
+import { DataStorageService} from '../../shared/data-storage.service';
+import { MarketDataModel } from '../market-data.model';
 
 @Component({
   selector: 'app-home-list',
@@ -12,8 +11,8 @@ import { marketDataModel } from '../market-data.model';
   styleUrls: ['./home-list.component.css']
 })
 export class HomeListComponent implements OnInit, OnDestroy {
-  coinmarket: CoinCryptocoin[];
-  marketData: marketDataModel[];
+  coinmarket: MarketDataModel[];
+  marketData: MarketDataModel[];
   // marketData =
   // [{ id: 'bitcoin',
   //   name: 'Bitcoin',
@@ -176,7 +175,7 @@ export class HomeListComponent implements OnInit, OnDestroy {
 
     this.subscription2 = this.coinmarketService.marketDataChanged
       .subscribe(
-        (marketData: marketDataModel[]) => {
+        (marketData: MarketDataModel[]) => {
           this.marketData = marketData; } );
   }
 
@@ -184,34 +183,16 @@ export class HomeListComponent implements OnInit, OnDestroy {
     this.subscription2.unsubscribe();
   }
 
-  test() {
-    console.log('test starting');
-    // this.dataService.testFirebaseQuery();
-    this.dataService.getUserPortfolioAuth();
+  button(portfolio: string, coin: string, start: number, limit: number) {
+    this.loading = true;
+    this.start = 0;
+    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
   }
 
- button(portfolio: string, coin: string, start: number, limit: number) {
-   this.loading = true;
-   this.start = 0;
-   this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
- }
-
- buttonCoin(coin: string) {
-  this.loading = true;
-  this.dataService.getHTTPcall('market', coin,  0, 20).then( () => this.loading = false);
-}
-
-  // button100(portfolio: string, coin: string, start: number, limit: number) {
-  //   this.loading = true;
-  //   this.start = 100;
-  //   this.dataService.getHTTPcall('market', '', this.start, 200).then( () => this.loading = false);
-  // }
-
-  // button200(portfolio: string, coin: string, start: number, limit: number) {
-  //   this.loading = true;
-  //   this.start = 200;
-  //   this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
-  // }
+  buttonCoin(coin: string) {
+    this.loading = true;
+    this.dataService.getHTTPcall('market', coin, 0, 20).then( () => this.loading = false);
+  }
 
   buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;

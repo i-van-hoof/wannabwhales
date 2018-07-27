@@ -40,14 +40,31 @@ export class HeaderComponent {
                 }
               }
 
-  onSaveData() {
-    this.dataStorageService.storeMarket()
-      .subscribe(
-        (response: Response) => {
-          console.log(response);
-        }
-      );
-  }
+              onLogout() {
+                this.authService.logout();
+              }
+
+              ngOnInit() {
+                this.dataStorageService.getUserPortfolioAuth();
+
+                this.interval = setInterval(() =>
+                  this.dataStorageService.getUserPortfolioAuth(), 10000);
+              }
+
+              ngOnDestroy() {
+                if (this.interval) {
+                  clearInterval(this.interval);
+                }
+              }
+
+  // onSaveData() {
+  //   this.dataStorageService.storeMarket()
+  //     .subscribe(
+  //       (response: Response) => {
+  //         console.log(response);
+  //       }
+  //     );
+  // }
 
 
 
@@ -58,45 +75,28 @@ export class HeaderComponent {
   //       this.renderer.setElementClass(this.el.nativeElement.querySelector('navbar-ex1-collapse'), 'in', false);
   // }
 
-  onSavePortfolio() {
-    this.dataStorageService.storePortfolio();
+  // onSavePortfolio() {
+  //   this.dataStorageService.storePortfolio();
       // .subscribe(
       //   (response: Response) => {
       //     alert("start saving process");
       //     console.log(response);
       //   }
       // );
-  }
+  // }
 
-  onSaveTransactions() {
-    this.dataStorageService.storeTransactions()
-      .subscribe(
-        (response: Response) => {
-          console.log(response);
-        }
-      );
-  }
+  // onSaveTransactions() {
+  //   this.dataStorageService.storeTransactions()
+  //     .subscribe(
+  //       (response: Response) => {
+  //         console.log(response);
+  //       }
+  //     );
+  // }
 
-  onLogout() {
-    this.authService.logout();
-  }
-
-  ngOnInit() {
-    this.dataStorageService.getUserPortfolioAuth();
-
-    this.interval = setInterval(() =>
-      this.dataStorageService.getUserPortfolioAuth(), 10000);
-  }
-
-  ngOnDestroy() {
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-  }
-
-  onGetTransactions() {
-    this.dataStorageService.getServerTransactions();
-  }
+  // onGetTransactions() {
+  //   this.dataStorageService.getServerTransactions();
+  // }
 
 
 }

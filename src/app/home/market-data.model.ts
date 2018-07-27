@@ -1,4 +1,4 @@
-export class marketDataModel {
+export class MarketDataModel {
   public id: string;
   public name: string;
   public symbol: string;

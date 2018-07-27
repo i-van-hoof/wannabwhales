@@ -26,9 +26,19 @@
         <li><a routerLink="/signup"><span class="glyphicon glyphicon-user"></span> Register</a></li>
         <li><a routerLink="/signin"  *ngIf="!authService.isAuthenticated()"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
         <li><a style="cursor: pointer;" (click)="onLogout()" *ngIf="authService.isAuthenticated()"><b>Log out</b></a></li>
+        <li class="dropdown" appDropdown *ngIf="true">
+          <a style="cursor: pointer" class="dropdown-toggle" role="button"><b>Info</b> <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+           <b> WannaBeWhales App </b><br> Test release!<br> A Properview project<br>
+            <li><a href="http://www.properview.nl" class="dropdown-toggle"> www.properview.nl</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
-  </div>
+
+</div>
+
+
 </nav>
 
 

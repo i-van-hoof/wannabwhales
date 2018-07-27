@@ -14,11 +14,6 @@
       <p [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}" class="list-group-item-text"> {{coinmarketItem.percent_change_24h}} %</p>
     </div>
 
-    <!-- <div class="col-xs-2">
-      <p class="list-group-item-text"> Cap </p>
-      <p class="list-group-item-text"> Balance </p>
-      <p class="list-group-item-text"> Value </p>
-    </div> -->
     <div class="col-xs-6" style="padding-right: 4px">
       <p class="list-group-item-text"> Cap: {{coinmarketItem.market_cap_usd | number}} $</p>
       <p class="list-group-item-text"> Balance : {{coinmarketItem.balance}}</p>
@@ -26,46 +21,5 @@
     </div>
   </div>
 </a>
-
-  <!--<a-->
-  <!--style="cursor: pointer"-->
-  <!--[routerLink]="[coinmarketItem.symbol]"-->
-  <!--routerLinkActive="active"-->
-   <!--class="list-group-item clearfix"-->
-    <!--&gt;-->
-
-  <!--<div class="row">-->
-    <!--<div class="col-xs-10"><b>{{coinmarketItem.symbol}} ({{coinmarketItem.name}})<br>-->
-      <!--<p [ngClass]="{'negative': coinmarketItem.percent_change_24h < 0, 'positive' : coinmarketItem.percent_change_24h > 0}" class="list-group-item-text"> {{coinmarketItem.price_usd}} $</p></b>-->
-    <!--</div>-->
-
-    <!--<div class="col-xs-2 pull-right" style="text-align: right">-->
-      <!--<span class="pull-right"><img src="./assets/SVG/{{coinmarketItem.symbol}}.svg" alt="" class="img-responsive" style="max-height: 50px"></span></div>-->
-
-  <!--</div>-->
-
-  <!--<div class="row">-->
-    <!--<div class="col-xs-2">-->
-      <!--<p class="list-group-item-text"> Cap </p>-->
-    <!--</div>-->
-    <!--<div class="col-xs-4">-->
-      <!--<b>{{coinmarketItem.market_cap_usd | number}}</b>-->
-    <!--</div>-->
-      <!--<div class="col-xs-6">-->
-  <!--</div>-->
-  <!--</div>-->
-
-    <!--<div class="row">-->
-      <!--<div class="col-xs-2">-->
-        <!--Balance-->
-      <!--</div>-->
-      <!--<div class="col-xs-4">-->
-        <!--<p class="list-group-item-text"> {{coinmarketItem.balance}}</p>-->
-      <!--</div>-->
-      <!--<div class="col-xs-6">-->
-        <!--<b> {{ coinmarketItem.value | number : '1.0-0'}} $</b>-->
-      <!--</div>-->
-    <!--</div>-->
-<!--</a>-->
 
 

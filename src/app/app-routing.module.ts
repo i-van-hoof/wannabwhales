@@ -2,7 +2,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MarketComponent} from './market/market.component';
-
 import {WishListComponent} from './wish-list/wish-list.component';
 import {HomeComponent} from './home/home.component';
 import {PortfolioStartComponent} from './portfolio/portfolio-start/portfolio-start.component';

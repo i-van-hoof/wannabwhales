@@ -33,18 +33,7 @@ interface PostId extends Post {
 export class AppComponent implements OnInit {
   title = 'WannaBeWhales';
   loadedFeature = 'market';
-  // items: Observable<any[]>;
-
-  // postCol: AngularFirestoreCollection<Post>;
-  // posts: any;
-  //
-  // postTitle: string;
-  // content: string;
-  // postDoc: AngularFirestoreDocument<Post>;
-  // post: Observable<Post>;
-
   constructor(db: AngularFireDatabase) {
-    //this.items = db.list('market').valueChanges();
 
   }
 
@@ -54,8 +43,7 @@ export class AppComponent implements OnInit {
       const child = document.getElementById('container2');
       child.style.paddingRight = child.offsetWidth - child.clientWidth + 'px';
 
-
-      // Dit is de initialize van de productie omgeving
+      // initialize production envrionment
       // var config = {
       //   apiKey: "AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA",
       //   authDomain: "whalesapp-dev.firebaseapp.com",
@@ -66,7 +54,7 @@ export class AppComponent implements OnInit {
       // };
       // firebase.initializeApp(config);
 
-     // Dit is de initialize van de testomgeving
+     // initialize development environment
       const config = {
         apiKey: 'AIzaSyCxS-yQCgYUWTBDdPJFT3sIz-blK3dSSys',
         authDomain: 'whalesapp-test-mr2.firebaseapp.com',
@@ -81,18 +69,6 @@ export class AppComponent implements OnInit {
       {
         this.loadedFeature = feature;
       }
-
-      // addPost() {
-      //   // this.afs.collection('posts').add({'title': this.postTitle, 'content': this.content});
-      //   // hieronder de variant als je zelf een custom ID wil aanmaken voor het document
-      //   this.afs.collection('tickers').doc('dag 1').collection('Bitcoin').doc('Ticker').set({'title': this.postTitle, 'content': this.content});
-      //
-      // }
-      //
-      // getPost(PostId) {
-      //   this.postDoc = this.afs.doc('posts/' + PostId);
-      //   this.post = this.postDoc.valueChanges();
-      // }
   }
 
 

@@ -16,15 +16,3 @@
 //   }
 // };
 
-// // The Firebase production environment:
-// export const environment = {
-//   production: false,
-//   firebase: {
-//     apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
-//     authDomain: 'whalesapp-dev.firebaseapp.com',
-//     databaseURL: 'https://whalesapp-dev.firebaseio.com',
-//     projectId: 'whalesapp-dev',
-//     storageBucket: 'whalesapp-dev.appspot.com',
-//     messagingSenderId: '506504177003'
-//   }
-// };

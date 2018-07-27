@@ -25,28 +25,10 @@
         </div>
     </div>
     </div>
-<!--
-    <div class="showHide col-xs-4 col-md-2 homepageBar" style="margin-right: 0px; text-align: right">
-        <p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning
-        <button *ngIf="loading" class="btn btn-info homepageButtons" style="margin-top: 5p; background-color: #f7f3de; border-color: white; color: grey" ><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
-      </div> -->
 
- <!-- // hier de mobile loading info -->
       <div class="col-xs-4 col-md-2 homepageBar" style="margin-right: 0px; text-align: right">
-          <!--<p *ngIf="loading">Loading...</p> btn btn-sm btn-link alert alert-warning-->
           <button *ngIf="loading" class="btn btn-sm btn-link"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...</button>
         </div>
-
-    <!-- <div class="form-inline">
-        <div class="form-group col-xs-5">
-            <input type="search" class="form-control" placeholder="Enter search string" [formControl]="searchField" #search>
-
-        </div>
-        <div class="form-group col-xs-6" style="padding-left: 0px">
-            <button class="btn btn-primary"  (click)="buttonCoin(search.value)">Search</button>
-
-        </div>
-    </div> -->
 
     <div class="showMobile col-xs-12 col-md-12" style="margin-right: 0px; margin-left: 2px; text-align: left"><b>Showing page: {{this.start}} - {{this.start + 100}}</b></div>
 
@@ -76,13 +58,11 @@
 
         </a>
 
-  <!--<div class="col-sm-12">-->
     <app-home-item
       *ngFor="let coinmarketEl of marketData; let i = index"
       [coinmarket]="coinmarketEl"
       [index]="i"
     ></app-home-item>
-   <!--</div>-->
 </div>
 
 

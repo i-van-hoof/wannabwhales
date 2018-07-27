@@ -10,7 +10,6 @@
   .homepageBar { margin-top: 5px; margin-right: 0px}
   .homepageButtonTop {font-size: 14px; width: 26%}
   .homepageButtonScroll {font-size: 14px; width: 35%; background-color: #DDDDDD}
-  .searchButtons { }
   .portfolioList {padding-left: 2px}
 
 }
@@ -22,8 +21,6 @@
   #leftside > button { display: none; }
   .mobile-backgroundColor {background-color: white}
   .searchBarDesktop { text-align: right}
-
-
 }
 
 .glyphicon-refresh-animate {

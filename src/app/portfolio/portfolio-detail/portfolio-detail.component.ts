@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {PortfolioModel} from '../portfolio.model';
 import {CoinmarketService} from '../../home/coinmarket.service';
 import {ActivatedRoute, NavigationEnd, NavigationStart, Params, Router} from '@angular/router';
-import {CoinCryptocoin} from '../../home/coinmarket.model';
+// import {CoinCryptocoin} from '../../home/coinmarket.model';
 import {DataStorageService} from '../../shared/data-storage.service';
 import {Subscription} from 'rxjs/Subscription';
 import {portfolioDataModel} from '../../home/portfolio-data.model';
@@ -14,15 +13,12 @@ import {PortfolioListComponent} from '../portfolio-list/portfolio-list.component
   styleUrls: ['./portfolio-detail.component.css']
 })
 export class PortfolioDetailComponent implements OnInit {
-   portfolioItem: PortfolioModel;
-   coinmarketItem: CoinCryptocoin;
    portfolioDataItem: portfolioDataModel;
    symbol: string;
    routeSymbol: string;
    options: Object;
    chart: Object;
    tickers: any;
-   // nIntervId: any;
    subscription: Subscription;
    filteredItems: any;
 
@@ -30,7 +26,7 @@ export class PortfolioDetailComponent implements OnInit {
                private dataStorageService: DataStorageService,
                private route: ActivatedRoute,
                private router: Router,
-               private _list: PortfolioListComponent) {
+               ) {
 
      this.options = {
        title: {text: ''},
@@ -68,19 +64,6 @@ export class PortfolioDetailComponent implements OnInit {
        },
      };
 
-     // setTimeout(() => {
-     //   // this.chart['series'][0].setData([[1508768560076, 6005.46],[1508768560085, 6505.46],[1508768627592, 7200.46]]);
-     //    this.chart['series'][0].setData(this.tickers);
-     //   // console.log(this.chart['series'][0].data);
-     // }, 1000);
-     //
-     // router.events.subscribe((val) => {
-     //   if (val instanceof NavigationEnd) {console.log('true');}
-     //   });
-     //
-     //  setInterval(() =>
-     //    this.updateSeriesData(this.tickers), 3000);
-
       }
 
     saveInstance(chartInstance): void {
@@ -95,7 +78,6 @@ export class PortfolioDetailComponent implements OnInit {
 
 // de router params functie geeft de symbol van de coin in de array via het Symbol, bijv XRP.
   ngOnInit() {
-
 
 
     this.subscription = this.coinMarketservice.tickersChanged
@@ -114,11 +96,8 @@ export class PortfolioDetailComponent implements OnInit {
         (params: Params) => {
           this.symbol = params['symbol'];
           console.log(this.symbol);
-          // this.dataStorageService.getUserPortfolioAuth();
-
-          // this.portfolioDataItem = this.coinMarketservice.getPortfolioDataItem(this.symbol);
           this.portfolioDataItem = this.coinMarketservice.getPortfolioItem(this.symbol);
-          // this.dataStorageService.getUserPortfolioAuth();
+
           this.dataStorageService.retrieveTicker(this.symbol).subscribe(items => {
             this.filteredItems = [];
             items.map(tickerData => {
@@ -138,8 +117,6 @@ export class PortfolioDetailComponent implements OnInit {
         }
       );
   }
-
-
 
   onEditPortfolioItem() {
     this.routeSymbol = this.portfolioDataItem['symbol'];

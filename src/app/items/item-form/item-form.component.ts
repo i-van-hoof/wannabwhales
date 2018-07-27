@@ -1,6 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CoinCryptocoin} from '../../home/coinmarket.model';
-
 
 @Component({
   selector: 'app-item-form',
