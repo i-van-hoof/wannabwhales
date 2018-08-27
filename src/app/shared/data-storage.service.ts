@@ -215,6 +215,7 @@ export class DataStorageService {
     const newPortfolio = {};
     this.portfolioArray = [];
     for (let object of portfolioUpdate) {
+      if (object['inportfolio'] === true) {
         this.portfolioArray.push({
           symbol: object['symbol'],
           id: object['id'],
@@ -222,10 +223,10 @@ export class DataStorageService {
           balance: object['balance'],
           name: object['name'],
           value: object['y']
-        }); }
+        }); }}
     console.log(this.userId);
     newPortfolio[this.userId] = this.portfolioArray;
-    console.log('next step is saving portfolio: ' + newPortfolio);
+    console.log('next step is saving portfolio: ' + JSON.stringify(this.portfolioArray));
     this.portfolioRef = this.db.object('UserPortfolios/');
     this.portfolioRef.update(newPortfolio);
   }

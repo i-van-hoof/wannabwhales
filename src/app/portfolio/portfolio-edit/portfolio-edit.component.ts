@@ -46,14 +46,14 @@ export class PortfolioEditComponent implements OnInit {
     if (this.editMode) {
       console.log('updatePortfolio() vanuit portfolio-edit');
       console.log(this.symbol);
-       if (this.portfolioForm.value.inportfolio) {
-          this.coinmarketService.updateUserPortfolio(this.symbol, this.portfolioForm.value);
+       if (this.portfolioForm.value.newitem) {
+        this.coinmarketService.addToUserPortfolio(this.portfolioForm.value);
      // this.coinmarketService.updatePortfolioSymbols(this.symbol, this.portfolioForm.value);
         } else { console.log('this data added to the UserPortfolio');
-          this.coinmarketService.addToUserPortfolio(this.portfolioForm.value);
+          this.coinmarketService.updateUserPortfolio(this.symbol, this.portfolioForm.value);
         }
+        this.dataStorageService.storePortfolio();
         this.onCancel();
-        this.dataStorageService.storePortfolio()
          //  .subscribe(
          //   (response: Response) => {console.log(response);}
          // );
@@ -88,6 +88,7 @@ export class PortfolioEditComponent implements OnInit {
     let portfolioBalance;
     let portfolioValue;
     let portfolioInportfolio: boolean;
+    let newPortfolioItem: boolean;
     this.formArray = new FormArray([]);
 
     if (this.editMode) {
@@ -100,6 +101,7 @@ export class PortfolioEditComponent implements OnInit {
         portfolioBalance = portfolio.balance;
         portfolioValue = portfolio.y;
         portfolioInportfolio = portfolio.inportfolio;
+        newPortfolioItem = portfolio.inportfolio !== true;
 
       // if (portfolio['transactions']) {
       //   for (let transaction of portfolio.transactions) {
@@ -124,6 +126,7 @@ export class PortfolioEditComponent implements OnInit {
       'balance': new FormControl(portfolioBalance, Validators.required),
       'y': new FormControl(portfolioValue, Validators.required),
       'inportfolio': new FormControl(portfolioInportfolio, Validators.required),
+      'newitem': new FormControl(newPortfolioItem, Validators.required),
       'transactions': this.formArray
     });
   }}
