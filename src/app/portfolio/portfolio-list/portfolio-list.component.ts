@@ -25,6 +25,7 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   private start: number = 0;
   active: Boolean = false;
   show1: Boolean = true;
+  newColor = false;
 
   constructor(private coinmarketService: CoinmarketService, private dataService: DataStorageService
               ) {}
@@ -44,7 +45,7 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.dataService.getHTTPcall('portfolio', '', 0 ,  10).then( () => this.loading = false);
+    this.dataService.getHTTPcall('portfolio', '', 0 ,  20).then( () => this.loading = false);
 
     // this.portfolioData = this.coinmarketService.getPortfolio();
 
@@ -74,18 +75,19 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   }
 
   show() {
+    this.newColor = !this.newColor;
     this.show1 = !this.show1;
   }
 
 
   buttonCoin(coin: string) {
     this.loading = true;
-    this.dataService.getHTTPcall('portfolio', coin,  0, 20).then( () => this.loading = false);
+    this.dataService.getHTTPcall('portfolio', coin,  0, 50).then( () => this.loading = false);
   }
 
   button(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
-    this.dataService.getHTTPcall('portfolio', '',  0, 50).then( () => this.loading = false);
+    this.dataService.getHTTPcall('portfolio', '',  0, limit).then( () => this.loading = false);
     // this.router.navigate(['../'], {relativeTo: this.route});
   }
 
@@ -99,7 +101,6 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
   buttonNext(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     this.start += 100;
-    console.log(this.start);
     this.dataService.getHTTPcall('portfolio', '', this.start, 100).then( () => this.loading = false);
   }
 

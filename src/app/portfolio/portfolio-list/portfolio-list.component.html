@@ -6,8 +6,8 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <button type="button" class="btn btn-primary portfolioButtons" (click)="show()" [ngClass]="{'btn-success': active}">Portfolio</button>
-    <button type="button" class="btn btn-basic portfolioButtons" (click)="button('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Top 50</button>
+    <button type="button" class="btn btn-primary portfolioButtons" (click)="show()" [ngClass]="{'test': newColor}">Portfolio</button>
+    <button type="button" class="btn btn-basic portfolioButtons" (click)="button('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">Top100</button>
     <!-- <button type="button" class="btn btn-basic" (click)="button50('')" [ngClass]="{'btn-success': active}">0-50</button> -->
     <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonPrevious('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}"><span class="glyphicon glyphicon-chevron-left"></span> 100</button>
     <button type="button" class="btn btn-basic portfolioButtons" (click)="buttonNext('portfolio', '', 0, 100)" [ngClass]="{'btn-success': active}">100 <span class="glyphicon glyphicon-chevron-right"></span></button>

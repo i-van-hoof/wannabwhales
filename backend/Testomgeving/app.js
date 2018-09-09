@@ -176,8 +176,6 @@ function generatePortfolioTickers(tickers2) {
       const  index = tickers2.map(function(x) {return x.symbol; }).indexOf(object.symbol);
       if (index >= 0) {
         object['price_usd'] = tickers2[index].price_usd;
-        // console.log(object['price_usd']);
-        // console.log(object['balance']);
         object['value'] = object['balance'] * object['price_usd'];
         total += object['value'];
         // console.log(total);
@@ -194,7 +192,6 @@ function generatePortfolioTickers(tickers2) {
     const timestamp = admin.database.ServerValue.TIMESTAMP;
         console.log('generating portfolioTickers');
     const key2 = db.ref().child('Tickers').push().key;
-    // const path2 = '/PortfolioTickers/V0uICQbXrnfCryghTkRpmbv4sBn2/' + key2;
     const path2 = '/PortfolioTickers/' + userKey + '/' + key2;
     let updates2 = {};
     updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};

@@ -10,12 +10,12 @@
     </div>
 
     <div class="col-xs-4"><p>{{coinmarketItem.symbol}} ({{coinmarketItem.name}})<br>
-      <p class="list-group-item-text"> {{coinmarketItem.price_usd}} $</p>
-      <p [ngClass]="{'negative': coinmarketItem.percent_change_1h < 0, 'positive' : coinmarketItem.percent_change_1h > 0}" class="list-group-item-text"> {{coinmarketItem.percent_change_24h}} %</p>
+      <p class="list-group-item-text"> {{coinmarketItem.price_usd | number: '1.0-6' }} $</p>
+      <p [ngClass]="{'negative': coinmarketItem.percent_change_24h < 0, 'positive' : coinmarketItem.percent_change_24h > 0}" class="list-group-item-text"> {{coinmarketItem.percent_change_24h}} %</p>
     </div>
 
     <div class="col-xs-6" style="padding-right: 4px">
-      <p class="list-group-item-text"> Cap: {{coinmarketItem.market_cap_usd | number}} $</p>
+      <p class="list-group-item-text"> Cap: {{coinmarketItem.market_cap_usd / 1000000 | number: '1.0-0'}} M $</p>
       <p class="list-group-item-text"> Balance : {{coinmarketItem.balance}}</p>
       <p class="list-group-item-text"> Value: {{coinmarketItem.y | number : '1.0-0'}} $</p>
     </div>

@@ -24,3 +24,11 @@
 
     a { font-size: 12px }
 }
+
+.test {
+  background-color: blue;
+}
+
+button {
+  outline: none;
+}

@@ -12,7 +12,7 @@
     <h3 class="showHide">Portfolio Chart</h3>
 
     <hr class="showHide">
-    <chart style="display:block;  width: 100% !important;" type="StockChart" [options]="optionsStockchart" (click)="onClickPortfolioButton($event)" (load)="saveInstanceStock($event.context)"></chart>
+    <chart style="display:block;  width: 100% !important;" name="stockName" type="StockChart" [options]="optionsStockchart" (click)="onClickPortfolioButton($event)" (load)="saveInstanceStock($event.context)"></chart>
 
   </div>
   <div class="showHide col-xs-12 col-md-6">
