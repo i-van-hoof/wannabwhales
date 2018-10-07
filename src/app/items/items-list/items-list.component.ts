@@ -74,6 +74,7 @@ export class ItemsListComponent implements OnInit {
 
   ) {
 
+
     this.userName = authService.getUserEmail();
 
     // options of the Highstock portfolio value ticker
@@ -376,7 +377,9 @@ export class ItemsListComponent implements OnInit {
 
 
   saveInstanceStock(chartInstance): void {
-    this.chartStock = chartInstance;}
+
+    this.chartStock = chartInstance;
+  }
 
   saveInstancePie(chartInstance): void {
     this.chartPie = chartInstance;
@@ -510,8 +513,8 @@ export class ItemsListComponent implements OnInit {
     return total;
   }
 
-  ngOnInit() {
 
+  ngOnInit() {
     // this.dataStorageService.getUserPortfolioAuth();
     this.dataStorageService.retrievePortfolioTicker(2700);
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 1000);

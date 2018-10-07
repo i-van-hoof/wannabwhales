@@ -88,12 +88,13 @@ export class DataStorageService {
   firebaseQuery(portfolio: portfolioDataModel[]) {
     const coinsToFetch = [];
     for (const coinItem of portfolio) {
-      coinsToFetch.push(coinItem['symbol']); }
+      coinsToFetch.push(coinItem['name']); }
       console.log('Fetched coins from UserPortfolio in Firebase: ' + coinsToFetch);
 
     // Map the Firebase promises into an array
     const coinPromises = coinsToFetch.map(id => {
-      return this.db.object('market/' + id).valueChanges().first().toPromise();
+      const idDatabase =  id.replace(/[^a-zA-Z ]/g, '');
+      return this.db.object('marketByName/' + idDatabase).valueChanges().first().toPromise();
       });
     // Wait for all the async requests mapped into
     // the array to complete
@@ -152,7 +153,7 @@ export class DataStorageService {
               delete object['24h_volume_usd'];
             }
             if (type === 'market') {
-              console.log('setMarketData() from datastorage')
+              console.log('setMarketData() from datastorage');
               this.coinMarketService.setMarketData(this.results);
             } else {
               console.log('setportfolio from datastorage');
