@@ -93,7 +93,8 @@ export class DataStorageService {
 
     // Map the Firebase promises into an array
     const coinPromises = coinsToFetch.map(id => {
-      const idDatabase =  id.replace(/[^a-zA-Z ]/g, '');
+      const idDatabase =  id.replace(/[^a-zA-Z0-9 ]/g, '');
+      console.log(idDatabase);
       return this.db.object('marketByName/' + idDatabase).valueChanges().first().toPromise();
       });
     // Wait for all the async requests mapped into
