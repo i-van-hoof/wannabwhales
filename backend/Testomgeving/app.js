@@ -54,7 +54,7 @@ const cron3 = new CronJob('0 1,11,21,31,41,51 * * * *', function() {
   saveMarketInfo();
 }, null, true, 'Europe/Amsterdam');
 
-const cron4 = new CronJob('0 5,15,25,35,45,55 * * * *', function() {
+const cron4 = new CronJob('0 14,29,44,59 * * * *', function() {
   saveMarketInfoNameAsKey();
 }, null, true, 'Europe/Amsterdam');
 
@@ -390,48 +390,69 @@ function saveMarketInfo() {
 
 // saving market info in Firebase database each .. minutes with NAME as KEY
 function saveMarketInfoNameAsKey() {
-  for (i = 0; i < 17; i++) {
 
-  let start = i * 100;
-  console.log(start);
-  rp('https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=' + start + '&limit=100').then(marketString => {
-    market = JSON.parse(marketString);
-    let marketInfoByName = {};
-    keyList = Object.keys(market['data']);
+  const requestOptions = {
+    method: 'GET',
+    uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
+    qs: {
+      start: 1,
+      limit: 3,
+      convert: 'USD'
+    },
+    headers: {
+      'X-CMC_PRO_API_KEY': 'e196f820-0be5-4c0e-8e6a-bb6b54b7f290'
+    },
+    json: true,
+    gzip: true
+  };
 
-    for (let item of keyList) {
-      name = market['data'][item]['name'].replace(/[^a-zA-Z ]/g, '');
+  // rp(requestOptions).then(response => {
+  //   console.log('API call response:', response);
+  // }).catch((err) => {
+  //   console.log('API call error:', err.message);
+  // });
 
-      marketInfoByName[name] = {
-        id: market['data'][item].id,
-        name: market['data'][item].name,
-        symbol: market['data'][item].symbol,
-        website_slug: market['data'][item].website_slug,
-        rank: market['data'][item].rank,
-        circulating_supply: market['data'][item].circulating_supply,
-        total_supply: market['data'][item].total_supply,
-        price_usd: market['data'][item]['quotes']['USD'].price,
-        price_btc: market['data'][item]['quotes']['BTC'].price,
-        volume_24h: market['data'][item]['quotes']['USD'].volume_24h,
-        market_cap: market['data'][item]['quotes']['USD'].market_cap,
-        percent_change_1h: market['data'][item]['quotes']['USD'].percent_change_1h,
-        percent_change_24h: market['data'][item]['quotes']['USD'].percent_change_24h,
-        percent_change_7d: market['data'][item]['quotes']['USD'].percent_change_7d,
-        last_updated: market['data'][item].last_updated
-      }
-    }
+  rp(requestOptions).then(market => {
+
+    console.log('storing data in Firebase marketByName folder worked. Dataset:');
+    console.log(market)
+    // market = JSON.parse(marketString);
+    // let marketInfoByName = {};
+    // keyList = Object.keys(market['data']);
+
+    // for (let item of keyList) {
+    //   name = market['data'][item]['name'].replace(/[^a-zA-Z ]/g, '');
+
+    //   marketInfoByName[name] = {
+    //     id: market['data'][item].id,
+    //     name: market['data'][item].name,
+    //     symbol: market['data'][item].symbol,
+    //     website_slug: market['data'][item].website_slug,
+    //     rank: market['data'][item].rank,
+    //     circulating_supply: market['data'][item].circulating_supply,
+    //     total_supply: market['data'][item].total_supply,
+    //     price_usd: market['data'][item]['quotes']['USD'].price,
+    //     price_btc: market['data'][item]['quotes']['BTC'].price,
+    //     volume_24h: market['data'][item]['quotes']['USD'].volume_24h,
+    //     market_cap: market['data'][item]['quotes']['USD'].market_cap,
+    //     percent_change_1h: market['data'][item]['quotes']['USD'].percent_change_1h,
+    //     percent_change_24h: market['data'][item]['quotes']['USD'].percent_change_24h,
+    //     percent_change_7d: market['data'][item]['quotes']['USD'].percent_change_7d,
+    //     last_updated: market['data'][item].last_updated
+    //   }
+    // }
 
   // update Firebase with market price data, once every .. minutes
-    var db = admin.database();
-    db.ref('marketByName').update(marketInfoByName).then(results => {
-    console.log('storing data in Firebase marketByName folder worked');
+    // var db = admin.database();
+    // db.ref('marketByName').update(marketInfoByName).then(results => {
+    // console.log('storing data in Firebase marketByName folder worked');
     //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
     }).catch(err => {
     console.log('error for saving marketByName:', err);
     })
-  })
-}
-}
+  }
+
+
 
 
 
