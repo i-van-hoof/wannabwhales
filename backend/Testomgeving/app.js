@@ -274,7 +274,8 @@ function saveMarketInfoNameAsKey() {
       }
     };
 
-    generatePortfolioTickersNEW(marketInfoByName);
+    // generatePortfolioTickersNEW(marketInfoByName);
+    generateTickersNEW(marketInfoByName);
 
   // update Firebase with market price data, once every .. minutes
     var db = admin.database();
@@ -323,7 +324,7 @@ function generatePortfolioTickersNEW(tickersInfo) {
   db.ref('users').once('value')
     .then(userdata => {
     users = userdata.val();
-  let usersKeys = Object.keys(users);
+    let usersKeys = Object.keys(users);
 
 
 // get for each user from array usersKeys de portfolio
@@ -339,30 +340,55 @@ function generatePortfolioTickersNEW(tickersInfo) {
         var total = 0;
     for (let object of portfolio) {
       const  nameOfCoin = object.name.replace(/[^a-zA-Z0-9 ]/g, '');
-      console.log(typeof tickersInfo[nameOfCoin].price_usd !== 'undefined');
-      // conde snippets for test if variable is defined
-      // if (typeof(variable) == "undefined")
-      // if (typeof tickersInfo[nameOfCoin].price_usd !== 'undefined') { object['value'] = object['price_usd'] * tickersInfo[nameOfCoin].price_usd };
-      object['value'] = object['price_usd'] * tickersInfo[nameOfCoin].price_usd
+      if (typeof tickersInfo[nameOfCoin] !== 'undefined') {
+        object['value'] = object['balance'] * tickersInfo[nameOfCoin].price_usd
+      }
       total += object['value'];
     }
-
-        const timestamp = admin.database.ServerValue.TIMESTAMP;
-        const key2 = db.ref().child('Tickers').push().key;
-        const path2 = '/PortfolioTickers/' + userKey + '/' + key2;
-        let updates2 = {};
-        updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};
-    console.log(updates2);
+    const timestamp = admin.database.ServerValue.TIMESTAMP;
+    const key2 = db.ref().child('Tickers').push().key;
+    const path2 = '/PortfolioTickers/' + userKey + '/' + key2;
+    let updates2 = {};
+    updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};
 // update Firebase with portfolio ticker
-  //   db.ref().update(updates2).then(function(results) {
-  //     console.log('results', results);
-  //   console.log("Send " + usersKeys.length + " portfolio Tickers to firebase");
-  // }).catch(function(err) {
-  //     console.log('err', err);
-  // })
+    db.ref().update(updates2).then(function(results) {
+       console.log('results', results);
+     console.log("Send " + usersKeys.length + " portfolio Tickers to firebase");
+   }).catch(function(err) {
+       console.log('err updating Firebase with portfolioTickers', err);
+   })
   }).catch(function(results) {
     console.log("generatePortfolioTickers function is not working properly");
     console.log('error:', results);
   });
 }
 })};
+
+function generateTickersNEW(tickersInfo) {
+  let tickerUpdates = {};
+  var db = admin.database();
+  const key = db.ref().child('Tickers').push().key;
+  const timestamp = admin.database.ServerValue.TIMESTAMP;
+
+   for (let object of tickersInfo) {
+     symbol = object['symbol'].replace(/[^a-zA-Z ]/g, '')
+     const tickersPath = '/Tickers2/' + symbol + '/' + key;
+     tickerUpdates[tickersPath] = {
+       symbol: symbol,
+      // rank: object['cmc_rank'],
+       price_usd: object['price_usd'],
+      //  price_btc: object['price_btc'],
+       market_cap_usd: object['market_cap'],
+       time: timestamp};
+   }
+   console.log('generating coin tickers');
+   console.log(tickerUpdates);
+//  // update Firebase with market tickers, once every 15 minutes
+//    db.ref().update(tickerUpdates).then(results => {
+//    // console.log('results', results);
+//    console.log("Send "+tickers.length+" market-tickers to Firebase");
+//    //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
+//    }).catch(err => {
+//    console.log('err', err);
+//    })
+}
