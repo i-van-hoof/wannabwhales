@@ -18,215 +18,99 @@ admin.initializeApp({
 
 let users = [];
 let portfolio = [];
-let count = 0;
-let tickerData;
-let tickers = [];
-// let market = {};
-let marketSummary = {};
-let tickers2 = [];
-
-
-// existing code for initializing Firebase SDK
-// const environment = {
-//     production: false,
-//     firebase: {
-//         apiKey: 'AIzaSyBoQQj5O2r5akeSCifTApT8KGeLZGxVVJA',
-//         authDomain: 'whalesapp-dev.firebaseapp.com',
-//         databaseURL: 'https://whalesapp-dev.firebaseio.com',
-//         projectId: 'whalesapp-dev',
-//         storageBucket: 'whales-app.appspot.com',
-//         messagingSenderId: '506504177003'
-//     }};
-// firebase.initializeApp(environment.firebase);
 
 // cronjob for saving market summary
 var CronJob = require('cron').CronJob;
 
 const cron1 = new CronJob('0 0,15,30,45 * * * *', function() {
-  generateTickers();
+  getMarketSummaryPro();
 }, null, true, 'Europe/Amsterdam');
 
 const cron2 = new CronJob('0 0,15,30,45 * * * *', function() {
-  getMarketSummary();
-}, null, true, 'Europe/Amsterdam');
-
-// const cron3 = new CronJob('0 1,16,31,46 * * * *', function() {
-//   saveMarketInfo();
-// }, null, true, 'Europe/Amsterdam');
-
-const cron4 = new CronJob('0 14,29,44,59 * * * *', function() {
   saveMarketInfoNameAsKey();
 }, null, true, 'Europe/Amsterdam');
 
-// const cron5 = new CronJob('0 20,40,59 * * * *', function() {
-//   getData();
-// }, null, true, 'Europe/Amsterdam');
+// //  getting the market summary data from the Coinmarketcap API
+// function getMarketSummary() {
+//   console.log("Getting market summary data");
+//   rp('https://api.coinmarketcap.com/v1/global/')
+//     .then(globalString => {
+//     marketSummary = JSON.parse(globalString);
 
-//  getting the market summary data from the Coinmarketcap API
-function getMarketSummary() {
-  console.log("Getting market summary data");
-  rp('https://api.coinmarketcap.com/v1/global/')
-    .then(globalString => {
-    marketSummary = JSON.parse(globalString);
+//     // prepare an json object with market summary for Firebase
+//   console.log('generating json object market summary');
+//   var db = admin.database();
+//   const key = db.ref().child('MarketSummary').push().key;
+//   console.log(key);
+//   const path = '/MarketSummary/CoinMarketCap/' + key;
+//   console.log(path);
+//   let updates = {};
 
-    // prepare an json object with market summary for Firebase
-  console.log('generating json object market summary');
-  var db = admin.database();
-  const key = db.ref().child('MarketSummary').push().key;
-  console.log(key);
-  const path = '/MarketSummary/CoinMarketCap/' + key;
-  console.log(path);
-  let updates = {};
+//   // code voor timestamp met firebase als niet inloggen met admin rights
+//   // const timestamp = firebase.database.ServerValue.TIMESTAMP;
+//   const timestamp = admin.database.ServerValue.TIMESTAMP;
+//   updates[path] = {
+//     symbol: 'MARKETSUM',
+//     total_market_cap_usd: marketSummary['total_market_cap_usd'],
+//     total_24h_volume_usd: marketSummary['total_24h_volume_usd'],
+//     bitcoin_percentage_of_market_cap: marketSummary['bitcoin_percentage_of_market_cap'],
+//     active_currencies: marketSummary['active_currencies'],
+//     active_assets: marketSummary['active_assets'],
+//     active_markets: marketSummary['active_markets'],
+//     time: timestamp };
+//   // console.log(updates);
+//   return db.ref().update(updates).then(function(results) {
+//     console.log('results', results);
+//     console.log("Sent market summary from Coinmarket cap to Firebase");
+//   }).catch(err => {
+//     console.log('err', err);
+//   })
+// })
+// }
 
-  // code voor timestamp met firebase als niet inloggen met admin rights
-  // const timestamp = firebase.database.ServerValue.TIMESTAMP;
-  const timestamp = admin.database.ServerValue.TIMESTAMP;
-  updates[path] = {
-    symbol: 'MARKETSUM',
-    total_market_cap_usd: marketSummary['total_market_cap_usd'],
-    total_24h_volume_usd: marketSummary['total_24h_volume_usd'],
-    bitcoin_percentage_of_market_cap: marketSummary['bitcoin_percentage_of_market_cap'],
-    active_currencies: marketSummary['active_currencies'],
-    active_assets: marketSummary['active_assets'],
-    active_markets: marketSummary['active_markets'],
-    time: timestamp };
-  // console.log(updates);
-  return db.ref().update(updates).then(function(results) {
-    console.log('results', results);
-    console.log("Sent market summary from Coinmarket cap to Firebase");
-}).catch(err => {
-    console.log('err', err);
-})
-})
-}
+// function for getting market summary from coinmarket cap pro api
 
-// Alternative function for getting 1000 first coins from coinmarketcap
- function getData() {
-var url1 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=0&limit=100';
-var url2 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=100&limit=100';
-var url3 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=200&limit=100';
-var url4 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=300&limit=100';
-var url5 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=400&limit=100';
-var url6 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=500&limit=100';
-var url7 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=600&limit=100';
-var url8 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=700&limit=100';
-var url9 = 'https://api.coinmarketcap.com/v2/ticker/?convert=BTC&start=800&limit=100';
+function getMarketSummaryPro() {
 
-rp(url1)
-  .then(response => {
-    market = JSON.parse(response)
-    info1 = market.data
-    return rp(url2)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info2 = market.data
-    return rp(url3)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info3 = market.data
-    return rp(url4)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info4 = market.data
-    return rp(url5)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info5 = market.data
-    return rp(url6)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info6 = market.data
-    return rp(url7)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info7 = market.data
-    return rp(url8)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info8 = market.data
-    return rp(url9)
-  })
-  .then(response => {
-    market = JSON.parse(response)
-    info9 = market.data
-    const object2 = Object.assign(
-      info1, info2, info3, info4, info5, info6, info7, info8, info9);
-    keyList = Object.keys(object2)
-    let marketInfo = {}
-    for (let item of keyList) {
-      symbol = object2[item]['name'].replace(/[^a-zA-Z0-9 ]/g, '');
+  const requestOptionsSummary = {
+    method: 'GET',
+    uri: 'https://pro-api.coinmarketcap.com/v1/global-metrics/quotes/latest',
+    headers: {
+      'X-CMC_PRO_API_KEY': 'e196f820-0be5-4c0e-8e6a-bb6b54b7f290'
+    },
+    json: true,
+    gzip: true
+  };
 
-      marketInfo[symbol] = {
-        id: object2[item].id,
-        name: object2[item].name,
-        symbol: object2[item].symbol,
-        price_usd: object2[item]['quotes']['USD'].price,
-      }
-    }
-    console.log("function get 1000 first objects of coinmarketcap tickers works")
-    generatePortfolioTickersNEW(marketInfo)
-    // If something went wrong
-    // throw new Error('messed up')
-  })
-  .catch(err => console.log) // Don't forget to catch errors
- }
+  rp(requestOptionsSummary).then(marketSummary => {
+    const marketSummaryList = marketSummary['data'];
 
-// getting marketinfo and generate the tickers per coin for graphs and make the ticker of each UserPortfolio (generatePortfolioTickers())
-
-function generateTickers() {
-   return rp('https://api.coinmarketcap.com/v1/ticker/?limit=400').then(tickerString => {
-    tickers = JSON.parse(tickerString);
-    for (let object of tickers) {
-      object['volume_24h'] = +object['24h_volume_usd'];
-      delete object['24h_volume_usd'];
-      // replacing special characters, because limitations database
-      object['symbol'] = object['symbol'].replace(/[^a-zA-Z ]/g, '');
-
-      object['market_cap_usd'] = +object['market_cap_usd'];
-      object['price_btc'] = +object['price_btc'];
-      object['price_usd'] = +object['price_usd'];
-      delete object['percent_change_1h'];
-      delete object['percent_change_24h'];
-      delete object['percent_change_7d'];
-      delete object['available_supply'];
-      delete object['total_supply'];
-      delete object['last_updated'];
-    }
-    console.log("Parsed "+tickers.length+" market-tickers");
-    // console.log("this is variable tickers[0] : ");
-    // console.log(tickers[0]);
-
-    let tickerUpdates = {};
+  // prepare an json object with market summary for Firebase
     var db = admin.database();
+    const key = db.ref().child('MarketSummary').push().key;
+    const timestamp = admin.database.ServerValue.TIMESTAMP;
+    const path = '/MarketSummary/CoinMarketCap/' + key;
+    let updates = {};
 
-    for (let object of tickers) {
-      const key = db.ref().child('Tickers').push().key;
-      const timestamp = admin.database.ServerValue.TIMESTAMP;
-      const tickersPath = '/Tickers/' + object['symbol'] + '/' + key;
-      tickerUpdates[tickersPath] = {
-        symbol: object['symbol'],
-        rank: object['rank'],
-        price_usd: object['price_usd'],
-        price_btc: object['price_btc'],
-        market_cap_usd: object['market_cap_usd'],
-        time: timestamp};
-    }
-  // update Firebase with market tickers, once every 15 minutes
-    db.ref().update(tickerUpdates).then(results => {
-    // console.log('results', results);
-    console.log("Send "+tickers.length+" market-tickers to Firebase");
-    //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
+    updates[path] = {
+      symbol: 'MARKETSUM',
+      total_market_cap_usd: marketSummaryList['quote']['USD'].total_market_cap,
+      total_24h_volume_usd: marketSummaryList['quote']['USD'].total_volume_24h,
+      bitcoin_percentage_of_market_cap: marketSummaryList.btc_dominance ,
+      active_currencies: marketSummaryList.active_cryptocurrencies,
+      active_exchanges: marketSummaryList.active_exchanges,
+      active_markets: marketSummaryList.active_market_pairs,
+      time: timestamp
+    };
+
+    console.log('marketsummary from cmc pro API' , updates);
+    return db.ref().update(updates).then(function(results) {
+      console.log('results', results);
+      console.log("Sent market summary from Coinmarket cap to Firebase");
     }).catch(err => {
-    console.log('err', err);
+      console.log('err', err);
     })
-})
+  })
 }
 
 // saving market info in Firebase database each .. minutes with NAME as KEY
@@ -248,19 +132,36 @@ function saveMarketInfoNameAsKey() {
   };
 
   rp(requestOptions).then(market => {
-    // console.log('storing data in Firebase marketByName folder worked. Dataset:');
-    const marketList = market['data']
+
+    const marketList = market['data'];
+    let tickerUpdates = {};
     let marketInfoByName = {};
+    let marketInfo = {};
+    var db = admin.database();
+    const key = db.ref().child('Tickers').push().key;
+    const timestamp = admin.database.ServerValue.TIMESTAMP;
 
     for (let item of marketList) {
-      name = item.name.replace(/[^a-zA-Z0-9 ]/g, '');
+      const name = item.name.replace(/[^a-zA-Z0-9 ]/g, '');
+      const symbol= item.symbol.replace(/[^a-zA-Z0-9 ]/g, '');
+      let portfolioArray = [];
 
-      marketInfoByName[name] = {
+      // const timestamp = admin.database.ServerValue.TIMESTAMP;
+      const tickersPath = '/Tickers/' + symbol + '/' + key;
+
+      tickerUpdates[tickersPath] = {
+        symbol: symbol,
+        rank: item.cmc_rank,
+        price_usd: item['quote']['USD'].price,
+        market_cap_usd: item['quote']['USD'].market_cap,
+        time: timestamp };
+
+      const round = {
         id: item.id,
         name: name,
-        symbol: item.symbol.replace(/[^a-zA-Z0-9 ]/g, ''),
+        symbol: symbol,
         website_slug: item.slug,
-        // rank: item.cmc_rank,
+        rank: item.cmc_rank,
         circulating_supply: item.circulating_supply,
         total_supply: item.total_supply,
         price_usd: item['quote']['USD'].price,
@@ -272,13 +173,47 @@ function saveMarketInfoNameAsKey() {
         percent_change_7d: item['quote']['USD'].percent_change_7d,
         last_updated: (new Date(item['quote']['USD'].last_updated)/1000).valueOf()
       }
-    };
 
-    // generatePortfolioTickersNEW(marketInfoByName);
-    generateTickersNEW(marketInfoByName);
+      marketInfoByName[name] = round;
+      portfolioArray.push(round);
+
+    };
+    console.log(portfolioArray[1])
+
+  //   storePortfolio() {
+  //     const portfolioUpdate = this.coinMarketService.getPortfolioData();
+  //     console.log(portfolioUpdate);
+  //     const newPortfolio = {};
+  //     this.portfolioArray = [];
+  //     for (let object of portfolioUpdate) {
+  //       if (object['inportfolio'] === true) {
+  //         this.portfolioArray.push({
+  //           symbol: object['symbol'],
+  //           id: object['id'],
+  //           inportfolio: true,
+  //           balance: object['balance'],
+  //           name: object['name'],
+  //           value: object['y']
+  //         }); }}
+  //     console.log(this.userId);
+  //     newPortfolio[this.userId] = this.portfolioArray;
+  //     console.log('next step is saving portfolio: ' + JSON.stringify(this.portfolioArray));
+  //     this.portfolioRef = this.db.object('UserPortfolios/');
+  //     this.portfolioRef.update(newPortfolio);
+  //   }
+  // }
+
+    generatePortfolioTickersNEW(marketInfoByName);
+
+    // update Firebase with market tickers, once every 15 minutes
+    db.ref().update(tickerUpdates).then(results => {
+      // console.log('results', results);
+      // after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
+      }).catch(err => {
+      console.log('err', err);
+      })
 
   // update Firebase with market price data, once every .. minutes
-    var db = admin.database();
     db.ref('marketByName').update(marketInfoByName).then( () => {
     console.log('storing data in Firebase marketByName folder worked');
     //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
@@ -287,7 +222,6 @@ function saveMarketInfoNameAsKey() {
     })
 
     // marketinfo by Symbol (can be removed after front-end update)
-    let marketInfo = {};
     for (let item of marketList) {
       symbol = item.symbol.replace(/[^a-zA-Z0-9 ]/g, '');
 
@@ -310,7 +244,6 @@ function saveMarketInfoNameAsKey() {
       }
     }
   // update Firebase with market tickers, once every .. minutes
-    var db = admin.database();
     db.ref('market').update(marketInfo).then(results => {
     console.log('storing data in Firebase market folder worked' , results);
     }).catch(err => {
@@ -325,7 +258,6 @@ function generatePortfolioTickersNEW(tickersInfo) {
     .then(userdata => {
     users = userdata.val();
     let usersKeys = Object.keys(users);
-
 
 // get for each user from array usersKeys de portfolio
   for (let userKey of usersKeys) {
@@ -352,10 +284,10 @@ function generatePortfolioTickersNEW(tickersInfo) {
     updates2[path2] = {symbol: 'PORTF1', price_usd: total, balance: 1, time: timestamp};
 // update Firebase with portfolio ticker
     db.ref().update(updates2).then(function(results) {
-       console.log('results', results);
-     console.log("Send " + usersKeys.length + " portfolio Tickers to firebase");
+      console.log('results', results);
+      console.log("Send " + usersKeys.length + " portfolio Tickers to firebase");
    }).catch(function(err) {
-       console.log('err updating Firebase with portfolioTickers', err);
+      console.log('err updating Firebase with portfolioTickers', err);
    })
   }).catch(function(results) {
     console.log("generatePortfolioTickers function is not working properly");
@@ -363,32 +295,3 @@ function generatePortfolioTickersNEW(tickersInfo) {
   });
 }
 })};
-
-function generateTickersNEW(tickersInfo) {
-  let tickerUpdates = {};
-  var db = admin.database();
-  const key = db.ref().child('Tickers').push().key;
-  const timestamp = admin.database.ServerValue.TIMESTAMP;
-
-   for (let object of tickersInfo) {
-     symbol = object['symbol'].replace(/[^a-zA-Z ]/g, '')
-     const tickersPath = '/Tickers2/' + symbol + '/' + key;
-     tickerUpdates[tickersPath] = {
-       symbol: symbol,
-      // rank: object['cmc_rank'],
-       price_usd: object['price_usd'],
-      //  price_btc: object['price_btc'],
-       market_cap_usd: object['market_cap'],
-       time: timestamp};
-   }
-   console.log('generating coin tickers');
-   console.log(tickerUpdates);
-//  // update Firebase with market tickers, once every 15 minutes
-//    db.ref().update(tickerUpdates).then(results => {
-//    // console.log('results', results);
-//    console.log("Send "+tickers.length+" market-tickers to Firebase");
-//    //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
-//    }).catch(err => {
-//    console.log('err', err);
-//    })
-}
