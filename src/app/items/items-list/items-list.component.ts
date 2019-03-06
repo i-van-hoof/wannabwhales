@@ -518,6 +518,7 @@ export class ItemsListComponent implements OnInit {
     // this.dataStorageService.getUserPortfolioAuth();
     this.dataStorageService.retrievePortfolioTicker(2700);
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 1000);
+    // retrieveSummary();
 
     this.timerChartsObervable = Observable.timer(1000, 5000);
     this.subscriptionChartTimer = this.timerChartsObervable
@@ -578,16 +579,24 @@ export class ItemsListComponent implements OnInit {
           this.portfolioData = portfolioData; } );
           this.portfolioData = this.coinmarketService.getPortfolioData();
 
-    Observable.interval(3000)
-      .flatMap(() => this.http.get('https://api.coinmarketcap.com/v1/global/')
-        .map(res => res.json())
-        .catch((error:any) => Observable.throw(error.json().error || 'Server error')))
-      .subscribe(data => {
-        this.coinmarketCap = data;
-        this.totalMarketVolume = data.total_24h_volume_usd;
-        this.totalMarketCap = data.total_market_cap_usd;
-        this.totalMarketBitcoin = data.bitcoin_percentage_of_market_cap;
-          });
+    // Observable.interval(3000)
+    //   .flatMap(() => this.http.get('https://api.coinmarketcap.com/v1/global/')
+    //     .map(res => res.json())
+    //     .catch((error:any) => Observable.throw(error.json().error || 'Server error')))
+    //   .subscribe(data => {
+    //     this.coinmarketCap = data;
+    //     this.totalMarketVolume = data.total_24h_volume_usd;
+    //     this.totalMarketCap = data.total_market_cap_usd;
+    //     this.totalMarketBitcoin = data.bitcoin_percentage_of_market_cap;
+    //       });
+
+    // function retrieveSummary() {
+    //   const marketSummaryRef = this.db.list('MarketSummary/CoinMarketCap'  , ref => ref.limitToLast(1))
+    //     .valueChanges();
+    //     marketSummaryRef.subscribe( data => {
+    //       console.log(data);
+    //   });
+    // }
 
   }
 

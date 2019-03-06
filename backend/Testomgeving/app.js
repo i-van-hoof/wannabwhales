@@ -134,6 +134,7 @@ function saveMarketInfoNameAsKey() {
   rp(requestOptions).then(market => {
 
     const marketList = market['data'];
+    let portfolioArray = [];
     let tickerUpdates = {};
     let marketInfoByName = {};
     let marketInfo = {};
@@ -144,7 +145,7 @@ function saveMarketInfoNameAsKey() {
     for (let item of marketList) {
       const name = item.name.replace(/[^a-zA-Z0-9 ]/g, '');
       const symbol= item.symbol.replace(/[^a-zA-Z0-9 ]/g, '');
-      let portfolioArray = [];
+
 
       // const timestamp = admin.database.ServerValue.TIMESTAMP;
       const tickersPath = '/Tickers/' + symbol + '/' + key;
@@ -177,8 +178,10 @@ function saveMarketInfoNameAsKey() {
       marketInfoByName[name] = round;
       portfolioArray.push(round);
 
+
     };
-    console.log(portfolioArray[1])
+    console.log('looping market info from cmc finished')
+    console.log(portfolioArray[0])
 
   //   storePortfolio() {
   //     const portfolioUpdate = this.coinMarketService.getPortfolioData();
@@ -203,11 +206,12 @@ function saveMarketInfoNameAsKey() {
   //   }
   // }
 
+
     generatePortfolioTickersNEW(marketInfoByName);
 
     // update Firebase with market tickers, once every 15 minutes
     db.ref().update(tickerUpdates).then(results => {
-      // console.log('results', results);
+      console.log('coin-tickers saved to Firebase');
       // after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
       }).catch(err => {
       console.log('err', err);
@@ -215,11 +219,18 @@ function saveMarketInfoNameAsKey() {
 
   // update Firebase with market price data, once every .. minutes
     db.ref('marketByName').update(marketInfoByName).then( () => {
-    console.log('storing data in Firebase marketByName folder worked');
-    //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
-    }).catch(err => {
-    console.log('error for saving marketByName:', err);
-    })
+      console.log('storing data in Firebase marketByName folder worked');
+      //after finishing saving the tickers run the portfolio tickers function for saving the tickers of individual users
+      }).catch(err => {
+      console.log('error for saving marketByName:', err);
+      })
+
+  // update Firebase with market price data IN ARRAY, once every .. minutes
+    db.ref('marketArray').update(portfolioArray).then( () => {
+      console.log('marketArray saved to Firebase');
+      }).catch(err => {
+      console.log('error with marketArray', err);
+      })
 
     // marketinfo by Symbol (can be removed after front-end update)
     for (let item of marketList) {

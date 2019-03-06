@@ -50,11 +50,11 @@
     </div>
 
     <div class="dataBanner col-xs-4">
-      Biggest Gaining <br><b>{{ maxChangeSymbol }} {{ xMax }} %</b>
+      Biggest Gaining <br><b>{{ maxChangeSymbol }} {{ xMax | number: '1.0-2' }} %</b>
     </div>
 
     <div class="dataBanner col-xs-4">
-      Biggest Losing <br><b> {{ minChangeSymbol }} {{ xMin  }} %</b>
+      Biggest Losing <br><b> {{ minChangeSymbol }} {{ xMin | number: '1.0-2' }} %</b>
     </div>
 
   </div>

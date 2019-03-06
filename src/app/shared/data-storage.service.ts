@@ -10,8 +10,8 @@ import { Transaction } from './transaction.model';
 import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
-import { FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2/database-deprecated';
+import { AngularFireDatabase, AngularFireList, AngularFireObject} from 'angularfire2/database';
+import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 import 'rxjs/add/operator/map';
 // import {PortfolioEditComponent } from '../portfolio/portfolio-edit/portfolio-edit.component';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -20,7 +20,6 @@ import { portfolioDataModel } from '../home/portfolio-data.model';
 // import {CoinCryptocoin} from '../home/coinmarket.model';
 // import {PortfolioModel} from '../portfolio/portfolio.model';
 // import {map} from 'rxjs/operators';
-
 
 @Injectable()
 export class DataStorageService {
@@ -39,16 +38,17 @@ export class DataStorageService {
   userPortfolioRef: AngularFireObject<any>;
   // Firebase reference for market info
   portfolioRef: AngularFireObject<any>;
-  // item: Observable<any>;
-  // items: FirebaseListObservable<Item[]> = null;
+  testRef: AngularFireList<any>;
+  items: any;
+  // items: AngularFireList<any>;
   portfolio = [];
   userPortfolio = [];
   portfolioSummary = {};
   portfolioArray = [];
   coin: string;
   apiRoot = 'https://api.coinmarketcap.com/v1/ticker/';
-  // apiRootCors = 'https://cors-anywhere.herokuapp.com/https://api.coinmarketcap.com/v1/ticker';
   results = [];
+  resultsCall = [];
   loading: boolean;
 
   constructor(private http: Http,
@@ -57,7 +57,6 @@ export class DataStorageService {
               private authService: AuthService,
               public  db: AngularFireDatabase,
               private af: AngularFireAuth,
-              private jsonp: Jsonp
               ) {
                     this.user = af.authState;
                     this.af.authState.subscribe(user => {
@@ -72,9 +71,27 @@ export class DataStorageService {
     (user => {if (user) {this.getUserPortfolio(); console.log('auth worked'); } });
   }
 
+  // getMarketData(order: string, start: any,  limit: number) {
+  //     this.loading = true;
+  //     this.items = this.db.list('marketByName', ref => ref.orderByChild(order).startAt(start).limitToFirst(limit))
+  //       .valueChanges()
+  //       .subscribe(marketData => {
+  //         console.log(marketData);
+  //         this.results = marketData;
+  //         this.coinMarketService.setMarketData(this.results);
+  //         this.loading = false;
+  //       });
+  //   }
+
+    getMovies(startAt) {
+      const test  =  'Bitcoin  ';
+      return this.db.list('marketByName', ref => ref.orderByKey().startAt(startAt));
+      // .endAt(startAt + '\uf8ff'));
+    }
+
   getUserPortfolio() {
     this.userPortfolio = [];
-    this. userPortfolioRef = this.db.object(`UserPortfolios/${this.userId}`);
+    this.userPortfolioRef = this.db.object(`UserPortfolios/${this.userId}`);
     // method with Promise
     this. userPortfolioRef
       .snapshotChanges()
@@ -94,7 +111,6 @@ export class DataStorageService {
     // Map the Firebase promises into an array
     const coinPromises = coinsToFetch.map(id => {
       const idDatabase =  id.replace(/[^a-zA-Z0-9 ]/g, '');
-      console.log(idDatabase);
       return this.db.object('marketByName/' + idDatabase).valueChanges().first().toPromise();
       });
     // Wait for all the async requests mapped into
@@ -129,15 +145,15 @@ export class DataStorageService {
 
   getHTTPcall(type: string, coin: string, start: number,  limit: number) {
     let promise = new Promise((resolve, reject) => {
-      let apiURL = `${this.apiRoot}${coin}/?start=${start}&limit=${limit}`;
+    let apiURL = `${this.apiRoot}${coin}/?start=${start}&limit=${limit}`;
       // console.log(apiURL);
       this.http.get(apiURL)
         .toPromise()
         .then(
           res => { // Success
             // console.log('data received from coinmarketcap');
-            this.results = res.json();
-            for (let object of this.results) {
+            this.resultsCall = res.json();
+            for (let object of this.resultsCall) {
               object['rank'] = +object['rank'];
               object['price_usd'] = +object['price_usd'];
               object['price_btc'] = +object['price_btc'];
@@ -155,10 +171,10 @@ export class DataStorageService {
             }
             if (type === 'market') {
               console.log('setMarketData() from datastorage');
-              this.coinMarketService.setMarketData(this.results);
+              this.coinMarketService.setMarketData(this.resultsCall);
             } else {
               console.log('setportfolio from datastorage');
-              this.coinMarketService.setPortfolio(this.results);
+              this.coinMarketService.setPortfolio(this.resultsCall);
             }
             resolve();
           },

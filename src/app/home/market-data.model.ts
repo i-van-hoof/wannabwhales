@@ -4,9 +4,11 @@ export class MarketDataModel {
   public symbol: string;
   public rank: string;
   public price_usd: number;
+  public price: number;
   public price_btc: number;
   public volume_24h: number;
   public market_cap_usd: number;
+  public market_cap: number;
   public available_supply: number;
   public total_supply: number;
   public max_supply: number;
@@ -29,6 +31,7 @@ export class MarketDataModel {
     price_btc: number,
     volume_24h: number,
     market_cap_usd: number,
+    market_cap: number,
     available_supply: number,
     total_supply: number,
     max_supply: number,
@@ -52,6 +55,7 @@ export class MarketDataModel {
     this.price_btc = price_btc;
     this.volume_24h = volume_24h;
     this.market_cap_usd = market_cap_usd;
+    this.market_cap = market_cap;
     this.available_supply = available_supply;
     this.total_supply = total_supply;
     this.max_supply = max_supply;

@@ -19,13 +19,13 @@
     </div>
 
     <div id="child" class="col-md-3">
-      <div class="showHide col-md-6" style="text-align: right">  {{coinmarket.market_cap_usd | number }} </div>
+      <div class="showHide col-md-6" style="text-align: right">  {{coinmarket.market_cap | number: '1.0-0' }} </div>
       <div class="showHide col-md-6" style="text-align: right">  {{ coinmarket.volume_24h | number: '1.0-0' }} </div>
     </div>
 
-    <div id="child" class="portfolioList col-xs-3 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_1h < 0, 'positive' : coinmarket.percent_change_1h > 0}">  <b> {{coinmarket.percent_change_1h}} % </b> </div>
-    <div id="child" class="portfolioList col-xs-3 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> <b> {{coinmarket.percent_change_24h}} </b> % </div>
-    <div id="child" class="showHide col-xs-2 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_7d < 0, 'positive' : coinmarket.percent_change_7d > 0}"> <b> {{coinmarket.percent_change_7d}} % </b> </div>
+    <div id="child" class="portfolioList col-xs-3 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_1h < 0, 'positive' : coinmarket.percent_change_1h > 0}">  <b> {{coinmarket.percent_change_1h | number: '1.0-2'}} % </b> </div>
+    <div id="child" class="portfolioList col-xs-3 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_24h < 0, 'positive' : coinmarket.percent_change_24h > 0}"> <b> {{coinmarket.percent_change_24h | number: '1.0-2'}} </b> % </div>
+    <div id="child" class="showHide col-xs-2 col-md-1" style="text-align: right" [ngClass]="{'negative': coinmarket.percent_change_7d < 0, 'positive' : coinmarket.percent_change_7d > 0}"> <b> {{coinmarket.percent_change_7d | number: '1.0-2'}} % </b> </div>
 
     </div>
 
