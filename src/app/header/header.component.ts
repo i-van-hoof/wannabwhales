@@ -47,8 +47,8 @@ export class HeaderComponent {
               ngOnInit() {
                 this.dataStorageService.getUserPortfolioAuth();
 
-                this.interval = setInterval(() =>
-                  this.dataStorageService.getUserPortfolioAuth(), 10000);
+                // this.interval = setInterval(() =>
+                //   this.dataStorageService.getUserPortfolioAuth(), 10000);
               }
 
               ngOnDestroy() {

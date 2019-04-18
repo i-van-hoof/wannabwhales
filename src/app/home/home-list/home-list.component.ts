@@ -13,156 +13,9 @@ import { MarketDataModel } from '../market-data.model';
 export class HomeListComponent implements OnInit, OnDestroy {
   coinmarket: MarketDataModel[];
   marketData: MarketDataModel[];
-  // marketData =
-  // [{ id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00}
-  //   ,
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00},
-  //   { id: 'bitcoin',
-  //   name: 'Bitcoin',
-  //   symbol: 'BTC',
-  //   rank: 1,
-  //   price_usd: 6717.18,
-  //   price_btc: 1,
-  //   market_cap_usd: 100000,
-  //   volume_24h: 25000000,
-  //   percent_change_1h: 0.06,
-  //   percent_change_7d: 4.90,
-  //   percent_change_24h: 56.00}
-  // ];
-
   subscription: Subscription;
   subscription2: Subscription;
-  loading = false;
+  loading = true;
   start: number = 0;
   active: Boolean = false;
 
@@ -171,12 +24,13 @@ export class HomeListComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     this.loading = true;
-    this.dataService.getHTTPcall('market', '', 0 ,  100).then( () => this.loading = false);
+    this.dataService.getMarketData( 'rank', 0 ,  100);
 
     this.subscription2 = this.coinmarketService.marketDataChanged
       .subscribe(
         (marketData: MarketDataModel[]) => {
-          this.marketData = marketData; } );
+          this.marketData = marketData;
+          this.loading = false; } );
   }
 
   ngOnDestroy() {
@@ -186,23 +40,28 @@ export class HomeListComponent implements OnInit, OnDestroy {
   button(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     this.start = 0;
-    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+    // this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+    this.dataService.getMarketData( 'rank', 0 ,  100);
   }
 
   buttonCoin(coin: string) {
     this.loading = true;
-    this.dataService.getHTTPcall('market', coin, 0, 20).then( () => this.loading = false);
+    // this.dataService.getHTTPcall('market', coin, 0, 20).then( () => this.loading = false);
+    this.dataService.getMarketData( 'rank', 0 ,  100);
   }
 
   buttonPrevious(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     if (this.start > 0) { this.start -= 100; }
-    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+    // this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+    this.dataService.getMarketData( 'rank', this.start ,  100);
   }
 
   buttonNext(portfolio: string, coin: string, start: number, limit: number) {
     this.loading = true;
     this.start += 100;
-    this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false);
+    // this.dataService.getHTTPcall('market', '', this.start, 100).then( () => this.loading = false
+    this.dataService.getMarketData( 'rank', this.start ,  100);
+
   }
 }

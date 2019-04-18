@@ -515,9 +515,9 @@ export class ItemsListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.dataStorageService.retrievePortfolioTicker(5000);
+    // this.dataStorageService.getUserPortfolioAuth();
+    this.dataStorageService.retrievePortfolioTicker(2700);
     this.dataStorageService.retrieveSummaryTicker('CoinMarketCap', 1000);
-
     // retrieveSummary();
 
     this.timerChartsObervable = Observable.timer(1000, 5000);
@@ -577,9 +577,7 @@ export class ItemsListComponent implements OnInit {
       .subscribe(
         (portfolioData: portfolioDataModel[]) => {
           this.portfolioData = portfolioData; } );
-
-
-        this.portfolioData = this.coinmarketService.getPortfolioData();
+          this.portfolioData = this.coinmarketService.getPortfolioData();
 
     // Observable.interval(3000)
     //   .flatMap(() => this.http.get('https://api.coinmarketcap.com/v1/global/')

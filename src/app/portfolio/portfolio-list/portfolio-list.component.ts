@@ -45,11 +45,15 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.dataService.getHTTPcall('portfolio', '', 0 ,  20).then( () => this.loading = false);
 
-    // this.portfolioData = this.coinmarketService.getPortfolio();
+    this.dataService.getMarketData( 'rank', 0 ,  100);
+
+
 
 // this is new code for getting market data for 100s, to be mixed with portoflio
+
+
+
     this.subscription1 = this.coinmarketService.portfolioChanged
       .subscribe(
         (marketData: MarketDataModel[]) => {

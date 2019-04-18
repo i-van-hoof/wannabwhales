@@ -17,6 +17,7 @@ import 'rxjs/add/operator/map';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Item } from '../items/shared/item';
 import { portfolioDataModel } from '../home/portfolio-data.model';
+import { HomeListComponent } from '../home/home-list/home-list.component';
 // import {CoinCryptocoin} from '../home/coinmarket.model';
 // import {PortfolioModel} from '../portfolio/portfolio.model';
 // import {map} from 'rxjs/operators';
@@ -39,10 +40,12 @@ export class DataStorageService {
   // Firebase reference for market info
   portfolioRef: AngularFireObject<any>;
   testRef: AngularFireList<any>;
+  portfolioItems: any;
   items: any;
   // items: AngularFireList<any>;
   portfolio = [];
   userPortfolio = [];
+  userPortfolio2: any;
   portfolioSummary = {};
   portfolioArray = [];
   coin: string;
@@ -53,6 +56,7 @@ export class DataStorageService {
 
   constructor(private http: Http,
               private coinMarketService: CoinmarketService,
+
               private transactionService: TransactionService,
               private authService: AuthService,
               public  db: AngularFireDatabase,
@@ -71,23 +75,25 @@ export class DataStorageService {
     (user => {if (user) {this.getUserPortfolio(); console.log('auth worked'); } });
   }
 
-  // getMarketData(order: string, start: any,  limit: number) {
-  //     this.loading = true;
-  //     this.items = this.db.list('marketByName', ref => ref.orderByChild(order).startAt(start).limitToFirst(limit))
-  //       .valueChanges()
-  //       .subscribe(marketData => {
-  //         console.log(marketData);
-  //         this.results = marketData;
-  //         this.coinMarketService.setMarketData(this.results);
-  //         this.loading = false;
-  //       });
-  //   }
-
-    getMovies(startAt) {
-      const test  =  'Bitcoin  ';
-      return this.db.list('marketByName', ref => ref.orderByKey().startAt(startAt));
-      // .endAt(startAt + '\uf8ff'));
+  getMarketData(order: string, start: any,  limit: number) {
+      this.loading = true;
+      this.items = this.db.list('marketByName', ref => ref.orderByChild(order).startAt(start).limitToFirst(limit))
+        .valueChanges()
+        .subscribe(marketData => {
+          console.log('fetching market data worked');
+          console.log(marketData);
+          this.results = marketData;
+          this.coinMarketService.setMarketData(this.results);
+          this.loading = false;
+        });
     }
+
+
+    // getMovies(startAt) {
+    //   const test  =  'Bitcoin  ';
+    //   return this.db.list('marketByName', ref => ref.orderByKey().startAt(startAt));
+    //   // .endAt(startAt + '\uf8ff'));
+    // }
 
   getUserPortfolio() {
     this.userPortfolio = [];
@@ -97,8 +103,10 @@ export class DataStorageService {
       .snapshotChanges()
       .map(res => { this.userPortfolio = res.payload.val(); })
       .first()
-      .toPromise().then(() =>
-      this.firebaseQuery(this.userPortfolio))
+      .toPromise().then(() => {
+        console.log(this.userPortfolio);
+        this.firebaseQuery(this.userPortfolio);
+       } )
       .catch(result => console.log('Promise not working', result));
   }
 
@@ -125,7 +133,7 @@ export class DataStorageService {
             portfolio[index]['last_updated'] = value['last_updated'];
             portfolio[index]['market_cap_usd'] = value['market_cap'];
             portfolio[index]['price_usd'] = value['price_usd'];
-            portfolio[index]['price_btc'] = value['price_btc'];
+            portfolio[index]['price_btc'] = 1;
             portfolio[index]['percent_change_1h'] = value['percent_change_1h'];
             portfolio[index]['percent_change_24h'] = value['percent_change_24h'];
             portfolio[index]['percent_change_7d'] = value['percent_change_7d'];
@@ -137,7 +145,7 @@ export class DataStorageService {
       .catch(err => {
         console.log(err, 'error');
       });
-      this.coinMarketService.setPortfolioData(portfolio);
+      // this.coinMarketService.setPortfolioData(portfolio);
       if (this.authService.editMode === false) {
         this.coinMarketService.setPortfolioData(portfolio);
               } else { console.log('is in Edit Mode'); }
