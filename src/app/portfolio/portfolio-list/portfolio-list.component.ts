@@ -31,28 +31,23 @@ export class PortfolioListComponent implements OnInit, OnDestroy {
               ) {}
 
 
-  getTotal() {
-    let total = 0;
-    console.log(this.marketData);
-    for (let i = 0; i < this.marketData.length; i++) {
-      if (this.marketData[i].value) {
-        total += this.marketData[i].value;
-      }
-    }
-    console.log(total);
-    return total;
-  }
+  // getTotal() {
+  //   let total = 0;
+  //   console.log(this.marketData);
+  //   for (let i = 0; i < this.marketData.length; i++) {
+  //     if (this.marketData[i].value) {
+  //       total += this.marketData[i].value;
+  //     }
+  //   }
+  //   console.log(total);
+  //   return total;
+  // }
 
   ngOnInit() {
 
-
-    this.dataService.getMarketData( 'rank', 0 ,  100);
-
-
+    this.dataService.getMarketData( 'rank', 0 ,  30);
 
 // this is new code for getting market data for 100s, to be mixed with portoflio
-
-
 
     this.subscription1 = this.coinmarketService.portfolioChanged
       .subscribe(

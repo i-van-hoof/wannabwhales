@@ -29,20 +29,20 @@
 
           <!-- <button class="btn btn-primary" (click)="getTotal()">TEST</button> -->
  </div>
-<!--
-<div class="row">
-  <div class="col-xs-12">
-  <div><h3> Total portfolio value: $ {{ getTotal() | number: '1.0-0'}}</h3>
-  </div></div>
-</div> -->
 
-    <app-portfolio-item
+    <!-- <app-portfolio-item
       *ngFor="let coinmarketEl of marketData; let i = index;"
       [coinmarketItem]="coinmarketEl"
       [symbol]="marketData[i]['symbol']"
       [hidden]="marketData[i]['inportfolio'] === false && !show1"
       [inportfolio]="marketData[i]['inportfolio']"
-    ></app-portfolio-item>
+    ></app-portfolio-item> -->
+
+    <app-portfolio-item
+    *ngFor="let coinmarketEl of marketData; let i = index;"
+    [coinmarketItem]="coinmarketEl"
+    [symbol]="marketData[i]['symbol']"
+  ></app-portfolio-item>
 
 
 
